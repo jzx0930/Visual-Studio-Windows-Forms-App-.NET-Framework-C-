@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>練習設計</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <h1 class="title">練習設計</h1>
+
+  <div class="content-row">
+    <div class="left-column">
+      <a href="Red_Link.html" class="red link-item" target="_blank">1. 進入紅色分頁</a>
+      <h2 class="green">2. 民禁擋</h2>
+      <h2 class="blue">3. 瓜球i吃💩</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="right-column">
+      <div class="orbit-wrapper">
+        <div class="triangle"></div>
+        <div class="orbit-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-label" id="progressText">載入中：0%</div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const duration = 3000;
+    const start = performance.now();
+
+    function updateProgress(now) {
+      const elapsed = now - start;
+      const percent = Math.min((elapsed / duration) * 100, 100);
+      progressBar.style.width = percent + "%";
+      progressText.textContent = `載入中：${Math.floor(percent)}%`;
+
+      if (percent < 100) {
+        requestAnimationFrame(updateProgress);
+      } else {
+        progressText.textContent = "載入完成！";
+        progressBar.classList.add("spin");
+      }
+    }
+
+    requestAnimationFrame(updateProgress);
+  </script>
+</body>
+</html>
