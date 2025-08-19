@@ -1,57 +1,57 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE html> <!-- 宣告這是一個 HTML5 文件 -->
+<html lang="zh-Hant"> <!-- 設定語言為繁體中文 -->
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>練習設計</title>
-  <link rel="stylesheet" href="index.css">
+  <meta charset="utf-8"> <!-- 設定網頁的編碼為 UTF-8 -->
+  <meta name="viewport" content="width=device-width"> <!-- 讓網頁在行動裝置上能正確縮放 -->
+  <title>練習設計</title> <!-- 設定網頁標題 -->
+  <link rel="stylesheet" href="index.css"> <!-- 引入外部 CSS 樣式表 -->
 </head>
-<body>
-  <h1 class="title">練習設計</h1>
+<body> <!-- 網頁主體開始 -->
+  <h1 class="title">練習設計</h1> <!-- 主標題，使用 class "title" 方便 CSS 設計 -->
 
-  <div class="content-row">
-    <div class="left-column">
-      <a href="Red_Link.html" class="red link-item" target="_blank">1. 進入紅色分頁</a>
-      <h2 class="green">2. 民禁擋</h2>
-      <h2 class="blue">3. 瓜球i吃💩</h2>
+  <div class="content-row"> <!-- 包含左右欄的容器 -->
+    <div class="left-column"> <!-- 左側欄位 -->
+      <a href="VS_note.html" class="red link-item" target="_blank">1. VS筆記</a> <!-- 超連結，點擊後開新分頁 -->
+      <h2 class="green">2. 待定</h2> <!-- 第二項標題，使用 class "green" -->
+      <h2 class="blue">3.  待定</h2> <!-- 第三項標題，使用 class "blue"，含表情符號 -->
     </div>
 
-    <div class="divider"></div>
+    <div class="divider"></div> <!-- 分隔線或分隔區塊，可能用於視覺分隔左右欄 -->
 
-    <div class="right-column">
-      <div class="orbit-wrapper">
-        <div class="triangle"></div>
-        <div class="orbit-dot"></div>
+    <div class="right-column"> <!-- 右側欄位 -->
+      <div class="orbit-wrapper"> <!-- 包裹動畫或視覺元素的容器 -->
+        <div class="triangle"></div> <!-- 三角形圖形，可能透過 CSS 製作 -->
+        <div class="orbit-dot"></div> <!-- 軌道上的點，可能會有動畫效果 -->
       </div>
     </div>
   </div>
 
-  <div class="progress-label" id="progressText">載入中：0%</div>
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-label" id="progressText">載入中：0%</div> <!-- 顯示進度百分比的文字 -->
+  <div class="progress-container"> <!-- 進度條的外框容器 -->
+    <div class="progress-bar" id="progressBar"></div> <!-- 真正的進度條元素 -->
   </div>
 
-  <script>
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
-    const duration = 3000;
-    const start = performance.now();
+  <script> <!-- JavaScript 區塊開始 -->
+    const progressBar = document.getElementById("progressBar"); // 取得進度條元素
+    const progressText = document.getElementById("progressText"); // 取得進度文字元素
+    const duration = 3000; // 設定動畫持續時間為 3000 毫秒（3 秒）
+    const start = performance.now(); // 取得動畫開始的時間戳
 
-    function updateProgress(now) {
-      const elapsed = now - start;
-      const percent = Math.min((elapsed / duration) * 100, 100);
-      progressBar.style.width = percent + "%";
-      progressText.textContent = `載入中：${Math.floor(percent)}%`;
+    function updateProgress(now) { // 定義更新進度的函式
+      const elapsed = now - start; // 計算已經過的時間
+      const percent = Math.min((elapsed / duration) * 100, 100); // 計算百分比，最多到 100%
+      progressBar.style.width = percent + "%"; // 更新進度條寬度
+      progressText.textContent = `載入中：${Math.floor(percent)}%`; // 更新進度文字
 
-      if (percent < 100) {
-        requestAnimationFrame(updateProgress);
-      } else {
-        progressText.textContent = "載入完成！";
-        progressBar.classList.add("spin");
+      if (percent < 100) { // 如果尚未完成
+        requestAnimationFrame(updateProgress); // 繼續下一幀動畫
+      } else { // 如果已完成
+        progressText.textContent = "載入完成！"; // 顯示完成文字
+        progressBar.classList.add("spin"); // 加入 spin 樣式（可能是動畫效果）
       }
     }
 
-    requestAnimationFrame(updateProgress);
+    requestAnimationFrame(updateProgress); // 啟動動畫更新
   </script>
 </body>
 </html>
