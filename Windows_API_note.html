@@ -1,0 +1,95 @@
+<!DOCTYPE html> <!-- 宣告 HTML5 文件類型 -->
+<html lang="zh-Hant"> <!-- 設定語言為繁體中文 -->
+<head> <!-- 頁面頭部開始 -->
+  <meta charset="UTF-8"> <!-- 設定編碼為 UTF-8，支援中文與多語系 -->
+  <meta name="viewport" content="width=device-width"> <!-- 響應式設計，適應不同裝置寬度 -->
+  <title>Windows API 教學筆記</title> <!-- 網頁標題 -->
+  <link rel="stylesheet" href="Windows_API_note.css"> <!-- 引入外部 CSS 樣式表 -->
+  <script src="Windows_API.js" defer></script> <!-- 引入外部 JavaScript，延遲執行直到 DOM 完成 -->
+</head> <!-- 頁面頭部結束 -->
+<body> <!-- 網頁主體開始 -->
+  <a href="index.html" class="back-button">返回首頁</a> <!-- 返回首頁的按鈕連結 -->
+  <h1>Windows API 教學筆記</h1> <!-- 主標題 -->
+
+  <!-- 章節：什麼是 Windows API -->
+  <section> <!-- 第一個章節區塊 -->
+    <h2><span class="arrow">▶</span> 什麼是 Windows API？</h2> <!-- 可展開的章節標題，含箭頭圖示 -->
+    <div class="api-section"> <!-- 章節內容容器 -->
+      <p>Windows API（Windows Application Programming Interface）是 Microsoft 提供的一組函式和服務，讓開發人員能夠直接與 Windows 作業系統進行交互，執行各種低層級操作，如檔案管理、記憶體分配、圖形渲染、系統設定等。</p> <!-- 說明 Windows API 的定義與用途 -->
+      <p>這些 API 是 Windows 系統的核心組件，許多應用程式和軟體都使用它們來完成系統級操作。</p> <!-- 補充其重要性與應用範圍 -->
+    </div>
+  </section>
+
+  <!-- 章節：Windows API 的主要功能 -->
+  <section> <!-- 第二個章節區塊 -->
+    <h2><span class="arrow">▶</span> Windows API 的主要功能</h2> <!-- 可展開的章節標題 -->
+    <div class="api-section"> <!-- 功能分類容器 -->
+
+      <h3>系統管理（Kernel32.dll）</h3> <!-- 子分類標題：系統管理 -->
+      <ul> <!-- 系統管理函式列表 -->
+        <li>CreateFile：建立或開啟檔案</li> <!-- 建立或開啟檔案 -->
+        <li>ReadFile / WriteFile：讀取與寫入檔案</li> <!-- 檔案讀寫 -->
+        <li>GetPrivateProfileString / WritePrivateProfileString：讀取與寫入 INI 設定檔</li> <!-- INI 設定檔操作 -->
+        <li>Sleep：讓執行緒暫停指定的毫秒數</li> <!-- 執行緒暫停 -->
+      </ul>
+
+      <h3>視窗管理（User32.dll）</h3> <!-- 子分類標題：視窗管理 -->
+      <ul> <!-- 視窗管理函式列表 -->
+        <li>MessageBox：顯示訊息框</li> <!-- 顯示訊息框 -->
+        <li>FindWindow：查找應用程式窗口</li> <!-- 查找視窗 -->
+        <li>SetWindowText：改變窗口標題</li> <!-- 設定視窗標題 -->
+        <li>GetAsyncKeyState：檢測按鍵是否被按下</li> <!-- 偵測鍵盤輸入 -->
+      </ul>
+
+      <h3>圖形渲染（Gdi32.dll）</h3> <!-- 子分類標題：圖形渲染 -->
+      <ul> <!-- 圖形渲染函式列表 -->
+        <li>CreateCompatibleDC：建立虛擬的畫布</li> <!-- 建立相容的設備內容 -->
+        <li>BitBlt：繪製位圖到視窗或圖像</li> <!-- 位圖繪製 -->
+        <li>StretchBlt：縮放位圖</li> <!-- 位圖縮放 -->
+      </ul>
+
+      <h3>網路通信（Ws2_32.dll）</h3> <!-- 子分類標題：網路通信 -->
+      <ul> <!-- 網路通信函式列表 -->
+        <li>socket：建立網路連接</li> <!-- 建立 socket -->
+        <li>connect：與遠端伺服器建立 TCP 連線</li> <!-- 建立 TCP 連線 -->
+        <li>send / recv：發送或接收網路數據</li> <!-- 傳送與接收資料 -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 章節：如何在 C# 使用 Windows API -->
+  <section> <!-- 第三個章節區塊 -->
+    <h2><span class="arrow">▶</span> 如何在 C# 使用 Windows API</h2> <!-- 可展開的章節標題 -->
+    <div class="api-section"> <!-- C# 調用範例容器 -->
+      <p>在 C# 中，你可以使用 <code>DllImport</code> 來調用 Windows API。例如，調用 MessageBox：</p> <!-- 說明使用方式 -->
+      <button class="copy-btn">📋 複製程式碼</button> <!-- 複製程式碼按鈕 -->
+      <pre><code>using System.Runtime.InteropServices;
+
+class Program
+{
+    [DllImport("user32.dll")]
+    public static extern int MessageBox(IntPtr hWnd, string lpText, string lpCaption, uint uType);
+
+    static void Main()
+    {
+        MessageBox(IntPtr.Zero, "Hello, Windows API!", "Message Box", 0);
+    }
+}</code></pre> <!-- C# 程式碼範例 -->
+      <p>這段程式碼將顯示一個 Windows 訊息框，標題為 "Message Box"，內容為 "Hello, Windows API!"。</p> <!-- 補充說明程式碼效果 -->
+    </div>
+  </section>
+
+  <!-- 章節：Windows API 的重要性 -->
+  <section> <!-- 第四個章節區塊 -->
+    <h2><span class="arrow">▶</span> Windows API 的重要性</h2> <!-- 可展開的章節標題 -->
+    <div class="api-section"> <!-- 應用場景容器 -->
+      <ul> <!-- 應用場景列表 -->
+        <li>低層級系統管理工具（磁碟管理、記憶體監控）</li> <!-- 系統工具 -->
+        <li>硬體驅動程式（如滑鼠、鍵盤、顯示器）</li> <!-- 驅動程式 -->
+        <li>高效能應用（影像處理、遊戲引擎）</li> <!-- 高效能應用 -->
+        <li>企業應用（自動化、檔案管理）</li> <!-- 企業系統 -->
+      </ul>
+    </div>
+  </section>
+</body> <!-- 網頁主體結束 -->
+</html> <!-- HTML 文件結束 -->
