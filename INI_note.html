@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+    <a href="index.html" class="back-button">🏠 返回主頁</a> <!-- 返回首頁的按鈕連結 -->
+  <title>INI 檔案教學</title>
+  <link rel="stylesheet" href="INI_note.css" />
+  <script src="INI_note.js" defer></script> <!-- 引入外部 JavaScript，延遲執行直到 DOM 完成 -->
+</head>
+<body>
+  <h1>INI 檔案教學</h1>
+
+  <section>
+    <h2><span class="arrow">▶</span> INI 檔案結構說明</h2>
+    <div class="api-section">
+      <p class="main-text">典型的 INI 檔案格式：</p>
+      <pre><code>[SectionName]
+Key1=Value1
+Key2=Value2</code></pre>
+      <p class="sub-text">每個 INI 檔包含多個部分（sections），以方括號包圍的部分名稱來區分，內部由鍵值對（key-value pair）組成。這些檔案通常用於設定應用程式的參數，比如使用者偏好、視窗佈局、資料庫連線等。</p>
+    </div>
+  </section>
+
+  
+  <section>
+  <h2><span class="arrow">▶</span> INI 檔案內容範例</h2>
+  <div class="api-section">
+    <p class="main-text">範例內容如下：</p>
+    <div class="sub-text" style="white-space: pre-line; font-family: Consolas, monospace; line-height: 1.6;">
+[UI Settings]
+tabPage1.BackColor=-2302756
+tabPage1.ForeColor=-16777216
+this.BackColor=-986896
+tabPage.BackColor=-2302756
+tabPage.ForeColor=-16777216
+tabControl1.BackColor=-2302756
+tabControl1.ForeColor=-16777216
+
+[FontSettings]
+FontFamily=新細明體
+Size=9
+Style=Regular
+    </div>
+  </div>
+</section>
+  
+  
+  
+  
+  <section>
+    <h2><span class="arrow">▶</span> INI 寫入範例</h2>
+    <div class="api-section">
+      <h3>建立 IniFile 物件</h3>
+      <pre><code>private IniFile iniFile = new IniFile(
+  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ini", "config.ini")
+);</code></pre>
+
+      <h3>寫入設定值</h3>
+      <pre><code>iniFile.Write("UI Settings", "tabPage1.BackColor", tabPage1.BackColor.ToArgb().ToString());
+iniFile.Write("UI Settings", "tabPage1.ForeColor", tabPage1.ForeColor.ToArgb().ToString());
+iniFile.Write("UI Settings", "this.BackColor", this.BackColor.ToArgb().ToString());
+
+iniFile.Write("FontSettings", "FontFamily", Font.FontFamily.Name);
+iniFile.Write("FontSettings", "Size", Font.Size.ToString());
+iniFile.Write("FontSettings", "Style", Font.Style.ToString());</code></pre>
+    </div>
+  </section>
+
+ 
+
+
+  <section>
+    <h2><span class="arrow">▶</span> INI 讀取範例</h2>
+    <div class="api-section">
+      <pre><code>tabPage.BackColor = Color.FromArgb(int.Parse(
+  iniFile.Read("UI Settings", "tabPage1.BackColor")
+));
+tabPage.ForeColor = Color.FromArgb(int.Parse(
+  iniFile.Read("UI Settings", "tabPage1.ForeColor")
+));
+this.BackColor = Color.FromArgb(int.Parse(
+  iniFile.Read("UI Settings", "this.BackColor")
+));
+
+this.Font = new Font(
+  iniFile.Read("FontSettings", "FontFamily"),
+  float.Parse(iniFile.Read("FontSettings", "Size")),
+  (FontStyle)Enum.Parse(typeof(FontStyle), iniFile.Read("FontSettings", "Style"))
+);</code></pre>
+    </div>
+  </section>
+
+
+
+  <script src="script.js"></script>
+</body>
+</html>
