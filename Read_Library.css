@@ -2,7 +2,6 @@ body {
   background-color: #000;
   color: #fff;
   font-family: "Segoe UI", sans-serif;
-  text-align: center;
   padding: 50px;
 }
 
@@ -10,6 +9,21 @@ h1 {
   font-size: 2.5em;
   color: #0f0;
   animation: fadeIn 1s ease-out;
+}
+
+h2, h3 {
+  color: #0f0;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-out;
+}
+
+p {
+  font-size: 1.2em;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.6;
+  animation: fadeIn 1.5s ease-out;
 }
 
 .note-list {
@@ -24,7 +38,7 @@ h1 {
   font-size: 1.2em;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 2px dashed #d4af37;/*#d4af37   #ccaa00 */
+  border-bottom: 2px dashed #d4af37;
   animation: fadeIn 1.5s ease-out;
 }
 
@@ -34,20 +48,10 @@ h1 {
 }
 
 .sub-text {
-  text-indent: 0; /* 不縮排 */
-  margin-left: 1em; /* 對齊主文字，不與編號對齊 */
+  text-indent: 0;
+  margin-left: 1em;
   color: #ccc;
   font-size: 1em;
-}
-
-
-
-
-
-p {
-  font-size: 1.2em;
-  margin-top: 20px;
-  animation: fadeIn 1.5s ease-out;
 }
 
 .video-box {
@@ -85,6 +89,50 @@ video {
 .back-button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+/* 表格樣式 */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  border-collapse: collapse;
+  animation: fadeIn 1.5s ease-out;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 1em;
+}
+
+th {
+  background-color: #222;
+  color: #0f0;
+  font-weight: bold;
+}
+
+td {
+  background-color: #111;
+  color: #eee;
+}
+
+/* 程式碼區塊 */
+code {
+  background-color: #222;
+  color: #0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+}
+
+/* 清單樣式 */
+ul {
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 20px;
+  line-height: 1.6;
 }
 
 /* 動畫效果 */
