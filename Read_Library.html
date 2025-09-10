@@ -9,7 +9,7 @@
 <body>
   <a href="index.html" class="back-button">🏠 返回主頁</a>
 
-  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
+  <div style="display: flex; justify-content: flex-start; align-items: center; gap: 10px; margin-top: 20px;">
     <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Visual_Studio_Icon_2019.svg"
          alt="Visual Studio Logo"
          style="width: 40px;">
@@ -18,19 +18,10 @@
 
   <p>閱讀應用Library流程。</p>
 
-
-
   <hr style="margin: 40px 0;">
-
-  <h2>技術文件快速上手指南（jzx 教學邏輯）</h2>
 
   <p>🎯 目的<br>
   幫助工程師快速理解 .NET 類別庫或 API 文件，並正確應用指令與方法。</p>
-
-  <p>🧠 為什麼不先看命名空間？<br>
-  命名空間（namespace）是模組分類，像是資料夾結構。<br>
-  它不包含功能細節，也不告訴你怎麼用。<br>
-  應該在最後確認引用是否正確，而不是當作入口。</p>
 
   <h3>✅ 正確閱讀順序</h3>
 
@@ -64,7 +55,51 @@
   <p>✅ 結語：這是一種「模組化閱讀策略」<br>
   你不是在「看文件」，你是在「拆模組」<br>
   你不是在「背 API」，你是在「組流程」<br>
-  這就是 jzx 教學邏輯的精髓：結構化、可重用、可教學</p>
+  </p>
+
+  <h3>🧩 把說明書當成「模組規格書」來看</h3>
+
+  <table>
+    <tr>
+      <th>元件</th>
+      <th>在說明書中叫什麼</th>
+      <th>你要看什麼</th>
+    </tr>
+    <tr>
+      <td>模組名稱</td>
+      <td>類別（Class）</td>
+      <td>它是做什麼的</td>
+    </tr>
+    <tr>
+      <td>模組參數</td>
+      <td>屬性（Property）</td>
+      <td>可以設定什麼</td>
+    </tr>
+    <tr>
+      <td>模組動作</td>
+      <td>方法（Method）</td>
+      <td>可以執行什麼</td>
+    </tr>
+    <tr>
+      <td>模組擴充</td>
+      <td>繼承（Inheritance）</td>
+      <td>是否有進階版本</td>
+    </tr>
+    <tr>
+      <td>模組分類</td>
+      <td>命名空間（Namespace）</td>
+      <td>屬於哪一類模組</td>
+    </tr>
+  </table>
+
+  <h3>✅ 給你一個實用技巧：只看你要用的那一段</h3>
+
+  <ul>
+    <li>找到你要用的類別（例如 Variables）</li>
+    <li>找到你要用的屬性（例如 Global.Doubles）</li>
+    <li>找到你要用的方法（例如 GetMultiple()）</li>
+    <li>看範例程式碼（直接複製來改）</li>
+  </ul>
 
 </body>
 </html>
