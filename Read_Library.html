@@ -7,71 +7,64 @@
   <link rel="stylesheet" href="VS_note.css">
 </head>
 <body>
-   <a href="index.html" class="back-button">🏠 返回主頁</a>
-  
-<div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Visual_Studio_Icon_2019.svg"
-       alt="Visual Studio Logo"
-       style="width: 40px;">
-  <h1 style="margin: 0;">VisualStudio-WindowsFormsApp(.NET-Framework) 🎉</h1>
-</div>
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
 
- 
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Visual_Studio_Icon_2019.svg"
+         alt="Visual Studio Logo"
+         style="width: 40px;">
+    <h1 style="margin: 0;">VisualStudio-WindowsFormsApp(.NET-Framework) 🎉</h1>
+  </div>
+
   <p>閱讀應用Library流程。</p>
-  
-  
 
 
-<ol class="note-list">
-  <li>
-    <div class="main-text">開始 F5</div>
-    <div class="sub-text">啟動應用程式進行測試或執行。</div>
-  </li>
-  <li>
-    <div class="main-text">建置解決方案 Ctrl+Shift+B</div>
-    <div class="sub-text">快速編譯整個方案，檢查是否有語法錯誤。</div>
-  </li>
-  <li>
-    <div class="main-text">加入中斷點 F9，跳出 Shift+F11</div>
-    <div class="sub-text">用於偵錯流程控制，搭配 Visual Studio 的除錯工具。</div>
-  </li>
-  <li>
-    <div class="main-text">摺疊制定義</div>
-    <div class="sub-text">右鍵 → 大綱 → 摺疊制定義，可快速收起冗長程式區塊。</div>
-  </li>
-  <li>
-    <div class="main-text">部署方式</div>
-    <div class="sub-text">在專案內的主程式資料 bin → Debug 內的資料內容複製出來，儲存於另一新的資料夾，即可部署，如此一來程式無法被修改，也不會有被更改的風險。(但每台電腦的配置檔不同，需個別處理)</div>
-  </li>
-  <li>
-    <div class="main-text">尋找 Form 元件</div>
-    <div class="sub-text">(1) Ctrl+Alt+T 開啟文件大綱快速定位元件。</div>
-     <div class="sub-text">(2) 屬性頁面上方下拉選單可輸入元件首字母搜尋。</div>
 
-  </li>
-  <li>
-    <div class="main-text">書籤功能</div>
-    <div class="sub-text">Ctrl+K+K 插入書籤，Ctrl+K+W 開啟書籤視窗，Ctrl+K+N 快速跳回。可在「檢視 → 書籤視窗」開啟。</div>
-  </li>
-  <li>
-    <div class="main-text">卷軸地圖模式</div>
-    <div class="sub-text">工具 → 選項 → 文字編輯器 → C# → IntelliSense 可調整提示與說明。卷軸可改為地圖模式。</div>
-  </li>
-  <li>
-    <div class="main-text">工具與功能管理</div>
-    <div class="sub-text">工具 → 取得工具與功能，可查看安裝時選擇的工具組，也能額外安裝舊版 .NET Framework。</div>
-  </li>
-  <li>
-    <div class="main-text">查看 Framework 版本</div>
-    <div class="sub-text">方案總管 → 專案右鍵 → 屬性，可查看該專案使用的 .NET Framework 版本。</div>
-  </li>
-  <li>
-    <div class="main-text">輸出類型設定</div>
-    <div class="sub-text">專案右鍵 → 屬性 → 應用程式 → 輸出類型。若改為主控台應用程式，可使用 Console.WriteLine() 並在 cmd 顯示結果。</div>
-  </li>
-</ol>
+  <hr style="margin: 40px 0;">
 
+  <h2>技術文件快速上手指南（jzx 教學邏輯）</h2>
 
- 
+  <p>🎯 目的<br>
+  幫助工程師快速理解 .NET 類別庫或 API 文件，並正確應用指令與方法。</p>
+
+  <p>🧠 為什麼不先看命名空間？<br>
+  命名空間（namespace）是模組分類，像是資料夾結構。<br>
+  它不包含功能細節，也不告訴你怎麼用。<br>
+  應該在最後確認引用是否正確，而不是當作入口。</p>
+
+  <h3>✅ 正確閱讀順序</h3>
+
+  <p><strong>Step 1：先看「類別名稱」＝模組名稱</strong><br>
+  目的：了解這個模組是做什麼的<br>
+  範例：ControllerVariableContainer 類別<br>
+  類似你在工廠中辨識模組功能（例如：變數管理器、運動控制器）</p>
+
+  <p><strong>Step 2：看「屬性」＝模組的輸入/設定點</strong><br>
+  目的：找出可以設定或取得的資料<br>
+  範例：.Global、.Fieldbus、.Doubles<br>
+  類似你設定模組參數（例如：速度、位置、變數空間）</p>
+
+  <p><strong>Step 3：看「方法」＝模組的動作指令</strong><br>
+  目的：找出可以執行的功能<br>
+  範例：GetMultiple 方法<br>
+  類似你呼叫控制器指令（例如：MoveAbs、ArrayRead）</p>
+
+  <p><strong>Step 4：看「範例」＝模組的使用流程</strong><br>
+  目的：直接學會怎麼用<br>
+  範例：<br>
+  <code>double[] values = myController.Variables.Global.Doubles.GetMultiple(0, 200);</code><br>
+  類似你參考教學流程圖或範例程式碼，快速套用</p>
+
+  <p><strong>最後 Step：回頭確認命名空間</strong><br>
+  目的：確保你 using 了正確的命名空間<br>
+  範例：<br>
+  <code>using Aerotech.A3200.Variables;</code><br>
+  類似你確認模組路徑是否正確掛載</p>
+
+  <p>✅ 結語：這是一種「模組化閱讀策略」<br>
+  你不是在「看文件」，你是在「拆模組」<br>
+  你不是在「背 API」，你是在「組流程」<br>
+  這就是 jzx 教學邏輯的精髓：結構化、可重用、可教學</p>
+
 </body>
 </html>
