@@ -90,6 +90,11 @@ video {
   transform: scale(1.1);
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
 }
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
 
 /* 表格樣式 */
 table {
