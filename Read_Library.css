@@ -135,6 +135,12 @@ ul {
   line-height: 1.6;
 }
 
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
 /* 動畫效果 */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
