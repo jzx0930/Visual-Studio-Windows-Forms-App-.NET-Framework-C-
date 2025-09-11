@@ -103,50 +103,68 @@
   
 <hr style="margin: 60px 0;">
 
-  <h2>📘 A3200 .NET Library 類別結構教學（jzx 教學邏輯）</h2>
+ <section>
+  <h2>🧩 Step 0：命名空間是分類資料夾</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/N_Aerotech_A3200.htm" target="_blank">Aerotech.A3200 命名空間</a></p>
+  <p>所有控制器相關類別都歸在 Aerotech.A3200 命名空間下。</p>
+  <p>命名空間本身不包含功能，只是分類。</p>
+  <p>🔧 教學邏輯：這是「模組分類」，不看內容，只確認類別歸屬。</p>
 
-  <p><strong>Step 0：命名空間是分類資料夾</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/N_Aerotech_A3200.htm" target="_blank">Aerotech.A3200 命名空間</a><br>
-  所有控制器相關類別都歸在此命名空間下，僅作為分類用途。</p>
+  <h2>🧩 Step 1：Controller 是主入口類別</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Controller.htm" target="_blank">Controller 類別</a></p>
+  <pre><code>public class Controller : INamed&lt;string&gt;, IDisposable</code></pre>
+  <p>是整個控制器操作的核心類別。</p>
+  <p>實作 INamed&lt;string&gt;（具名物件）與 IDisposable（可釋放資源）。</p>
+  <p>提供 .Commands、.Tasks、.Parameters 等屬性。</p>
+  <p>🔍 <strong>補充說明：</strong><br>
+  實作（Implements）指的是這個類別承諾會提供某些介面定義的方法或屬性。例如 IDisposable 要求類別提供 Dispose() 方法。<br>
+  這是一種「功能合約」，讓類別具備特定能力。</p>
+  <p>🔧 教學邏輯：這是「模組入口」，所有功能都從這裡開始呼叫。</p>
 
-  <p><strong>Step 1：Controller 是主入口類別</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Controller.htm" target="_blank">Controller 類別</a><br>
-  宣告：<code>public class Controller : INamed&lt;string&gt;, IDisposable</code><br>
-  實作代表類別具備特定功能合約，例如 <code>IDisposable</code> 要求提供 <code>Dispose()</code> 方法。</p>
+  <h2>🧩 Step 2：Commands 是 Controller 的屬性</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/P_Aerotech_A3200_Controller_Commands.htm" target="_blank">Commands 屬性</a></p>
+  <pre><code>public TaskSelectionCommands Commands { get; }</code></pre>
+  <p>Commands 是 Controller 類別的屬性。</p>
+  <p>屬性型別是 TaskSelectionCommands，讓你選擇任務並取得該任務的指令模組。</p>
+  <p>🔍 <strong>補充說明：</strong><br>
+  屬性型別（Property Type）指的是這個屬性所對應的資料類型。在這裡，Commands 屬性的型別是 TaskSelectionCommands，表示你取得的是一個任務選擇器物件。<br>
+  這決定了你可以對該屬性呼叫哪些方法或存取哪些子屬性。</p>
+  <p>🔧 教學邏輯：這是「模組參數」，你從這裡開始選擇任務。</p>
 
-  <p><strong>Step 2：Commands 是 Controller 的屬性</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/P_Aerotech_A3200_Controller_Commands.htm" target="_blank">Commands 屬性</a><br>
-  宣告：<code>public TaskSelectionCommands Commands { get; }</code><br>
-  屬性型別是 <code>TaskSelectionCommands</code>，表示你取得的是任務選擇器物件，可進一步選擇任務並呼叫指令。</p>
+  <h2>🔗 繼承：TaskSelectionCommands → RootCommands</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_TaskSelectionCommands.htm" target="_blank">TaskSelectionCommands 類別</a></p>
+  <pre><code>public class TaskSelectionCommands : RootCommands</code></pre>
+  <p>繼承自 RootCommands，提供 .Item(TaskId) 方法，讓你選擇任務（例如 T01）。</p>
+  <p>🔧 教學邏輯：這是「模組擴充」，你可以選擇任務並取得該任務的指令模組。</p>
 
-  <p><strong>🔗 繼承：TaskSelectionCommands → RootCommands</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_TaskSelectionCommands.htm" target="_blank">TaskSelectionCommands 類別</a><br>
-  宣告：<code>public class TaskSelectionCommands : RootCommands</code><br>
-  提供 <code>.Item(TaskId)</code> 方法，讓你選擇任務（例如 T01）。</p>
+  <h2>🔗 繼承：RootCommands → CommandCategory</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_RootCommands.htm" target="_blank">RootCommands 類別</a><br>
+     📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_CommandCategory.htm" target="_blank">CommandCategory 類別</a></p>
+  <pre><code>public class RootCommands : CommandCategory, INamed&lt;TaskId&gt;</code></pre>
+  <p>繼承自 CommandCategory，實作 INamed&lt;TaskId&gt;，表示每個任務都有名稱。</p>
+  <p>提供 .Motion、.IO、.Program 等指令模組。</p>
+  <p>🔧 教學邏輯：這是「模組分類容器」，每個任務都可以取得一組指令模組。</p>
 
-  <p><strong>🔗 繼承：RootCommands → CommandCategory</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_RootCommands.htm" target="_blank">RootCommands 類別</a><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_CommandCategory.htm" target="_blank">CommandCategory 類別</a><br>
-  宣告：<code>public class RootCommands : CommandCategory, INamed&lt;TaskId&gt;</code><br>
-  提供 <code>.Motion</code>、<code>.IO</code> 等指令模組。</p>
+  <h2>🧩 Step 3：Motion 是 RootCommands 的屬性</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/P_Aerotech_A3200_Commands_RootCommands_Motion.htm" target="_blank">Motion 屬性</a></p>
+  <pre><code>public MotionCommands Motion { get; }</code></pre>
+  <p>屬性型別是 MotionCommands，提供運動控制指令，例如 .Enable()、.Linear() 等。</p>
+  <p>因為 TaskSelectionCommands 繼承自 RootCommands，所以你可以透過 <code>myController.Commands.Item(TaskId.T01)</code> 直接存取 .Motion。</p>
+  <p>🔧 教學邏輯：這是「模組動作入口」，你從這裡開始呼叫運動指令。</p>
 
-  <p><strong>Step 3：Motion 是 RootCommands 的屬性</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/P_Aerotech_A3200_Commands_RootCommands_Motion.htm" target="_blank">Motion 屬性</a><br>
-  宣告：<code>public MotionCommands Motion { get; }</code><br>
-  屬性型別是 <code>MotionCommands</code>，表示你取得的是一個運動指令模組物件。<br>
-  因為 <code>TaskSelectionCommands</code> 繼承自 <code>RootCommands</code>，所以你可以透過 <code>myController.Commands.Item(TaskId.T01)</code> 直接存取 <code>.Motion</code>。</p>
+  <h2>🧩 Step 4：MotionCommands 是運動指令集合</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_MotionCommands.htm" target="_blank">MotionCommands 類別</a></p>
+  <pre><code>public class MotionCommands : CommandCategory</code></pre>
+  <p>繼承自 CommandCategory，所有運動指令都定義在這裡。</p>
+  <p>🔧 教學邏輯：這是「模組動作集合」，你會在這裡找到 .Linear()、.Enable() 等方法。</p>
 
-  <p><strong>Step 4：MotionCommands 是運動指令集合</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/T_Aerotech_A3200_Commands_MotionCommands.htm" target="_blank">MotionCommands 類別</a><br>
-  宣告：<code>public class MotionCommands : CommandCategory</code><br>
-  所有運動指令都定義在這個類別中，例如 <code>.Linear()</code>、<code>.Enable()</code>。</p>
+  <h2>🧩 Step 5：Linear() 是 MotionCommands 的方法</h2>
+  <p>📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/M_Aerotech_A3200_Commands_MotionCommands_Linear_7.htm" target="_blank">Linear 方法</a></p>
+  <pre><code>public void Linear(int[] axisIndexes, double[] Distance, double CoordinatedSpeed)</code></pre>
+  <p>執行協調運動，對應 AeroBasic 的 LINEAR 指令。</p>
+  <p>🔧 教學邏輯：這是「模組動作指令」，你實際執行控制器運動的地方。</p>
 
-  <p><strong>Step 5：Linear() 是 MotionCommands 的方法</strong><br>
-  📄 <a href="https://jzx0930.github.io/Aerotech-A3200-.NET-Library/html/M_Aerotech_A3200_Commands_MotionCommands_Linear_7.htm" target="_blank">Linear 方法</a><br>
-  宣告：<code>public void Linear(int[] axisIndexes, double[] Distance, double CoordinatedSpeed)</code><br>
-  這是執行協調運動的指令，對應 AeroBasic 的 <code>LINEAR</code> 指令。</p>
-
-  <h3>✅ 最終呼叫流程（jzx 教學流程）</h3>
+  <h2>✅ 最終呼叫流程（jzx 教學流程）</h2>
   <pre><code>// 1. 建立 Controller
 var myController = Controller.Connect(...);
 
@@ -157,7 +175,7 @@ var task = myController.Commands.Item(TaskId.T01);
 task.Motion.Linear(new[] { 0, 1 }, new[] { 10.0, 20.0 }, 5.0);
 </code></pre>
 
-  <h3>🧠 教學總結：類別關聯圖（文字版）</h3>
+  <h2>🧠 教學總結：類別關聯圖（文字版）</h2>
   <pre><code>Controller
   └── Commands : TaskSelectionCommands
         └── (繼承) RootCommands
