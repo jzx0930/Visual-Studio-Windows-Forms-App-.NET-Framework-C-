@@ -20,45 +20,42 @@
 
   <hr style="margin: 40px 0;">
 
-  <p>🎯 目的<br>
-  幫助工程師快速理解 .NET 類別庫或 API 文件，並正確應用指令與方法。</p>
+<section>
+  <h2>🧩 Step 0：閱讀目的與策略</h2>
+  <p>🎯 目的：幫助工程師快速理解 .NET 類別庫或 API 文件，並正確應用指令與方法。</p>
+  <p>🔧 教學邏輯：你不是在「看文件」，你是在「拆模組」；不是在「背 API」，你是在「組流程」。</p>
 
-  <p>✅ 正確閱讀順序</p>
+  <h2>🧩 Step 1：先看「類別名稱」＝模組名稱</h2>
+  <p>這是你理解模組功能的第一步。</p>
+  <p>範例：<code>ControllerVariableContainer</code> 類別</p>
+  <p>🔍 類似你在工廠中辨識模組功能（例如：變數管理器、運動控制器）</p>
+  <p>🔧 教學邏輯：先掌握模組的定位與用途。</p>
 
-  <p><strong>Step 1：先看「類別名稱」＝模組名稱</strong><br>
-  目的：了解這個模組是做什麼的<br>
-  範例：ControllerVariableContainer 類別<br>
-  類似你在工廠中辨識模組功能（例如：變數管理器、運動控制器）</p>
+  <h2>🧩 Step 2：看「屬性」＝模組的輸入/設定點</h2>
+  <p>這是你找出可以設定或取得的資料的地方。</p>
+  <p>範例：<code>.Global</code>、<code>.Fieldbus</code>、<code>.Doubles</code></p>
+  <p>🔍 類似你設定模組參數（例如：速度、位置、變數空間）</p>
+  <p>🔧 教學邏輯：屬性是模組的介面，決定你能操作什麼。</p>
 
-  <p><strong>Step 2：看「屬性」＝模組的輸入/設定點</strong><br>
-  目的：找出可以設定或取得的資料<br>
-  範例：.Global、.Fieldbus、.Doubles<br>
-  類似你設定模組參數（例如：速度、位置、變數空間）</p>
+  <h2>🧩 Step 3：看「方法」＝模組的動作指令</h2>
+  <p>這是你找出可以執行的功能的地方。</p>
+  <p>範例：<code>GetMultiple()</code> 方法</p>
+  <p>🔍 類似你呼叫控制器指令（例如：<code>MoveAbs</code>、<code>ArrayRead</code>）</p>
+  <p>🔧 教學邏輯：方法是模組的行為，代表它能做什麼。</p>
 
-  <p><strong>Step 3：看「方法」＝模組的動作指令</strong><br>
-  目的：找出可以執行的功能<br>
-  範例：GetMultiple 方法<br>
-  類似你呼叫控制器指令（例如：MoveAbs、ArrayRead）</p>
+  <h2>🧩 Step 4：看「範例」＝模組的使用流程</h2>
+  <p>這是你直接學會怎麼用的地方。</p>
+  <pre><code>double[] values = myController.Variables.Global.Doubles.GetMultiple(0, 200);</code></pre>
+  <p>🔍 類似你參考教學流程圖或範例程式碼，快速套用</p>
+  <p>🔧 教學邏輯：範例是模組的實戰應用，幫助你快速上手。</p>
 
-  <p><strong>Step 4：看「範例」＝模組的使用流程</strong><br>
-  目的：直接學會怎麼用<br>
-  範例：<br>
-  <code>double[] values = myController.Variables.Global.Doubles.GetMultiple(0, 200);</code><br>
-  類似你參考教學流程圖或範例程式碼，快速套用</p>
+  <h2>🧩 最後 Step：回頭確認命名空間</h2>
+  <p>這是你確保引用正確的地方。</p>
+  <pre><code>using Aerotech.A3200.Variables;</code></pre>
+  <p>🔍 類似你確認模組路徑是否正確掛載</p>
+  <p>🔧 教學邏輯：命名空間是模組的分類結構，確保你能正確使用該類別。</p>
 
-  <p><strong>最後 Step：回頭確認命名空間</strong><br>
-  目的：確保你 using 了正確的命名空間<br>
-  範例：<br>
-  <code>using Aerotech.A3200.Variables;</code><br>
-  類似你確認模組路徑是否正確掛載</p>
-
-  <p>✅ 結語：這是一種「模組化閱讀策略」<br>
-  你不是在「看文件」，你是在「拆模組」<br>
-  你不是在「背 API」，你是在「組流程」<br>
-  </p>
-
-   <p>🧩 把說明書當成「模組規格書」來看</p>
-
+  <h2>✅ 教學總結：模組對照表</h2>
   <table>
     <tr>
       <th>元件</th>
@@ -92,14 +89,15 @@
     </tr>
   </table>
 
-   <p>✅ 給你一個實用技巧：只看你要用的那一段 </p>
-
+  <h2>✅ 實用技巧：只看你要用的那一段</h2>
   <ul>
-    <li>找到你要用的類別（例如 Variables）</li>
-    <li>找到你要用的屬性（例如 Global.Doubles）</li>
-    <li>找到你要用的方法（例如 GetMultiple()）</li>
+    <li>找到你要用的類別（例如 <code>Variables</code>）</li>
+    <li>找到你要用的屬性（例如 <code>Global.Doubles</code>）</li>
+    <li>找到你要用的方法（例如 <code>GetMultiple()</code>）</li>
     <li>看範例程式碼（直接複製來改）</li>
   </ul>
+</section>
+
   
 <hr style="margin: 60px 0;">
 
