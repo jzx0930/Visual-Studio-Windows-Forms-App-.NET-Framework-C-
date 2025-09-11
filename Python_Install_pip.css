@@ -1,21 +1,10 @@
-/* 背景與字型設定 */
 body {
   background-color: #000;
   color: #fff;
   font-family: "Segoe UI", sans-serif;
-  padding: 50px 0;
-  margin: 0;
+  padding: 50px;
 }
 
-/* 主容器置中並左對齊 */
-.content-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 20px;
-  text-align: left;
-}
-
-/* 標題樣式 */
 h1 {
   font-size: 2.5em;
   color: #0f0;
@@ -29,28 +18,62 @@ h2, h3 {
   animation: fadeIn 1s ease-out;
 }
 
-/* 段落樣式 */
 p {
   font-size: 1.2em;
+  margin: 20px auto;
+  max-width: 800px;
   line-height: 1.6;
-  margin: 20px 0;
   animation: fadeIn 1.5s ease-out;
 }
 
-/* 超連結樣式 */
-a {
-  color: #0ff;
-  text-decoration: underline;
+.note-list {
+  list-style-type: decimal;
+  padding-left: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
 }
 
-a:hover {
-  color: #0f0;
+.note-list li {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #d4af37;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.main-text {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.sub-text {
+  text-indent: 0;
+  margin-left: 1em;
+  color: #ccc;
+  font-size: 1em;
+}
+
+.video-box {
+  width: 80%;
+  max-width: 640px;
+  margin: 30px auto;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: #111;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
 }
 
 /* 返回按鈕樣式 */
 .back-button {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 12px 24px;
   background-color: #0f0;
   color: #000;
@@ -68,33 +91,34 @@ a:hover {
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
 }
 
-/* 清單樣式 */
-ul, ol {
-  padding-left: 40px;
-  margin: 20px 0;
-  line-height: 1.6;
-}
-
-.note-list {
-  list-style-type: decimal;
-  padding-left: 40px;
-  margin: 20px 0;
-}
-
-.note-list li {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px dashed #d4af37;
+/* 表格樣式 */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  border-collapse: collapse;
   animation: fadeIn 1.5s ease-out;
 }
 
-.main-text {
-  font-weight: bold;
-  margin-bottom: 6px;
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 1em;
 }
 
-/* 程式碼樣式 */
+th {
+  background-color: #222;
+  color: #0f0;
+  font-weight: bold;
+}
+
+td {
+  background-color: #111;
+  color: #eee;
+}
+
+/* 程式碼區塊 */
 code {
   background-color: #222;
   color: #0f0;
@@ -103,12 +127,18 @@ code {
   font-family: Consolas, monospace;
 }
 
-/pre {
-  background-color: #111;
-  padding: 12px;
-  border-radius: 6px;
-  overflow-x: auto;
-  margin: 20px 0;
+/* 清單樣式 */
+ul {
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 /* 動畫效果 */
