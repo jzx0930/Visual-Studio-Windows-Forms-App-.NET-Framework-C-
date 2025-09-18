@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>示波器基礎應用教學</title>
+  <link rel="stylesheet" href="Oscilloscope_Tutorial.css">
+</head>
+<body>
+  <div class="content-wrapper">
+
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
+
+  <div style="display: flex; justify-content: flex-start; align-items: center; gap: 10px; margin-top: 20px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Oscilloscope_icon.svg"
+         alt="Oscilloscope Icon"
+         style="width: 40px;">
+    <h1 style="margin: 0;">Oscilloscope 基礎應用教學 🎯</h1>
+  </div>
+
+  <p>模組化理解示波器的操作流程與邏輯。</p>
+
+  <hr style="margin: 40px 0;">
+
+<section>
+  <h2>🧩 Step 0：學習目的與策略</h2>
+  <p>🎯 目的：幫助工程師快速掌握示波器的核心功能，並能正確擷取與分析波形。</p>
+  <p>🔧 教學邏輯：你不是在「看波形」，你是在「定義時間窗格」；不是在「調參數」，你是在「建立擷取流程」。</p>
+
+  <h2>🧩 Step 1：先看「觸發條件」＝擷取起點</h2>
+  <p>這是你定義何時開始擷取波形的關鍵。</p>
+  <p>範例：<code>Edge Trigger（上升沿）</code>、<code>Voltage Threshold（2.5V）</code></p>
+  <p>🔍 類似你設定「何時開始拍照」的快門條件。</p>
+  <p>🔧 教學邏輯：觸發是時間基準點，決定擷取的起始位置。</p>
+
+  <h2>🧩 Step 2：設定「時間基準」＝擷取範圍</h2>
+  <p>這是你定義每格時間長度與總擷取時間的地方。</p>
+  <p>範例：<code>Time/Div = 1ms</code>，螢幕 10 格 → 擷取 10ms 波形</p>
+  <p>🔍 類似你設定相機快門速度與曝光時間。</p>
+  <p>🔧 教學邏輯：時間基準決定解析度與觀察範圍。</p>
+
+  <h2>🧩 Step 3：設定「觸發位置」＝波形分佈</h2>
+  <p>這是你決定觸發點在螢幕上的位置。</p>
+  <p>範例：<code>觸發點在第3格</code> → 擷取 3格前 + 7格後</p>
+  <p>🔍 類似你決定畫面中主角的位置。</p>
+  <p>🔧 教學邏輯：觸發位置決定你看到的是「前因」還是「後果」。</p>
+
+  <h2>🧩 Step 4：選擇「擷取模式」＝掃描方式</h2>
+  <p>這是你決定示波器如何反應的地方。</p>
+  <ul>
+    <li><code>Auto</code>：無論是否觸發都掃描</li>
+    <li><code>Normal</code>：只有觸發才掃描</li>
+    <li><code>Single</code>：觸發一次後停止</li>
+  </ul>
+  <p>🔍 類似你選擇拍照模式：連拍、自動、單張。</p>
+  <p>🔧 教學邏輯：擷取模式決定示波器的行為邏輯。</p>
+
+  <h2>🧩 Step 5：觀察與分析波形</h2>
+  <p>這是你使用游標、測量工具進行分析的地方。</p>
+  <p>範例：<code>測量頻率、週期、上升時間、峰值</code></p>
+  <p>🔍 類似你在照片中標記距離、角度、亮度。</p>
+  <p>🔧 教學邏輯：分析工具是你理解波形的放大鏡。</p>
+
+  <h2>✅ 教學總結：模組對照表</h2>
+  <table>
+    <tr>
+      <th>元件</th>
+      <th>在示波器中叫什麼</th>
+      <th>你要設定什麼</th>
+    </tr>
+    <tr>
+      <td>擷取起點</td>
+      <td>觸發條件（Trigger）</td>
+      <td>何時開始擷取</td>
+    </tr>
+    <tr>
+      <td>擷取範圍</td>
+      <td>時間基準（Time/Div）</td>
+      <td>每格時間與總長度</td>
+    </tr>
+    <tr>
+      <td>波形分佈</td>
+      <td>觸發位置（Horizontal Position）</td>
+      <td>前後比例</td>
+    </tr>
+    <tr>
+      <td>擷取方式</td>
+      <td>擷取模式（Auto/Normal/Single）</td>
+      <td>掃描行為</td>
+    </tr>
+    <tr>
+      <td>分析工具</td>
+      <td>測量功能（Measure）</td>
+      <td>頻率、週期、電壓等</td>
+    </tr>
+  </table>
+
+  <h2>✅ 實用技巧：只看你要用的那一段</h2>
+  <ul>
+    <li>設定觸發條件（例如：上升沿 + 2.5V）</li>
+    <li>設定時間基準（例如：1ms/div）</li>
+    <li>設定觸發位置（例如：第4格）</li>
+    <li>選擇擷取模式（例如：Single）</li>
+    <li>使用測量工具分析波形</li>
+  </ul>
+
+  <h2>🧠 教學總結：擷取流程圖（文字版）</h2>
+  <pre><code>Trigger（觸發條件）
+  └── Time Base（時間基準）
+        └── Horizontal Position（觸發位置）
+              └── Acquisition Mode（擷取模式）
+                    └── Measurement（波形分析）
+</code></pre>
+
+</section>
+</div>
+</body>
+</html>
