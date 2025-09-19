@@ -1,149 +1,366 @@
-body {  /* 設定整體背景與排版 */
-  background-color: #000;  /* 背景為黑色 */
-  font-family: "Segoe UI", sans-serif;  /* 使用 Segoe UI 字型 */
-  text-align: center;  /* 文字置中 */
-  margin: 0;  /* 移除預設外距 */
-  padding: 30px;  /* 內距 30px */
-  border: 10px solid #00aa55;  /* 外框為綠色粗線 */
-  animation: fadeInBody 1s ease-in;  /* 載入時淡入動畫 */
+/* =========================
+   全域設定與排版
+========================= */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 30px;
+  border: 10px solid #00aa55;
+  animation: fadeInBody 1s ease-in;
 }
 
-.title {  /* 標題樣式 */
-  background-color: #ff0;  /* 背景為亮黃色 */
-  color: #000;  /* 文字為黑色 */
-  border: 2px solid #000;  /* 黑色邊框 */
-  padding: 15px 30px;  /* 內距上下15px、左右30px */
-  display: inline-block;  /* 讓元素不佔滿整行 */
-  font-size: 2.5em;  /* 字體大小放大 */
-  margin-bottom: 40px;  /* 與下方元素距離 40px */
-  font-family: "Comic Sans MS", "DFKai-SB", cursive;  /* 使用 Comic Sans 或標楷體 */
-  animation: popIn 0.8s ease-out;  /* 彈跳式淡入動畫 */
+h1, .title {
+  font-size: 2.5em;
+  color: #0f0;
+  animation: fadeIn 1s ease-out;
+  font-family: "Comic Sans MS", "DFKai-SB", cursive;
 }
 
-.link-item {  /* 超連結樣式 */
-  display: block;  /* 佔滿整行 */
-  font-size: 1.5em;  /* 字體放大 */
-  margin: 15px 0;  /* 上下間距 15px */
-  text-decoration: none;  /* 移除底線 */
-  opacity: 0;  /* 初始透明 */
-  animation: fadeInUp 0.8s ease-out forwards;  /* 往上淡入動畫 */
+h2, h3 {
+  color: #0f0;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
-h2 {  /* 副標題樣式 */
-  margin: 15px 0;  /* 上下間距 15px */
-  font-size: 1.5em;  /* 字體大小 */
-  opacity: 0;  /* 初始透明 */
-  animation: fadeInUp 0.8s ease-out forwards;  /* 往上淡入動畫 */
+p {
+  font-size: 1.2em;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.6;
+  animation: fadeIn 1.5s ease-out;
 }
 
-.red {  /* 紅色文字樣式 */
-  color: #f00;  /* 紅色字體 */
-  animation-delay: 0.5s;  /* 延遲 0.5 秒開始動畫 */
+/* =========================
+   清單樣式
+========================= */
+.note-list {
+  list-style-type: decimal;
+  padding-left: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
 }
 
-.green {  /* 綠色文字樣式 */
-  color: #0a0;  /* 綠色字體 */
-  animation-delay: 0.8s;  /* 延遲 0.8 秒開始動畫 */
+.note-list li {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #d4af37;
+  animation: fadeIn 1.5s ease-out;
 }
 
-.blue {  /* 藍色文字樣式 */
-  color: #00f;  /* 藍色字體 */
-  animation-delay: 1.1s;  /* 延遲 1.1 秒開始動畫 */
+ul {
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 20px;
+  line-height: 1.6;
 }
 
-.content-row {  /* 內容橫排容器 */
-  display: flex;  /* 使用 Flex 排版 */
-  justify-content: center;  /* 水平置中 */
-  align-items: center;  /* 垂直置中 */
-  gap: 40px;  /* 元素間距 40px */
-  margin-top: 30px;  /* 與上方距離 30px */
-  flex-wrap: wrap;  /* 超出寬度時自動換行 */
+li {
+  font-size: 1.1em;
+  animation: fadeIn 1.2s ease-out;
 }
 
-.left-column {  /* 左側欄位 */
-  display: flex;  /* 使用 Flex 排版 */
-  flex-direction: column;  /* 垂直排列 */
-  align-items: flex-start;  /* 左對齊 */
+/* =========================
+   文字樣式
+========================= */
+.main-text {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #0f0;
 }
 
-.divider {  /* 垂直分隔線 */
-  width: 4px;  /* 寬度 4px */
-  height: 120px;  /* 高度 120px */
-  background-color: purple;  /* 紫色背景 */
-  border-radius: 2px;  /* 圓角 2px */
-  animation: fadeInBody 1s ease-in;  /* 淡入動畫 */
+.sub-text {
+  margin-left: 1em;
+  color: #ccc;
+  font-size: 1em;
+  text-indent: 0;
 }
 
-.right-column {  /* 右側欄位 */
-  display: flex;  /* 使用 Flex 排版 */
-  justify-content: center;  /* 水平置中 */
-  align-items: center;  /* 垂直置中 */
-  width: 120px;  /* 寬度 120px */
-  height: 120px;  /* 高度 120px */
+/* =========================
+   程式碼樣式
+========================= */
+code {
+  background-color: #111;
+  color: #0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
 }
 
-.orbit-wrapper {  /* 軌道容器 */
-  position: relative;  /* 相對定位 */
-  width: 120px;  /* 寬度 120px */
-  height: 120px;  /* 高度 120px */
+pre {
+  background-color: #111;
+  color: #0f0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.95em;
+  margin: 10px 0 20px;
+  border: 1px solid #0f0;
 }
 
-.triangle {  /* 三角形樣式 */
-  position: absolute;  /* 絕對定位 */
-  top: 10px;  /* 距離頂部 10px */
-  left: 0; right: 0; margin: auto;  /* 水平置中 */
-  width: 0; height: 0;  /* 無寬高，使用邊框製作形狀 */
-  border-left: 60px solid transparent;  /* 左側透明 */
-  border-right: 60px solid transparent;  /* 右側透明 */
-  border-bottom: 100px solid #ffcc00;  /* 下方為黃色三角形 */
-  animation: popIn 0.8s ease-out;  /* 彈跳式淡入動畫 */
+/* =========================
+   表格樣式
+========================= */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  border-collapse: collapse;
+  animation: fadeIn 1.5s ease-out;
 }
 
-.orbit-dot {  /* 軌道上的點 */
-  position: absolute;  /* 絕對定位 */
-  top: 50%; left: 50%;  /* 置中 */
-  width: 12px; height: 12px;  /* 點的大小 */
-  background-color: #fff;  /* 白色背景 */
-  border-radius: 50%;  /* 圓形 */
-  transform: translate(-50%, -50%);  /* 精準置中 */
-  animation: infinityLoop 4s linear infinite;  /* 無限循環動畫 */
-  box-shadow: 0 0 12px 4px rgba(255, 255, 150, 0.6);  /* 光暈效果 */
-  filter: brightness(1.2);  /* 增亮 */
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 1em;
 }
 
-.orbit-dot::before {  /* 軌道點的光暈 */
-  content: '';  /* 空內容 */
-  position: absolute;  /* 絕對定位 */
-  width: 100%; height: 100%;  /* 與主體同大小 */
-  background-color: #fff;  /* 白色背景 */
-  border-radius: 50%;  /* 圓形 */
-  opacity: 0.4;  /* 半透明 */
-  filter: blur(6px);  /* 模糊效果 */
-  transform: scale(1.5);  /* 放大 1.5 倍 */
+th {
+  background-color: #222;
+  color: #0f0;
+  font-weight: bold;
 }
 
-.progress-label {  /* 進度條標籤 */
-  color: #fff;  /* 白色文字 */
-  font-size: 1.2em;  /* 字體大小 */
-  margin-bottom: 8px;  /* 與下方距離 8px */
-  font-family: "Comic Sans MS", "DFKai-SB", cursive;  /* 使用 Comic Sans 或標楷體 */
+td {
+  background-color: #111;
+  color: #eee;
 }
 
-.progress-container {  /* 進度條容器 */
-  width: 80%;  /* 寬度為畫面 80% */
-  height: 20px;  /* 高度 20px */
-  background-color: #333;  /* 深灰背景 */
-  border-radius: 10px;  /* 圓角 */
-  margin: 20px auto 0;  /* 上方距離 20px，水平置中 */
-  overflow: hidden;  /* 超出部分隱藏 */
-  border: 2px solid #fff;  /* 白色邊框 */
-  position: relative;  /* 相對定位 */
+/* =========================
+   按鈕樣式
+========================= */
+.copy-btn, .back-button {
+  display: inline-block;
+  background-color: #0f0;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+  animation: fadeIn 1s ease-out;
+  text-decoration: none;
+  font-family: "Comic Sans MS", "DFKai-SB", cursive;
 }
 
-.progress-bar {  /* 進度條本體 */
-  height: 100%;  /* 高度填滿容器 */
-  width: 0%;  /* 初始寬度為 0% */
-  background: repeating-linear-gradient(  /* 彩虹漸層背景 */
+.copy-btn:hover, .back-button:hover,
+.copy-btn.copied {
+  background-color: #00ff88;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+  transform: scale(1.05);
+}
+
+/* =========================
+   影片區塊
+========================= */
+.video-box {
+  width: 80%;
+  max-width: 640px;
+  margin: 30px auto;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: #111;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.video-title {
+  font-size: 1.6em;
+  color: #0f0;
+  margin-bottom: 12px;
+  animation: fadeIn 1s ease-out;
+}
+
+/* =========================
+   展開區塊與箭頭動畫
+========================= */
+section h2 {
+  font-size: 1.8em;
+  max-width: 800px;
+  text-align: left;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.api-section {
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #111;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  color: #ccc;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+section.expanded .api-section {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.6s ease-out;
+}
+
+section.collapsed .api-section {
+  display: none;
+}
+
+.api-section h3 {
+  color: #d4af37;
+  font-size: 1.4em;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.arrow {
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.collapsed .arrow {
+  transform: rotate(0deg);
+}
+
+.expanded .arrow {
+  transform: rotate(90deg);
+}
+
+/* =========================
+   色彩標籤
+========================= */
+.red { color: #f00; animation-delay: 0.5s; }
+.green { color: #0a0; animation-delay: 0.8s; }
+.blue { color: #00f; animation-delay: 1.1s; }
+
+/* =========================
+   結構排版
+========================= */
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.content-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.right-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+}
+
+/* =========================
+   幾何與動畫元件
+========================= */
+.divider {
+  width: 4px;
+  height: 120px;
+  background-color: purple;
+  border-radius: 2px;
+  animation: fadeInBody 1s ease-in;
+}
+
+.orbit-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.triangle {
+  position: absolute;
+  top: 10px;
+  left: 0; right: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 100px solid #ffcc00;
+  animation: popIn 0.8s ease-out;
+}
+
+.orbit-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: infinityLoop 4s linear infinite;
+  box-shadow: 0 0 12px 4px rgba(255, 255, 150, 0.6);
+  filter: brightness(1.2);
+}
+
+.orbit-dot::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(6px);
+  transform: scale(1.5);
+}
+
+/* =========================
+   進度條樣式
+========================= */
+.progress-label {
+  color: #fff;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  font-family: "Comic Sans MS", "DFKai-SB", cursive;
+}
+
+.progress-container {
+  width: 80%;
+  height: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  margin: 20px auto 0;
+  overflow: hidden;
+  border: 2px solid #fff;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
     45deg,
     red 0px,
     orange 20px,
@@ -153,52 +370,60 @@ h2 {  /* 副標題樣式 */
     indigo 100px,
     violet 120px
   );
-  background-size: 200% 100%;  /* 背景尺寸放大 */
-  animation: fillRainbow 3s linear forwards;  /* 進度填滿動畫 */
+  background-size: 200% 100%;
+  animation: fillRainbow 3s linear forwards;
 }
 
-.progress-bar.spin {  /* 進度條旋轉效果 */
-  animation: spinGradient 1s linear infinite;  /* 無限旋轉背景動畫 */
+.progress-bar.spin {
+  animation: spinGradient 1s linear infinite;
 }
 
-@keyframes fadeInBody {  /* 定義淡入動畫：整體頁面用 */
-  from { opacity: 0; }  /* 起始完全透明 */
-  to { opacity: 1; }    /* 結束完全顯示 */
+/* =========================
+   動畫定義
+========================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes popIn {  /* 定義彈跳式淡入動畫：標題與三角形用 */
-  0% { transform: scale(0.5); opacity: 0; }  /* 初始縮小且透明 */
-  100% { transform: scale(1); opacity: 1; }  /* 結束恢復原大小並顯示 */
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes fadeInUp {  /* 定義向上淡入動畫：連結與副標題用 */
-  0% { transform: translateY(20px); opacity: 0; }  /* 初始向下偏移且透明 */
-  100% { transform: translateY(0); opacity: 1; }   /* 結束回到原位並顯示 */
+@keyframes fadeInUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes fillRainbow {  /* 定義進度條填滿動畫 */
-  from { width: 0%; }  /* 起始寬度為 0% */
-  to { width: 100%; }  /* 結束寬度為 100%（填滿） */
+@keyframes fadeInBody {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes spinGradient {  /* 定義進度條彩虹背景旋轉動畫 */
-  0% { background-position: 0% 0%; }  /* 起始背景位置 */
-  100% { background-position: 100% 0%; }  /* 結束背景位置向右移動 */
+@keyframes fillRainbow {
+  from { width: 0%; }
+  to { width: 100%; }
 }
 
-@keyframes orbitAround {  /* 定義繞圈動畫（未使用） */
-  0%   { transform: rotate(0deg) translateX(60px) rotate(0deg); }  /* 起始位置 */
-  100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }  /* 完成一圈旋轉 */
+@keyframes spinGradient {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
 }
 
-@keyframes infinityLoop {  /* 定義無限循環軌跡動畫：白色點繞圈用 */
-  0%   { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }  /* 起始中心點 */
-  12.5%{ transform: translate(-50%, -50%) translateX(30px) translateY(-30px); }  /* 向右上移動 */
-  25%  { transform: translate(-50%, -50%) translateX(60px) translateY(0px); }  /* 到最右邊 */
-  37.5%{ transform: translate(-50%, -50%) translateX(30px) translateY(30px); }  /* 向右下移動 */
-  50%  { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }  /* 回到中心點 */
-  62.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(-30px); }  /* 向左上移動 */
-  75%  { transform: translate(-50%, -50%) translateX(-60px) translateY(0px); }  /* 到最左邊 */
-  87.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(30px); }  /* 向左下移動 */
-  100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }  /* 回到中心點 */
+@keyframes orbitAround {
+  0%   { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+}
+
+@keyframes infinityLoop {
+  0%   { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
+  12.5%{ transform: translate(-50%, -50%) translateX(30px) translateY(-30px); }
+  25%  { transform: translate(-50%, -50%) translateX(60px) translateY(0px); }
+  37.5%{ transform: translate(-50%, -50%) translateX(30px) translateY(30px); }
+  50%  { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
+  62.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(-30px); }
+  75%  { transform: translate(-50%, -50%) translateX(-60px) translateY(0px); }
+  87.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(30px); }
+  100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
 }
