@@ -91,5 +91,63 @@ video {
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
 }
 
+/* ✅ 表格樣式（已更新） */
 table {
   width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  border-collapse: collapse;
+  animation: fadeIn 1.5s ease-out;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 1em;
+}
+
+th {
+  background-color: #222;
+  color: #0f0;
+  font-weight: bold;
+}
+
+td {
+  background-color: #111;
+  color: #eee;
+}
+
+/* 程式碼區塊 */
+code {
+  background-color: #222;
+  color: #0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+}
+
+/* 清單樣式 */
+ul {
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
