@@ -73,6 +73,59 @@
       <p>加入與特徵阻抗相同的終端電阻（例如 50 Ω）就像把繩子尾端接上一塊完美匹配牆面，波形不再反射，抖動與振鈴現象就能大幅降低。</p>
     </div>
   </section>
+  <section>
+    <h2><span class="arrow">▶</span> 五、Rise Time 與抖動的關係</h2>
+    <div class="api-section">
+      <p>Rise time（上升時間）是指訊號從低電位轉換到高電位所需的時間，通常定義為從 10% 到 90% 的電壓變化時間。當 rise time 越短，訊號邊緣越陡峭，雖然能提升切換速度，但也會加劇抖動現象。</p>
+
+      <ul>
+        <li><span class="main-text">時間解析度要求更高：</span>
+          <span class="sub-text">快速邊緣使得任何微小時間誤差（如取樣 jitter）都會在波形上造成明顯偏移。</span>
+        </li>
+        <li><span class="main-text">高頻成分更敏感：</span>
+          <span class="sub-text">短 rise time 包含更多高頻成分，容易受到反射、串擾與地彈影響。</span>
+        </li>
+        <li><span class="main-text">觸發點不穩定：</span>
+          <span class="sub-text">示波器觸發門檻若有微小擺動，在快速邊緣下會造成時間軸飄移。</span>
+        </li>
+      </ul>
+
+      <h3>實例比較</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>特性</th>
+            <th>慢 Rise Time（>5 ns）</th>
+            <th>快 Rise Time（<1 ns）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>抖動敏感度</td>
+            <td>低</td>
+            <td>高</td>
+          </tr>
+          <tr>
+            <td>反射影響</td>
+            <td>較小</td>
+            <td>明顯</td>
+          </tr>
+          <tr>
+            <td>觸發穩定性</td>
+            <td>穩定</td>
+            <td>易飄移</td>
+          </tr>
+          <tr>
+            <td>串擾與耦合</td>
+            <td>較弱</td>
+            <td>強烈</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>因此，在高速設計中，雖然短 rise time 能提升訊號切換速度，但也必須搭配良好的阻抗匹配、去耦設計與量測設備，才能有效抑制抖動。</p>
+    </div>
+  </section>
 
   <section>
     <h2><span class="arrow">▶</span> 示意影像</h2>
