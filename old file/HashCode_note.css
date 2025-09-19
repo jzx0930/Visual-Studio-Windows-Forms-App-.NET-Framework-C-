@@ -1,0 +1,253 @@
+/* =========================
+   全域設定
+========================= */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+  padding: 50px;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #0f0;
+  animation: fadeIn 1s ease-out;
+}
+
+/* =========================
+   清單樣式
+========================= */
+.note-list {
+  list-style-type: decimal;
+  padding-left: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.note-list li {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #d4af37;
+  animation: fadeIn 1.5s ease-out;
+}
+
+/* =========================
+   文字樣式
+========================= */
+.main-text {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #0f0;
+}
+
+.sub-text {
+  margin-left: 1em;
+  color: #ccc;
+  font-size: 1em;
+}
+
+/* =========================
+   程式碼樣式
+========================= */
+code {
+  background-color: #111;
+  color: #0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+}
+
+pre {
+  background-color: #111;
+  color: #0f0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.95em;
+  margin: 10px 0 20px;
+  border: 1px solid #0f0;
+}
+
+/* =========================
+   複製按鈕
+========================= */
+.copy-btn {
+  display: inline-block;
+  background-color: #0f0;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+  animation: fadeIn 1s ease-out;
+}
+
+.copy-btn:hover {
+  background-color: #00ff88;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+  transform: scale(1.05);
+}
+
+.copy-btn.copied {
+  background-color: #00ff88;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+  transform: scale(1.05);
+}
+
+/* =========================
+   影片區塊
+========================= */
+.video-box {
+  width: 80%;
+  max-width: 640px;
+  margin: 30px auto;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: #111;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.video-title {
+  font-size: 1.6em;
+  color: #0f0;
+  margin-bottom: 12px;
+  animation: fadeIn 1s ease-out;
+}
+
+/* =========================
+   返回按鈕
+========================= */
+.back-button {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 12px 24px;
+  background-color: #0f0;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: "Comic Sans MS", "DFKai-SB", cursive;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 255, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: popIn 0.8s ease-out;
+}
+
+.back-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+/* =========================
+   章節標題與內容區塊
+========================= */
+section h2 {
+  color: #0f0;
+  font-size: 1.8em;
+  margin: 60px auto 10px;
+  max-width: 800px;
+  text-align: left;
+  padding-left: 20px;
+  cursor: pointer;
+  animation: fadeIn 1s ease-out;
+}
+
+.api-section {
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #111;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  color: #ccc;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+section.expanded .api-section {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.6s ease-out;
+}
+
+section.collapsed .api-section {
+  display: none;
+}
+
+/* =========================
+   子標題與清單樣式
+========================= */
+.api-section h3 {
+  color: #d4af37;
+  font-size: 1.4em;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.api-section ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.api-section li {
+  margin-bottom: 6px;
+  font-size: 1.1em;
+  animation: fadeIn 1.2s ease-out;
+}
+
+/* =========================
+   箭頭動畫樣式
+========================= */
+.arrow {
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.collapsed .arrow {
+  transform: rotate(0deg);
+}
+
+.expanded .arrow {
+  transform: rotate(90deg);
+}
+
+/* =========================
+   動畫定義
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

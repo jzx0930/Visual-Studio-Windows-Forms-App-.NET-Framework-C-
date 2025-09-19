@@ -1,0 +1,153 @@
+/* Laser_Trigger_Tutorial.css */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  padding: 50px;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #0f0;
+  animation: fadeIn 1s ease-out;
+}
+
+h2, h3 {
+  color: #0f0;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-out;
+}
+
+p {
+  font-size: 1.2em;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.6;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.note-list {
+  list-style-type: decimal;
+  padding-left: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.note-list li {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #d4af37;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.main-text {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.sub-text {
+  text-indent: 0;
+  margin-left: 1em;
+  color: #ccc;
+  font-size: 1em;
+}
+
+.video-box {
+  width: 80%;
+  max-width: 640px;
+  margin: 30px auto;
+  border: 2px solid #0f0;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: #111;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 12px 24px;
+  background-color: #0f0;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: "Comic Sans MS", "DFKai-SB", cursive;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 255, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: popIn 0.8s ease-out;
+}
+
+.back-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+/* ✅ 表格樣式（已更新） */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 30px auto;
+  border-collapse: collapse;
+  animation: fadeIn 1.5s ease-out;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 1em;
+}
+
+th {
+  background-color: #222;
+  color: #0f0;
+  font-weight: bold;
+}
+
+td {
+  background-color: #111;
+  color: #eee;
+}
+
+/* 程式碼區塊 */
+code {
+  background-color: #222;
+  color: #0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+}
+
+/* 清單樣式 */
+ul {
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
