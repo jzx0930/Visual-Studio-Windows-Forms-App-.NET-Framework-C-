@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>電訊號抖動與反射分析</title>
+  <link rel="stylesheet" href="index.css">
+  <script defer src="index.js"></script>
+</head>
+<body>
+  <h1 class="title">電訊號抖動與反射分析</h1>
+
+  <section>
+    <h2><span class="arrow">▶</span> 一、抖動現象的來源</h2>
+    <div class="api-section">
+      <ul>
+        <li><span class="main-text">示波器取樣與觸發抖動：</span>
+          <span class="sub-text">取樣時間誤差與觸發門檻擺動會導致波形邊緣不穩定。</span>
+        </li>
+        <li><span class="main-text">阻抗不匹配與反射：</span>
+          <span class="sub-text">訊號在傳輸線末端若遇到阻抗不一致，會產生反射與振鈴。</span>
+        </li>
+        <li><span class="main-text">訊號源特性：</span>
+          <span class="sub-text">脈衝形成網路（PFN）在放電瞬間可能產生時間差，導致抖動。</span>
+        </li>
+        <li><span class="main-text">線間耦合與共模干擾：</span>
+          <span class="sub-text">多心線之間的電容／磁耦合會引入雜訊與抖動。</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="arrow">▶</span> 二、反射原理與擺繩類比</h2>
+    <div class="api-section">
+      <p>當高速訊號在傳輸線中行進時，若末端阻抗不匹配，會產生反射。這可用擺繩效應類比：</p>
+      <ul>
+        <li><span class="main-text">固定端反射：</span>
+          <span class="sub-text">如繩子綁在牆上，波反彈並相位翻轉。</span>
+        </li>
+        <li><span class="main-text">自由端反射：</span>
+          <span class="sub-text">如繩子尾端自由，波反彈但不翻轉。</span>
+        </li>
+      </ul>
+
+      <h3>反射係數公式</h3>
+      <pre><code>Γ = (Z<sub>L</sub> - Z<sub>0</sub>) / (Z<sub>L</sub> + Z<sub>0</sub>)</code></pre>
+      <p>其中 <code>Z<sub>L</sub></code> 為負載阻抗，<code>Z<sub>0</sub></code> 為傳輸線特徵阻抗。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="arrow">▶</span> 三、同軸電纜的特徵阻抗</h2>
+    <div class="api-section">
+      <p>同軸電纜透過精密幾何結構與介質控制，維持穩定的特徵阻抗，常見為 50 Ω 或 75 Ω。</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>結構層</th>
+            <th>功能</th>
+            <th>對阻抗的影響</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>中心導體</td>
+            <td>傳輸信號</td>
+            <td>決定內部電場分佈</td>
+          </tr>
+          <tr>
+            <td>絕緣介質</td>
+            <td>隔離導體</td>
+            <td>介電常數影響電容</td>
+          </tr>
+          <tr>
+            <td>外導體</td>
+            <td>地線與屏蔽</td>
+            <td>控制回流路徑與電感</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="arrow">▶</span> 四、優化建議</h2>
+    <div class="api-section">
+      <ol class="note-list">
+        <li>使用阻抗匹配的同軸線（如 50 Ω）取代多心線。</li>
+        <li>在信號源與示波器端串聯終端電阻，吸收反射波。</li>
+        <li>縮短探棒接地迴路，減少地彈與雜訊。</li>
+        <li>使用低抖動驅動器與適當去耦電容。</li>
+      </ol>
+
+      <div class="progress-label">訊號穩定度改善進度</div>
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
