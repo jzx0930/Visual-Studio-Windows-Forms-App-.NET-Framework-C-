@@ -250,6 +250,141 @@
 
 
 
+<li></li>
+  <!-- 模組一：SLE 技術總覽 -->
+   <h1 class="title">透明材料加工法</h1>
+  
+  <section>
+  <h2><span class="arrow">▶</span> BUM 與 TDM 雷射加工技術比較（透明材料）</h2>
+  <div class="api-section">
+    <h3>📌 定義與加工方向</h3>
+    <p><strong>BUM（Build-Up Metallization）</strong> 與 <strong>TDM（Through-Drilling Metallization）</strong> 都是雷射導通孔製程技術，常用於高密度互連（HDI）、封裝基板與透明材料微孔加工。</p>
+    <ul>
+      <li>兩者雷射入射方向皆為 <strong>由上往下（Top-Down）</strong></li>
+      <li>但熔融起始點不同：<br>
+        <span class="main-text">TDM：</span> 從 <strong>入射面（Incidence Surface）</strong> 開始熔融移除<br>
+        <span class="main-text">BUM：</span> 從 <strong>出射面（Exit Surface）</strong> 開始熔融移除
+      </li>
+    </ul>
+
+    <h3>⚙️ 熔融機制與孔型差異</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>BUM</th>
+          <th>TDM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>雷射入射方向</td>
+          <td>由上往下（Top-Down）</td>
+          <td>由上往下（Top-Down）</td>
+        </tr>
+        <tr>
+          <td>熔融起始點</td>
+          <td>出射面（Exit Surface）</td>
+          <td>入射面（Incidence Surface）</td>
+        </tr>
+        <tr>
+          <td>熔融傳播方向</td>
+          <td>由下往上（Exit → Incidence）</td>
+          <td>由上往下（Incidence → Exit）</td>
+        </tr>
+        <tr>
+          <td>孔型</td>
+          <td>近似直壁孔或倒錐形</td>
+          <td>錐形孔（Tapered Hole）</td>
+        </tr>
+        <tr>
+          <td>熱影響區（HAZ）</td>
+          <td>小，集中於焦點</td>
+          <td>大，逐層累積</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>📐 錐形孔形成原因（TDM）</h3>
+    <ul>
+      <li>雷射能量分佈呈高斯光束（Gaussian Beam），中心能量高、邊緣低</li>
+      <li>入射面吸收能量最多，孔徑較大，隨深度光束發散，孔徑逐漸收斂</li>
+      <li>形成典型錐形孔，錐度常見為 <strong>10–30%</strong></li>
+    </ul>
+
+    <h3>📐 BUM 孔型特性</h3>
+    <ul>
+      <li>雷射焦點設於材料深處，透過非線性吸收（如多光子吸收）產生局部改性</li>
+      <li>孔型更接近圓柱或倒錐形，錐度可低於 <strong>5%</strong></li>
+      <li>形成泪滴狀熔融區（Teardrop Melt Zone），利於後續電鍍填孔</li>
+    </ul>
+
+    <h3>🧠 工藝優化建議</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>技術</th>
+          <th>降低錐度方法</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TDM</td>
+          <td>短焦距透鏡、環切光束、低能量多次照射、旋切加工</td>
+        </tr>
+        <tr>
+          <td>BUM</td>
+          <td>精準控制焦點位置、使用飛秒雷射、搭配電鍍填孔技術</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>📦 應用場景比較</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>應用領域</th>
+          <th>BUM 技術</th>
+          <th>TDM 技術</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>微孔堆疊</td>
+          <td>✅ 適合</td>
+          <td>❌ 不適合</td>
+        </tr>
+        <tr>
+          <td>穿透導通孔</td>
+          <td>❌ 不適用</td>
+          <td>✅ 適合</td>
+        </tr>
+        <tr>
+          <td>透明材料加工</td>
+          <td>✅ 熔融集中於出射面</td>
+          <td>✅ 熔融從入射面開始</td>
+        </tr>
+        <tr>
+          <td>孔型一致性</td>
+          <td>✅ 高</td>
+          <td>❌ 易形成錐形孔</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>🔬 小結</h3>
+    <p><strong>TDM</strong> 加工透明材料時，因雷射能量集中於入射面，容易形成錐形孔；而 <strong>BUM</strong> 則透過雷射焦點設於出射面，形成泪滴狀改性區，孔型更穩定、錐度更小，適合微孔堆疊與高密度互連。</p>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
 
   
 </body>
