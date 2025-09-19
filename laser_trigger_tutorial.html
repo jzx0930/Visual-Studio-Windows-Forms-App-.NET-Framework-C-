@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>雷射脈衝與PSO觸發邏輯整理</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; line-height: 1.6; margin: 40px; background-color: #f9f9f9; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #eaeaea; }
+    .section { margin-bottom: 40px; }
+    .highlight { background-color: #fff3cd; padding: 10px; border-left: 5px solid #ffc107; }
+    a { color: #007acc; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <h1>雷射脈衝與PSO觸發邏輯整理</h1>
+
+  <div class="section">
+    <h2>🔍 問題核心：PSO與雷射脈衝時序不一致</h2>
+    <ul>
+      <li><strong>現象：</strong> PSO依據位置輸出Trigger訊號，但雷射依自身時脈發脈衝，兩者無主時序同步。</li>
+      <li><strong>風險：</strong> Trigger可能落在雷射脈衝間隙，導致漏發或clip到脈衝邊緣。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🛠️ 解法模組一：硬體時脈同步（External Clock Sync）</h2>
+    <table>
+      <tr><th>項目</th><th>說明</th></tr>
+      <tr><td>方法</td><td>將雷射時脈訊號接入控制器，PSO等待時脈邊緣再輸出Trigger</td></tr>
+      <tr><td>優點</td><td>每次Trigger都與雷射時脈同步，避免漏發</td></tr>
+      <tr><td>缺點</td><td>加工位置會有微小延遲偏差（DelayTime × 軸速）</td></tr>
+      <tr><td>適用情境</td><td>對雷射觸發準確性要求高，但可接受微小位置偏差</td></tr>
+      <tr><td>技術參考</td><td><a href="https://www.aerotech.com/synchronizing-position-synchronized-output-pso-with-mode-locked-lasers/" target="_blank">Aerotech官方應用說明</a></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>🧪 解法模組二：軟體延長PSO脈衝寬度（Total Time / On Time）</h2>
+    <table>
+      <tr><th>項目</th><th>說明</th></tr>
+      <tr><td>方法</td><td>將PSO脈衝寬度設為接近或略大於雷射時脈週期</td></tr>
+      <tr><td>優點</td><td>無硬體延遲，位置精度最佳</td></tr>
+      <tr><td>缺點</td><td>非100%同步，極少數情況可能漏發</td></tr>
+      <tr><td>適用情境</td><td>材料容許偶發漏發或多發，追求位置精度</td></tr>
+      <tr><td>設定範例</td><td>雷射週期1.0 µs → Total Time = 1.1 µs, On Time = 1.0 µs</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>📌 選擇建議（Decision Logic）</h2>
+    <div class="highlight">
+      <pre>
+IF 製程允許偶發漏發 OR 多發
+    → 選擇方案二（軟體延長脈衝）
+ELSE
+    → 選擇方案一（硬體時脈同步）
+      </pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📚 雷射脈衝間距不固定的原因分析</h2>
+    <ul>
+      <li><strong>內部時脈抖動：</strong> 雷射振盪器受環境影響，導致脈衝間距抖動。</li>
+      <li><strong>鎖模相位漂移：</strong> 模態間相位關係變化，造成脈衝間距微變。</li>
+      <li><strong>腔長變化：</strong> 熱膨脹或震動改變腔長，影響脈衝週期。</li>
+      <li><strong>驅動電路不穩：</strong> 外部驅動訊號不穩定，導致脈衝間距變動。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>📊 模擬現象：脈衝間距抖動示意</h2>
+    <table>
+      <tr><th>時間點</th><th>理想脈衝間距</th><th>實際脈衝間距</th><th>偏移原因</th></tr>
+      <tr><td>t₁</td><td>1.000 µs</td><td>1.003 µs</td><td>腔長微膨脹</td></tr>
+      <tr><td>t₂</td><td>1.000 µs</td><td>0.997 µs</td><td>相位漂移</td></tr>
+      <tr><td>t₃</td><td>1.000 µs</td><td>1.001 µs</td><td>電源波動</td></tr>
+    </table>
+  </div>
+
+</body>
+</html>
