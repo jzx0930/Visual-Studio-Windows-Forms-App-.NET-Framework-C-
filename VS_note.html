@@ -69,6 +69,34 @@
     <div class="main-text">輸出類型設定</div>
     <div class="sub-text">專案右鍵 → 屬性 → 應用程式 → 輸出類型。若改為主控台應用程式，可使用 Console.WriteLine() 並在 cmd 顯示結果。</div>
   </li>
+
+  <li>
+  <div class="main-text">C# 方法回傳型別對照表</div>
+  <div class="sub-text">依據方法的用途選擇適合的回傳型別，可提升程式可讀性與維護性。</div>
+  <div class="sub-text">✔ void：不回傳任何資料，適用於執行動作，如 UI 更新、寫入檔案。</div>
+  <div class="sub-text">✔ bool：回傳 true/false，適用於成功與否判斷，例如流程控制。</div>
+  <div class="sub-text">✔ int / double / float：回傳數值，適用於計算、統計、座標。</div>
+  <div class="sub-text">✔ string：回傳文字，適用於錯誤訊息、路徑、格式化輸出。</div>
+  <div class="sub-text">✔ object：回傳任意型別，適用於通用容器或動態資料。</div>
+  <div class="sub-text">✔ List<T> / T[]：回傳集合，適用於查詢結果或批次資料。</div>
+  <div class="sub-text">✔ Dictionary<TKey, TValue>：回傳鍵值對，適用於設定表或對應表。</div>
+  <div class="sub-text">✔ Tuple / ValueTuple：回傳多個值，適用於同時回傳狀態與資料。</div>
+  <div class="sub-text">✔ 自訂類別：回傳完整結構，適用於加工結果、錯誤資訊、統計報告。</div>
+  <div class="sub-text">✔ Task / Task<T>：非同步方法回傳型別，搭配 async 使用。</div>
+</li>
+  
+<li>
+  <div class="main-text">C# var 使用原則與最佳實踐</div>
+  <div class="sub-text">var 是編譯期型別推斷，讓程式更簡潔，但需注意可讀性。</div>
+  <div class="sub-text">✔ 適合用在型別明確的情況，例如：var count = 5;</div>
+  <div class="sub-text">✔ 適合用在型別冗長的情況，例如：var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();</div>
+  <div class="sub-text">✔ LINQ 查詢與匿名型別幾乎必用 var。</div>
+  <div class="sub-text">⚠ 不建議用在型別不明確或右側為 null 的情況。</div>
+  <div class="sub-text">⚠ var 不是 dynamic，型別在編譯期就已確定。</div>
+  <div class="sub-text">📌 實戰建議：簡單型別可用可不用，複雜型別建議使用，團隊開發應遵守一致風格。</div>
+</li>
+
+  
 </ol>
 
 
