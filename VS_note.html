@@ -73,7 +73,7 @@
 <li>
   <div class="main-text">C# 方法回傳型別對照表</div>
   <div class="sub-text">依據方法的用途選擇適合的回傳型別，可提升程式可讀性與維護性。</div>
-  <div class="api-section">
+  <section class="api-section">
     <h3>📋 回傳型別與用途比較</h3>
     <table>
       <thead>
@@ -84,60 +84,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>void</td>
-          <td>不回傳任何資料，僅執行動作</td>
-          <td>UpdateUI(), LogError()</td>
-        </tr>
-        <tr>
-          <td>bool</td>
-          <td>回傳成功與否，流程控制</td>
-          <td>DoLaserProcessing(), TryConnect()</td>
-        </tr>
-        <tr>
-          <td>int / double / float</td>
-          <td>回傳數值結果</td>
-          <td>CalculateSpeed(), GetRetryCount()</td>
-        </tr>
-        <tr>
-          <td>string</td>
-          <td>回傳文字、訊息、路徑</td>
-          <td>GetErrorMessage(), GetFilePath()</td>
-        </tr>
-        <tr>
-          <td>object</td>
-          <td>回傳任意型別，通用容器</td>
-          <td>GetResult()</td>
-        </tr>
-        <tr>
-          <td>List&lt;T&gt; / T[]</td>
-          <td>回傳集合資料</td>
-          <td>GetAllFeatures(), FindMatchingFiles()</td>
-        </tr>
-        <tr>
-          <td>Dictionary&lt;K,V&gt;</td>
-          <td>回傳鍵值對，設定表</td>
-          <td>GetLaserSettings()</td>
-        </tr>
-        <tr>
-          <td>(T1, T2)</td>
-          <td>回傳多個值（Tuple）</td>
-          <td>TryUploadFile() → (bool, string)</td>
-        </tr>
-        <tr>
-          <td>自訂類別</td>
-          <td>回傳完整結構與狀態</td>
-          <td>LaserProcessResult, JobReport</td>
-        </tr>
-        <tr>
-          <td>Task / Task&lt;T&gt;</td>
-          <td>非同步方法回傳型別</td>
-          <td>await SaveAsync(), await GetDataAsync()</td>
-        </tr>
+        <tr><td>void</td><td>不回傳任何資料，僅執行動作</td><td>UpdateUI(), LogError()</td></tr>
+        <tr><td>bool</td><td>回傳成功與否，流程控制</td><td>DoLaserProcessing(), TryConnect()</td></tr>
+        <tr><td>int / double / float</td><td>回傳數值結果</td><td>CalculateSpeed(), GetRetryCount()</td></tr>
+        <tr><td>string</td><td>回傳文字、訊息、路徑</td><td>GetErrorMessage(), GetFilePath()</td></tr>
+        <tr><td>object</td><td>回傳任意型別，通用容器</td><td>GetResult()</td></tr>
+        <tr><td>List&lt;T&gt; / T[]</td><td>回傳集合資料</td><td>GetAllFeatures(), FindMatchingFiles()</td></tr>
+        <tr><td>Dictionary&lt;K,V&gt;</td><td>回傳鍵值對，設定表</td><td>GetLaserSettings()</td></tr>
+        <tr><td>(T1, T2)</td><td>回傳多個值（Tuple）</td><td>TryUploadFile() → (bool, string)</td></tr>
+        <tr><td>自訂類別</td><td>回傳完整結構與狀態</td><td>LaserProcessResult, JobReport</td></tr>
+        <tr><td>Task / Task&lt;T&gt;</td><td>非同步方法回傳型別</td><td>await SaveAsync(), await GetDataAsync()</td></tr>
       </tbody>
     </table>
-  </div>
+  </section>
 </li>
+
 
 
 
@@ -145,7 +106,7 @@
 <li>
   <div class="main-text">C# var 使用原則與最佳實踐</div>
   <div class="sub-text">var 是編譯期型別推斷，讓程式更簡潔，但需注意可讀性與一致性。</div>
-  <div class="api-section">
+  <section class="api-section">
     <h3>📋 使用情境與建議</h3>
     <table>
       <thead>
@@ -156,26 +117,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>型別明確</td>
-          <td>右側值清楚可辨</td>
-          <td>var count = 5; → int</td>
-        </tr>
-        <tr>
-          <td>型別冗長</td>
-          <td>簡化複雜型別宣告</td>
-          <td>var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();</td>
-        </tr>
-        <tr>
-          <td>LINQ 查詢</td>
-          <td>常用匿名型別</td>
-          <td>var result = from x in list select new { x, x * 2 };</td>
-        </tr>
-        <tr>
-          <td>foreach 迴圈</td>
-          <td>推斷集合元素型別</td>
-          <td>foreach (var item in list)</td>
-        </tr>
+        <tr><td>型別明確</td><td>右側值清楚可辨</td><td>var count = 5; → int</td></tr>
+        <tr><td>型別冗長</td><td>簡化複雜型別宣告</td><td>var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();</td></tr>
+        <tr><td>LINQ 查詢</td><td>常用匿名型別</td><td>var result = from x in list select new { x, x * 2 };</td></tr>
+        <tr><td>foreach 迴圈</td><td>推斷集合元素型別</td><td>foreach (var item in list)</td></tr>
       </tbody>
     </table>
 
@@ -192,8 +137,9 @@
       <li>✔ var 是編譯期推斷，不是 dynamic</li>
       <li>✔ 團隊開發應遵守一致風格，避免混亂</li>
     </ul>
-  </div>
+  </section>
 </li>
+
 
 
 
