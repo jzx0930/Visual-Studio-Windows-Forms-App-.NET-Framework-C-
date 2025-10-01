@@ -70,37 +70,130 @@
     <div class="sub-text">專案右鍵 → 屬性 → 應用程式 → 輸出類型。若改為主控台應用程式，可使用 Console.WriteLine() 並在 cmd 顯示結果。</div>
   </li>
 
- <li>
+<li>
   <div class="main-text">C# 方法回傳型別對照表</div>
   <div class="sub-text">依據方法的用途選擇適合的回傳型別，可提升程式可讀性與維護性。</div>
-  <div class="sub-text">📌 常見回傳型別與用途：</div>
-  <div class="sub-text">✔ <strong>void：</strong> 不回傳任何資料，適用於執行動作，如 UI 更新、寫入檔案。</div>
-  <div class="sub-text">✔ <strong>bool：</strong> 回傳 true/false，適用於成功與否判斷，例如流程控制。</div>
-  <div class="sub-text">✔ <strong>int / double / float：</strong> 回傳數值，適用於計算、統計、座標。</div>
-  <div class="sub-text">✔ <strong>string：</strong> 回傳文字，適用於錯誤訊息、路徑、格式化輸出。</div>
-  <div class="sub-text">✔ <strong>object：</strong> 回傳任意型別，適用於通用容器或動態資料。</div>
-  <div class="sub-text">✔ <strong>List&lt;T&gt; / T[]：</strong> 回傳集合，適用於查詢結果或批次資料。</div>
-  <div class="sub-text">✔ <strong>Dictionary&lt;K,V&gt;：</strong> 回傳鍵值對，適用於設定表或對應表。</div>
-  <div class="sub-text">✔ <strong>(T1, T2)：</strong> 回傳多個值（Tuple），適用於同時回傳狀態與資料。</div>
-  <div class="sub-text">✔ <strong>自訂類別：</strong> 回傳完整結構，適用於加工結果、錯誤資訊、統計報告。</div>
-  <div class="sub-text">✔ <strong>Task / Task&lt;T&gt;：</strong> 非同步方法回傳型別，搭配 async 使用。</div>
+  <div class="api-section">
+    <h3>一、常見回傳型別與用途 (Return Types & Usage)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>用途說明</th>
+          <th>範例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>void</td>
+          <td>不回傳任何資料，僅執行動作</td>
+          <td>UpdateUI(), LogError()</td>
+        </tr>
+        <tr>
+          <td>bool</td>
+          <td>回傳成功與否，流程控制</td>
+          <td>DoLaserProcessing(), TryConnect()</td>
+        </tr>
+        <tr>
+          <td>int / double / float</td>
+          <td>回傳數值結果</td>
+          <td>CalculateSpeed(), GetRetryCount()</td>
+        </tr>
+        <tr>
+          <td>string</td>
+          <td>回傳文字、訊息、路徑</td>
+          <td>GetErrorMessage(), GetFilePath()</td>
+        </tr>
+        <tr>
+          <td>object</td>
+          <td>回傳任意型別，通用容器</td>
+          <td>GetResult()</td>
+        </tr>
+        <tr>
+          <td>List&lt;T&gt; / T[]</td>
+          <td>回傳集合資料</td>
+          <td>GetAllFeatures(), FindMatchingFiles()</td>
+        </tr>
+        <tr>
+          <td>Dictionary&lt;K,V&gt;</td>
+          <td>回傳鍵值對，設定表</td>
+          <td>GetLaserSettings()</td>
+        </tr>
+        <tr>
+          <td>(T1, T2)</td>
+          <td>回傳多個值（Tuple）</td>
+          <td>TryUploadFile() → (bool, string)</td>
+        </tr>
+        <tr>
+          <td>自訂類別</td>
+          <td>回傳完整結構與狀態</td>
+          <td>LaserProcessResult, JobReport</td>
+        </tr>
+        <tr>
+          <td>Task / Task&lt;T&gt;</td>
+          <td>非同步方法回傳型別</td>
+          <td>await SaveAsync(), await GetDataAsync()</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </li>
+
 
   
 <li>
   <div class="main-text">C# var 使用原則與最佳實踐</div>
   <div class="sub-text">var 是編譯期型別推斷，讓程式更簡潔，但需注意可讀性與一致性。</div>
-  <div class="sub-text">📌 建議使用情境：</div>
-  <div class="sub-text">✔ <strong>型別明確：</strong> 例如 var count = 5; → int。</div>
-  <div class="sub-text">✔ <strong>型別冗長：</strong> 例如 var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();。</div>
-  <div class="sub-text">✔ <strong>LINQ 查詢：</strong> 常用匿名型別，幾乎必用 var。</div>
-  <div class="sub-text">✔ <strong>foreach 迴圈：</strong> 推斷集合元素型別。</div>
-  <div class="sub-text">⚠ <strong>不建議：</strong> 型別不明確、右側為 null、初學者維護困難。</div>
-  <div class="sub-text">📌 實戰建議：</div>
-  <div class="sub-text">✔ 簡單型別可用可不用，複雜型別建議使用。</div>
-  <div class="sub-text">✔ var 是編譯期推斷，不是 dynamic。</div>
-  <div class="sub-text">✔ 團隊開發應遵守一致風格，避免混亂。</div>
+  <div class="api-section">
+    <h3>一、使用時機與建議 (When & How to Use var)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>使用情境</th>
+          <th>說明</th>
+          <th>範例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>型別明確</td>
+          <td>右側值清楚可辨</td>
+          <td>var count = 5; → int</td>
+        </tr>
+        <tr>
+          <td>型別冗長</td>
+          <td>簡化複雜型別宣告</td>
+          <td>var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();</td>
+        </tr>
+        <tr>
+          <td>LINQ 查詢</td>
+          <td>常用匿名型別</td>
+          <td>var result = from x in list select new { x, x * 2 };</td>
+        </tr>
+        <tr>
+          <td>foreach 迴圈</td>
+          <td>推斷集合元素型別</td>
+          <td>foreach (var item in list)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>二、不建議使用的情況 (Avoid These Cases)</h3>
+    <ul>
+      <li>❌ 型別不明確 → 影響可讀性</li>
+      <li>❌ 初學者維護 → 難以理解程式邏輯</li>
+      <li>❌ 右側為 null → 編譯錯誤</li>
+    </ul>
+
+    <h3>三、實戰建議 (Best Practices)</h3>
+    <ul>
+      <li>✔ 簡單型別可用可不用，複雜型別建議使用</li>
+      <li>✔ var 是編譯期推斷，不是 dynamic</li>
+      <li>✔ 團隊開發應遵守一致風格，避免混亂</li>
+    </ul>
+  </div>
 </li>
+
 
   
 </ol>
