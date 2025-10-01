@@ -7,6 +7,102 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
+
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Visual_Studio_Icon_2019.svg"
+         alt="Visual Studio Logo"
+         style="width: 40px;">
+    <h1 style="margin: 0;">VisualStudio-WindowsFormsApp(.NET-Framework) 🎉</h1>
+  </div>
+
+  <p>小技巧筆記空間。</p>
+
+  <ol class="note-list">
+    <!-- 前 11 筆記略過，保留原樣 -->
+    <li><div class="main-text">開始 F5</div><div class="sub-text">啟動應用程式進行測試或執行。</div></li>
+    <li><div class="main-text">建置解決方案 Ctrl+Shift+B</div><div class="sub-text">快速編譯整個方案，檢查是否有語法錯誤。</div></li>
+    <li><div class="main-text">加入中斷點 F9，跳出 Shift+F11</div><div class="sub-text">用於偵錯流程控制，搭配 Visual Studio 的除錯工具。</div></li>
+    <li><div class="main-text">摺疊制定義</div><div class="sub-text">右鍵 → 大綱 → 摺疊制定義，可快速收起冗長程式區塊。</div></li>
+    <li><div class="main-text">部署方式</div><div class="sub-text">在 bin → Debug 資料夾中複製內容部署，避免被修改。（每台電腦配置不同）</div></li>
+    <li><div class="main-text">尋找 Form 元件</div><div class="sub-text">(1) Ctrl+Alt+T 開啟文件大綱快速定位元件。</div><div class="sub-text">(2) 屬性頁面上方下拉選單可輸入元件首字母搜尋。</div></li>
+    <li><div class="main-text">書籤功能</div><div class="sub-text">Ctrl+K+K 插入書籤，Ctrl+K+W 開啟書籤視窗，Ctrl+K+N 快速跳回。</div></li>
+    <li><div class="main-text">卷軸地圖模式</div><div class="sub-text">工具 → 選項 → 文字編輯器 → C# → IntelliSense 可調整提示與說明。</div></li>
+    <li><div class="main-text">工具與功能管理</div><div class="sub-text">工具 → 取得工具與功能，可查看安裝時選擇的工具組，也能額外安裝舊版 .NET Framework。</div></li>
+    <li><div class="main-text">查看 Framework 版本</div><div class="sub-text">方案總管 → 專案右鍵 → 屬性，可查看該專案使用的 .NET Framework 版本。</div></li>
+    <li><div class="main-text">輸出類型設定</div><div class="sub-text">專案右鍵 → 屬性 → 應用程式 → 輸出類型。改為主控台應用程式可使用 Console.WriteLine()。</div></li>
+
+    <!-- 第 12 筆記：方法回傳型別 -->
+    <li>
+      <section class="api-section">
+        <h2><span class="arrow">▶</span> C# 方法回傳型別對照表</h2>
+        <h3>📋 回傳型別與用途比較</h3>
+        <table>
+          <thead>
+            <tr><th>回傳型別</th><th>用途說明</th><th>範例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>void</td><td>不回傳任何資料，僅執行動作</td><td>UpdateUI(), LogError()</td></tr>
+            <tr><td>bool</td><td>回傳成功與否，流程控制</td><td>DoLaserProcessing(), TryConnect()</td></tr>
+            <tr><td>int / double / float</td><td>回傳數值結果</td><td>CalculateSpeed(), GetRetryCount()</td></tr>
+            <tr><td>string</td><td>回傳文字、訊息、路徑</td><td>GetErrorMessage(), GetFilePath()</td></tr>
+            <tr><td>object</td><td>回傳任意型別，通用容器</td><td>GetResult()</td></tr>
+            <tr><td>List&lt;T&gt; / T[]</td><td>回傳集合資料</td><td>GetAllFeatures(), FindMatchingFiles()</td></tr>
+            <tr><td>Dictionary&lt;K,V&gt;</td><td>回傳鍵值對，設定表</td><td>GetLaserSettings()</td></tr>
+            <tr><td>(T1, T2)</td><td>回傳多個值（Tuple）</td><td>TryUploadFile() → (bool, string)</td></tr>
+            <tr><td>自訂類別</td><td>回傳完整結構與狀態</td><td>LaserProcessResult, JobReport</td></tr>
+            <tr><td>Task / Task&lt;T&gt;</td><td>非同步方法回傳型別</td><td>await SaveAsync(), await GetDataAsync()</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </li>
+
+    <!-- 第 13 筆記：var 使用原則 -->
+    <li>
+      <section class="api-section">
+        <h2><span class="arrow">▶</span> C# var 使用原則與最佳實踐</h2>
+        <h3>📋 使用情境與建議</h3>
+        <table>
+          <thead>
+            <tr><th>使用情境</th><th>說明</th><th>範例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>型別明確</td><td>右側值清楚可辨</td><td>var count = 5; → int</td></tr>
+            <tr><td>型別冗長</td><td>簡化複雜型別宣告</td><td>var dict = new Dictionary&lt;string, List&lt;int&gt;&gt;();</td></tr>
+            <tr><td>LINQ 查詢</td><td>常用匿名型別</td><td>var result = from x in list select new { x, x * 2 };</td></tr>
+            <tr><td>foreach 迴圈</td><td>推斷集合元素型別</td><td>foreach (var item in list)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>⚠️ 不建議使用的情況</h3>
+        <ul>
+          <li>❌ 型別不明確 → 影響可讀性</li>
+          <li>❌ 初學者維護 → 難以理解程式邏輯</li>
+          <li>❌ 右側為 null → 編譯錯誤</li>
+        </ul>
+
+        <h3>📌 實戰建議</h3>
+        <ul>
+          <li>✔ 簡單型別可用可不用，複雜型別建議使用</li>
+          <li>✔ var 是編譯期推斷，不是 dynamic</li>
+          <li>✔ 團隊開發應遵守一致風格，避免混亂</li>
+        </ul>
+      </section>
+    </li>
+  </ol>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>下一頁</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
    <a href="index.html" class="back-button">🏠 返回主頁</a>
   
 <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px;">
@@ -150,3 +246,4 @@
  
 </body>
 </html>
+-->
