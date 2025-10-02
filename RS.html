@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>串列通訊標準與設定參數總覽</title>
+  <link rel="stylesheet" href="index.css">
+  <script defer src="index.js"></script>
+</head>
+<body>
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
+  <h1 class="title">RS-232 / RS-422 / RS-485 串列通訊技術比較</h1>
+
+  <!-- 模組一：通訊標準總覽 -->
+  <section>
+    <h2><span class="arrow">▶</span> 串列通訊標準簡介（Serial Communication Standards Overview）</h2>
+    <div class="api-section">
+      <p>RS-232、RS-422、RS-485 是常見的串列通訊標準，廣泛應用於工業控制、儀器設備與嵌入式系統中。它們定義了電氣層的傳輸方式與拓撲結構，並搭配通訊參數進行資料交換。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>RS-232</th>
+            <th>RS-422</th>
+            <th>RS-485</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>傳輸方式</td>
+            <td>單端（Single-ended）</td>
+            <td>差分（Differential）</td>
+            <td>差分（Differential）</td>
+          </tr>
+          <tr>
+            <td>通訊模式</td>
+            <td>全雙工</td>
+            <td>全雙工</td>
+            <td>半雙工</td>
+          </tr>
+          <tr>
+            <td>節點數量</td>
+            <td>1 對 1</td>
+            <td>1 對多（最多10接收端）</td>
+            <td>多點（最多32節點）</td>
+          </tr>
+          <tr>
+            <td>最大距離</td>
+            <td>約 15 公尺</td>
+            <td>約 1200 公尺</td>
+            <td>約 1200 公尺</td>
+          </tr>
+          <tr>
+            <td>終端電阻</td>
+            <td>不需要</td>
+            <td>需要（120Ω）</td>
+            <td>需要（120Ω）</td>
+          </tr>
+          <tr>
+            <td>常見應用</td>
+            <td>電腦與外設</td>
+            <td>感測器、監控系統</td>
+            <td>PLC、樓宇自動化</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 模組二：通訊參數設定 -->
+  <section>
+    <h2><span class="arrow">▶</span> 通訊參數設定（Communication Parameters）</h2>
+    <div class="api-section">
+      <p>串列通訊需設定一致的參數以確保資料正確傳輸，以下為常見設定項目：</p>
+      <table>
+        <thead>
+          <tr>
+            <th>參數</th>
+            <th>英文名稱</th>
+            <th>說明</th>
+            <th>常見值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>通訊鮑率</td>
+            <td>Baud Rate</td>
+            <td>每秒傳輸位元數（bps）</td>
+            <td>9600、19200、115200</td>
+          </tr>
+          <tr>
+            <td>資料位元</td>
+            <td>Data Bits</td>
+            <td>每筆資料的有效位元數</td>
+            <td>7、8</td>
+          </tr>
+          <tr>
+            <td>同位元檢查</td>
+            <td>Parity</td>
+            <td>資料錯誤檢查方式</td>
+            <td>None (N)、Even (E)、Odd (O)</td>
+          </tr>
+          <tr>
+            <td>停止位元</td>
+            <td>Stop Bits</td>
+            <td>資料結束的標記</td>
+            <td>1、2</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>範例設定：<code>9600,N,8,1</code> 表示鮑率 9600、無同位元、8 位元資料、1 位元停止。</p>
+    </div>
+  </section>
+
+  <!-- 模組三：接線與應用建議 -->
+  <section>
+    <h2><span class="arrow">▶</span> 接線方式與應用建議（Wiring & Application Tips）</h2>
+    <div class="api-section">
+      <ul>
+        <li><strong>RS-232：</strong> 使用 DB9 接頭，Tx ↔ Rx 交叉連接，適合短距離點對點通訊。</li>
+        <li><strong>RS-422：</strong> 使用兩對差分線（Tx+/Tx−、Rx+/Rx−），適合一對多通訊。</li>
+        <li><strong>RS-485：</strong> 使用一對差分線（A+/B−），支援多節點，需終端電阻與偏壓電阻。</li>
+      </ul>
+      <p>建議搭配 <code>Modbus RTU</code> 或自訂協定進行資料封包與解析，並加入錯誤處理與通訊狀態記錄模組。</p>
+    </div>
+  </section>
+</body>
+</html>
