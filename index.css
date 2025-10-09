@@ -33,6 +33,20 @@ p {
   line-height: 1.6;
   animation: fadeIn 1.5s ease-out;
 }
+.back-button.list-return {
+  background-color: #ffcc00;
+  color: #000;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+  font-size: 1em;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.back-button.list-return:hover {
+  background-color: #ffee88;
+  transform: scale(1.05);
+}
 
 /* =========================
    清單樣式
@@ -480,5 +494,6 @@ section.collapsed .api-section {
   87.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(30px); }
   100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
 }
+
 
 
