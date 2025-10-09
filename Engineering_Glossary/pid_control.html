@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PID 控制介紹</title>
+  <link rel="stylesheet" href="../index.css" />
+  <script defer src="../index.js"></script>
+</head>
+
+<body>
+  <div class="content-wrapper">
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="../Engineering_Glossary.html" class="back-button list-return glow-orange">📋 返回列表</a>
+    </div>
+
+    <h1 class="title">🧠 PID 控制介紹</h1>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 基本概念</h2>
+      <div class="api-section">
+        <p class="sub-text">
+          PID 是 Proportional（比例）、Integral（積分）、Derivative（微分）三項控制邏輯的縮寫，是目前工業控制中最常見且最穩定的演算法之一。
+        </p>
+        <p class="sub-text">
+          它透過持續回饋（feedback）來調整輸出，使系統能夠快速、穩定地達到目標值。PID 控制器會根據目前誤差、累積誤差與誤差變化率來計算控制輸出。
+        </p>
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 三項控制項目</h2>
+      <div class="api-section">
+        <h3 class="main-text">🔸 比例控制（P）</h3>
+        <p class="sub-text">根據目前誤差立即反應，誤差越大，輸出越強。比例增益過高可能導致震盪或不穩定。</p>
+
+        <h3 class="main-text">🔸 積分控制（I）</h3>
+        <p class="sub-text">累積過去誤差，消除穩態誤差（Steady-State Error）。但過度積分可能導致「積分飽和」現象。</p>
+
+        <h3 class="main-text">🔸 微分控制（D）</h3>
+        <p class="sub-text">預測誤差變化趨勢，抑制過衝（Overshoot）。對雜訊敏感，通常使用較小的微分時間。</p>
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 系統響應特性</h2>
+      <div class="api-section">
+        <ul>
+          <li><strong>Rise Time：</strong>系統從 10% 上升到 90% 所需時間。</li>
+          <li><strong>Percent Overshoot：</strong>輸出超越穩態值的幅度。</li>
+          <li><strong>Settling Time：</strong>系統進入穩態範圍所需時間。</li>
+          <li><strong>Steady-State Error：</strong>穩態時輸出與目標值的差距。</li>
+        </ul>
+        <img src="https://ni.scene7.com/is/image/ni/12fbdcae1636?scl=1" alt="PID 響應圖" style="width:100%; border-radius:8px; margin-top:20px;">
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 實際應用與調整</h2>
+      <div class="api-section">
+        <p class="sub-text">
+          PID 廣泛應用於溫度控制、機器人定位、流量控制、壓力穩定等領域。調整 PID 參數（Tuning）可使用試誤法或 Ziegler-Nichols 方法。
+        </p>
+        <p class="sub-text">
+          調整步驟通常為：先設 I、D 為 0，逐步增加 P 直到系統震盪，再加入 I 消除誤差，最後加入 D 抑制過衝與穩定性。
+        </p>
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> LabVIEW 工具補充</h2>
+      <div class="api-section">
+        <p class="sub-text">
+          NI LabVIEW 提供完整的 PID 工具組，包括基本控制 VI、進階自動調整 VI、抗積分飽和功能等，可快速建立高效能控制系統。
+        </p>
+        <img src="https://ni.scene7.com/is/image/ni/12fbdcae1640?scl=1" alt="LabVIEW PID 工具" style="width:100%; border-radius:8px; margin-top:20px;">
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 生活比喻與理解</h2>
+      <div class="api-section">
+        <p class="sub-text">
+          HackMD 中以機器手臂為例，說明若無 PID 控制，手臂會因慣性來回震盪；而 PID 控制則能讓手臂平順地停在目標位置。
+        </p>
+        <p class="sub-text">
+          類似火車進站前提前煞車的概念，PID 就像人腦內建的控制邏輯，讓系統在不同階段給予不同權重，達到精準控制。
+        </p>
+      </div>
+    </section>
+
+   
+    </div>
+  </div>
+</body>
+</html>
