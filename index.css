@@ -102,6 +102,59 @@ pre {
   margin: 10px 0 20px;
   border: 1px solid #0f0;
 }
+/* =========================
+   工程詞彙導覽卡片的主體樣式
+========================= */
+.term-card {
+  display: block; /* 讓整個卡片區塊可點擊（a 標籤變成區塊元素） */
+  width: 200px; /* 固定卡片寬度，方便排版一致性 */
+  padding: 20px; /* 內部留白，讓文字不貼邊 */
+  margin: 20px; /* 外部留白，讓卡片之間有間距 */
+  background-color: #111; /* 深色背景，符合整體暗色主題 */
+  border: 2px solid #0f0; /* 螢光綠邊框，強調科技感與互動性 */
+  border-radius: 12px; /* 圓角設計，讓卡片更柔和不生硬 */
+  text-align: left; /* 文字靠左對齊，提升可讀性 */
+  text-decoration: none; /* 移除 a 標籤預設底線 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* hover 動畫平滑過渡 */
+  animation: fadeIn 1s ease-out; /* 進場動畫，讓卡片逐一淡入 */
+}
+/* =========================
+ 滑鼠懸停時的互動效果
+========================= */
+
+.term-card:hover {
+  transform: scale(1.05); /* 微放大卡片，提供視覺回饋 */
+  box-shadow: 0 0 12px rgba(0, 255, 0, 0.6); /* 螢光綠外光暈，強化互動感 */
+}
+/* =========================
+ 詞彙標題樣式
+========================= */
+.term-card .main-text {
+  font-size: 1.4em; /* 放大主標題字體 */
+  color: #0f0; /* 使用螢光綠，與主題一致 */
+  margin-bottom: 8px; /* 與副標題之間留點空隙 */
+}
+/* =========================
+詞彙簡介樣式
+========================= */
+.term-card .sub-text {
+  font-size: 1em; /* 一般大小字體，作為補充說明 */
+  color: #ccc; /* 淺灰色，與主標題形成對比但仍清晰可讀 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* =========================
    表格樣式
@@ -427,4 +480,5 @@ section.collapsed .api-section {
   87.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(30px); }
   100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
 }
+
 
