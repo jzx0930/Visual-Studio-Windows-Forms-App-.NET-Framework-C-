@@ -444,6 +444,46 @@ section.collapsed .api-section {
 .progress-bar.spin {
   animation: spinGradient 1s linear infinite;
 }
+/* 呼吸燈橘色按鈕 */
+.back-button.glow-orange {
+  background-color: #ffa500;
+  color: #000;
+  font-size: 1em;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
+  animation: breatheOrange 2.5s ease-in-out infinite;
+  font-family: "Segoe UI", sans-serif;
+  transition: transform 0.3s ease;
+}
+
+.back-button.glow-orange:hover {
+  transform: scale(1.05);
+  background-color: #ffbb33;
+  box-shadow: 0 0 16px rgba(255, 165, 0, 0.8);
+}
+
+/* 呼吸燈動畫：大小與橘色光暈漸變 */
+@keyframes breatheOrange {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.4);
+    background-color: #ffa500;
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+    background-color: #ff8c00;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.4);
+    background-color: #ffa500;
+  }
+}
 
 /* =========================
    動畫定義
@@ -494,6 +534,7 @@ section.collapsed .api-section {
   87.5%{ transform: translate(-50%, -50%) translateX(-30px) translateY(30px); }
   100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px); }
 }
+
 
 
 
