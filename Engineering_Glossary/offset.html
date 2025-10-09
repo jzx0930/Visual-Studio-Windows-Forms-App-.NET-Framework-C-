@@ -10,24 +10,51 @@
 
 <body>
   <div class="content-wrapper">
-<div style="text-align: center; margin-top: 40px;">
-  <a href="../Engineering_Glossary.html" class="back-button list-return glow-orange">📋 返回列表</a>
-</div>
-
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="../Engineering_Glossary.html" class="back-button list-return glow-orange">📋 返回列表</a>
+    </div>
 
     <h1 class="title">📐 Offset</h1>
+
     <section class="expanded">
       <h2><span class="arrow">▼</span> 定義與用途</h2>
       <div class="api-section">
         <h3 class="main-text">什麼是 Offset？</h3>
         <p class="sub-text">Offset（偏移量）是系統輸出與期望值之間的穩態誤差。通常表示系統無法完全達到目標。</p>
+
         <h3 class="main-text">應用場景</h3>
         <p class="sub-text">在 PID 控制中，Offset 可透過積分項（I）來消除，達到零穩態誤差。</p>
+      </div>
+    </section>
+
+    <section class="expanded">
+      <h2><span class="arrow">▼</span> 穩態誤差的成因與情境</h2>
+      <div class="api-section">
+        <h3 class="main-text">穩態誤差是什麼？</h3>
+        <p class="sub-text">
+          穩態誤差是指設定值與當前值之間的偏差為恆定值，並持續存在。當僅使用比例控制（P）時，系統可能因負載變動或裝置特性而產生穩態誤差。此現象可從負載特性與控制特性線的交點理解，該交點往往不會與設定值一致。
+        </p>
+
+        <img src="https://tw.azbil.com/-/media/azbil/zh-tw/product/ba/temperature/img/pid_story_04_01.png" alt="穩態誤差示意圖1" style="width:100%; border-radius:8px; margin-top:20px;">
+
+        <p class="sub-text" style="margin-top:20px;">
+          圖1顯示：當系統僅使用比例動作時，輸出會因負載特性與控制特性交點偏離設定值，產生穩態誤差。
+        </p>
+
+        <img src="https://tw.azbil.com/-/media/azbil/zh-tw/product/ba/temperature/img/pid_story_04_02.png" alt="穩態誤差示意圖2" style="width:100%; border-radius:8px; margin-top:20px;">
+
+        <p class="sub-text" style="margin-top:20px;">
+          圖2顯示：不同負載條件下，控制特性線與負載特性線的交點會移動，導致穩態誤差的變化。
+        </p>
+
+        <h3 class="main-text">常見出現情境</h3>
+        <ul class="sub-text">
+          <li><strong>① 負載變化：</strong>負載越大，被奪取的熱量越多，導致檢測溫度低於設定值；負載越小則相反，溫度偏高。</li>
+          <li><strong>② 環境溫度變化：</strong>冬季環境溫度低，熱量流失多，溫度偏低；夏季環境溫度高，熱量流失少，溫度偏高。</li>
+          <li><strong>③ 設定值變更：</strong>若裝置設計為 800℃，當設定值高於此設計點時，檢測溫度會偏低；反之則偏高。</li>
+        </ul>
       </div>
     </section>
   </div>
 </body>
 </html>
-
-
-
