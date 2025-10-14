@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>工作筆記</title>
+  <link rel="stylesheet" href="index.css">
+  <script defer src="index.js"></script>
+</head>
+<body>
+     <a href="index.html" class="back-button">🏠 返回主頁</a>
+
+  <section>
+  <h2><span class="arrow">▶</span> 旋轉誤差與 XY 補償流程</h2>
+  <div class="api-section">
+    <ol class="note-list">
+      <li>移至 A′ 靶位取像</li>
+      <li>紀錄取像之 XY 軸位置（取像軸位置）</li>
+      <li>計算出特徵座標</li>
+      <li>計算出影像中心座標</li>
+      <li>計算 XY 差值（影像中心座標 − 特徵座標）</li>
+      <li>軸依據差值進行補償移動</li>
+      <li>補償後記錄（補償後軸位置1 = (𝑥_𝑎′, 𝑦_𝑎′)）</li>
+      <li>對 B′ 一樣執行 1~7，獲得補償後軸位置2 = (𝑥_𝑏′, 𝑦_𝑏′)</li>
+      <li>計算 A′B′ 中點，獲得 XY 補償基準點座標</li>
+      <li>計算 θ 角</li>
+      <li>移動至標準資訊位置需進行角度轉換再 XY 補償，才是正確的標準資訊位置</li>
+    </ol>
+      <img src="image/Anchor Point.png" alt="定位點" style="width:100%; border-radius:8px;">
+  </div>
+</section>
+
+
+  <section>
+  <h2><span class="arrow">▶</span> 直角座標與極座標比較</h2>
+  <div class="api-section">
+    <h3>📌 定義與表示方式</h3>
+    <ul>
+      <li><strong>直角座標：</strong> 使用 (x, y) 表示點到原點的水平與垂直距離</li>
+      <li><strong>極座標：</strong> 使用 (r, θ) 表示點與原點的距離與角度</li>
+    </ul>
+
+    <h3>🧠 優點與應用</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>直角座標</th>
+          <th>極座標</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>優點</td>
+          <td>直觀、易理解，適合直線描述</td>
+          <td>適合圓形、旋轉運動描述</td>
+        </tr>
+        <tr>
+          <td>應用</td>
+          <td>地圖、日常定位</td>
+          <td>工程、導航、機器人學</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>🔄 座標轉換公式</h3>
+    <ul>
+      <li>從直角座標轉為極座標：<br>r = √(x² + y²)，θ = arctan(y/x)</li>
+      <li>從極座標轉為直角座標：<br>x = r × cos(θ)，y = r × sin(θ)</li>
+    </ul>
+    <img src="https://www.mecalculator.tw/img/math/polar-cartesian.svg" alt="直角, 極座標轉換" style="width:100%; border-radius:8px;">
+  
+  </div>
+</section>
+
+
+  <section>
+  <h2><span class="arrow">▶</span> Z 軸基準建立方法</h2>
+  <div class="api-section">
+    <h3>📌 三種建立方式</h3>
+    <ul>
+      <li><strong>相機成像法：</strong> 移動 Z 軸觀察成像清晰度，儲存最清晰時的 Z 軸座標</li>
+      <li><strong>雷射試打法：</strong> 移動 Z 軸進行雷射試打，孔徑最小時即為焦點位置</li>
+      <li><strong>公版軟體量測法：</strong> 使用雷射共二交軟體，調整 Z 軸使顯示值為 0，儲存此高度</li>
+    </ul>
+
+    <h3>🧠 延伸應用</h3>
+    <p>完成上述 Z 軸資訊建立後，有助於後續加工參數的精準調整與定位。同樣概念亦可應用於 XY 軸的基準建立與調整。</p>
+  </div>
+</section>
+
