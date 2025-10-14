@@ -4,3 +4,4 @@ https://3dmart.com.tw/en/news/chatgpt-flux-tripo-workflow
 https://studio.tripo3d.ai/home?utm_source=google&utm_medium=cpc&utm_campaign=WW&utm_term=%E5%9B%BE%E5%83%8F%E8%BD%AC%203d%20%E6%A8%A1%E5%9E%8B%20ai&gad_source=1&gad_campaignid=22658699652&gbraid=0AAAAA_N1cpugosM3-3kXvohgGRpDM9Jdw&gclid=EAIaIQobChMIgZq-gcOikAMVU5mmAx2fYTAAEAMYASAAEgIuGvD_BwE
 https://tw.topmediai.com/generate-video/create-a-3d-effect-from-a-photo/?gad_source=1&gad_campaignid=22126289190&gbraid=0AAAAACZMS_bHgSGzYOLFSaAeNUxBhWMIT&gclid=EAIaIQobChMI9_T19YCjkAMVgRN7Bx0osxZmEAAYBCAAEgL9HfD_BwE#1.3
 https://tw.topmediai.com/generate-video/create-a-3d-effect-from-a-photo/?gad_source=1&gad_campaignid=22126289190&gbraid=0AAAAACZMS_bHgSGzYOLFSaAeNUxBhWMIT&gclid=EAIaIQobChMI9_T19YCjkAMVgRN7Bx0osxZmEAAYBCAAEgL9HfD_BwE#1.3
+https://huggingface.co/spaces/nvidia/PartPacker
