@@ -6,51 +6,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css">
   <script defer src="index.js"></script>
+  <style>
+    .speak-button {
+      margin-left: 10px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #eee;
+      font-size: 12px;
+    }
+    .speak-button:hover {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 <body>
   <div class="content-wrapper">
     <a href="index.html" class="back-button">🏠 返回主頁</a>
 
-    <h2>📘 工程詞彙導覽</h2>
+    <h2>📘 工程常用單字</h2>
     <div class="content-row">
 
       <div class="term-card">
-        <div class="main-text">Real Time</div>
-        <div class="sub-text">即時系統的反應能力</div>
+        <div class="main-text">Overview 
+          <button class="speak-button" onclick="speakText('Overview')">🔊</button>
+        </div>
+        <div class="sub-text">概述</div>
       </div>
 
       <div class="term-card">
-        <div class="main-text">PID</div>
-        <div class="sub-text">一種「自動控制」的方法</div>
-        <div class="sub-text">(P:比例 I:積分 D:微分)</div>
+        <div class="main-text">Configure 
+          <button class="speak-button" onclick="speakText('Configure')">🔊</button>
+        </div>
+        <div class="sub-text">配置</div>
       </div>
       
       <div class="term-card">
-        <div class="main-text">Offset</div>
-        <div class="sub-text">穩態誤差與偏移量</div>
+        <div class="main-text">Develop 
+          <button class="speak-button" onclick="speakText('Develop')">🔊</button>
+        </div>
+        <div class="sub-text">開發、發展</div>
       </div>
 
       <div class="term-card">
-        <div class="main-text">Rise Time</div>
+        <div class="main-text">Rise Time 
+          <button class="speak-button" onclick="speakText('Rise Time')">🔊</button>
+        </div>
         <div class="sub-text">系統反應速度指標</div>
       </div>
 
       <div class="term-card">
-        <div class="main-text">Settling Time</div>
+        <div class="main-text">Settling Time 
+          <button class="speak-button" onclick="speakText('Settling Time')">🔊</button>
+        </div>
         <div class="sub-text">系統穩定所需時間</div>
       </div>
 
       <div class="term-card">
-        <div class="main-text">Steady-State Error</div>
+        <div class="main-text">Steady-State Error 
+          <button class="speak-button" onclick="speakText('Steady-State Error')">🔊</button>
+        </div>
         <div class="sub-text">系統最終誤差量</div>
       </div>
 
       <div class="term-card">
-        <div class="main-text">Percent Overshoot</div>
+        <div class="main-text">Percent Overshoot 
+          <button class="speak-button" onclick="speakText('Percent Overshoot')">🔊</button>
+        </div>
         <div class="sub-text">輸出超越穩態值的幅度</div>
       </div>
 
     </div>
   </div>
+
+  <script>
+    function speakText(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US'; // 設定語言為英文
+      speechSynthesis.speak(utterance);
+    }
+  </script>
 </body>
 </html>
