@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>工程詞彙導覽</title>
+  <title>工程英文</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css">
   <script defer src="index.js"></script>
@@ -16,10 +16,12 @@
 
 <h2>📘 工程詞彙導覽</h2>
 <div class="content-row">
-  <a href="Engineering_Glossary/real_time.html" class="term-card">
-    <div class="main-text">Real Time</div>
-    <div class="sub-text">即時系統的反應能力</div>
-  </a>
+
+<div class="term-card">
+  <div class="main-text">Real Time</div>
+  <div class="sub-text">即時系統的反應能力</div>
+</div>
+
   
  <a href="Engineering_Glossary/pid_control.html" class="term-card">
     <div class="main-text">PID</div>
