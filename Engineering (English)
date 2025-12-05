@@ -11,66 +11,46 @@
   <div class="content-wrapper">
     <a href="index.html" class="back-button">🏠 返回主頁</a>
 
+    <h2>📘 工程詞彙導覽</h2>
+    <div class="content-row">
 
+      <div class="term-card">
+        <div class="main-text">Real Time</div>
+        <div class="sub-text">即時系統的反應能力</div>
+      </div>
 
+      <div class="term-card">
+        <div class="main-text">PID</div>
+        <div class="sub-text">一種「自動控制」的方法</div>
+        <div class="sub-text">(P:比例 I:積分 D:微分)</div>
+      </div>
+      
+      <div class="term-card">
+        <div class="main-text">Offset</div>
+        <div class="sub-text">穩態誤差與偏移量</div>
+      </div>
 
-<h2>📘 工程詞彙導覽</h2>
-<div class="content-row">
+      <div class="term-card">
+        <div class="main-text">Rise Time</div>
+        <div class="sub-text">系統反應速度指標</div>
+      </div>
 
-<div class="term-card">
-  <div class="main-text">Real Time</div>
-  <div class="sub-text">即時系統的反應能力</div>
-</div>
+      <div class="term-card">
+        <div class="main-text">Settling Time</div>
+        <div class="sub-text">系統穩定所需時間</div>
+      </div>
 
-  
- <a href="Engineering_Glossary/pid_control.html" class="term-card">
-    <div class="main-text">PID</div>
-    <div class="sub-text">一種「自動控制」的方法</div>
-      <div class="sub-text">(P:比例 I:積分 D:微分)</div>
-  </a>
-  
-  <a href="Engineering_Glossary/offset.html" class="term-card">
-    <div class="main-text">Offset</div>
-    <div class="sub-text">穩態誤差與偏移量</div>
-  </a>
+      <div class="term-card">
+        <div class="main-text">Steady-State Error</div>
+        <div class="sub-text">系統最終誤差量</div>
+      </div>
 
-  <a href="Engineering_Glossary/rise_time.html" class="term-card">
-    <div class="main-text">Rise Time</div>
-    <div class="sub-text">系統反應速度指標</div>
-  </a>
+      <div class="term-card">
+        <div class="main-text">Percent Overshoot</div>
+        <div class="sub-text">輸出超越穩態值的幅度</div>
+      </div>
 
-  <a href="Engineering_Glossary/settling_time.html" class="term-card">
-    <div class="main-text">Settling Time</div>
-    <div class="sub-text">系統穩定所需時間</div>
-  </a>
-
-<a href="Engineering_Glossary/steady_state_error.html" class="term-card">
-    <div class="main-text">Steady-State Error</div>
-    <div class="sub-text">系統最終誤差量</div>
-  </a>
-
-  <a href="Engineering_Glossary/percent_overshoot.html" class="term-card">
-    <div class="main-text">Percent Overshoot</div>
-    <div class="sub-text">輸出超越穩態值的幅度</div>
-  </a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-</div>
+    </div>
+  </div>
+</body>
+</html>
