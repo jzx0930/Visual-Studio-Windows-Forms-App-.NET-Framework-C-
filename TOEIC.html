@@ -19,16 +19,25 @@
     .speak-button:hover {
       background-color: #ddd;
     }
+    .section {
+      margin-bottom: 24px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      overflow: hidden;
+    }
     .section-title {
-      margin: 20px 0 10px;
-      font-size: 20px;
-      font-weight: bold;
+      background-color: #333;
       color: #00ff99;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
     }
     .content-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 每列三個字卡 */
+      grid-template-columns: repeat(3, 1fr); /* 每列固定三個字卡 */
       gap: 16px;
+      padding: 12px;
     }
     .term-card {
       background-color: #222;
@@ -52,6 +61,9 @@
         grid-template-columns: 1fr;
       }
     }
+    .collapsed {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -72,11 +84,15 @@ fetch("txt/單字一.txt")  // 確認檔名正確
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
     const container = document.getElementById("word-container");
 
+    let section = null;
     let row = null;
 
     lines.forEach(line => {
       // 如果是段落標題（例如 "單字(1)"）
       if (/^單字/.test(line)) {
+        section = document.createElement("div");
+        section.className = "section";
+
         const title = document.createElement("div");
         title.className = "section-title";
         title.textContent = line;
@@ -84,8 +100,14 @@ fetch("txt/單字一.txt")  // 確認檔名正確
         row = document.createElement("div");
         row.className = "content-row";
 
-        container.appendChild(title);
-        container.appendChild(row);
+        // 點擊標題可折疊/展開
+        title.addEventListener("click", () => {
+          row.classList.toggle("collapsed");
+        });
+
+        section.appendChild(title);
+        section.appendChild(row);
+        container.appendChild(section);
       } else {
         // 單字行
         const idx = line.indexOf("|");
