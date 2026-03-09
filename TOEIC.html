@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>工程英文字卡</title>
+  <title>TOEIC 工程英文字卡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css">
   <script defer src="index.js"></script>
@@ -19,48 +19,91 @@
     .speak-button:hover {
       background-color: #ddd;
     }
+    .section-title {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+    .term-card {
+      margin: 8px 0;
+      padding: 8px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background-color: #222;
+      color: #fff;
+    }
+    .main-text {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .sub-text {
+      font-size: 14px;
+      margin-top: 4px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
     <a href="index.html" class="back-button">🏠 返回主頁</a>
 
-    <h2>📘 工程常用單字</h2>
-    <div id="word-container" class="content-row"></div>
+    <h2>📘 TOEIC 工程常用單字</h2>
+    <div id="word-container"></div>
   </div>
 
 <script>
-fetch("txt/単字一.txt")  // 確認檔名正確
-  .then(response => response.text())
+fetch("txt/單字一.txt")  // 確認檔名正確
+  .then(response => {
+    if (!response.ok) throw new Error("檔案讀取失敗");
+    return response.text();
+  })
   .then(text => {
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
     const container = document.getElementById("word-container");
 
-    lines.forEach(line => {
-      const idx = line.indexOf("|");
-      if (idx !== -1) {
-        const word = line.substring(0, idx).trim();       // 英文單字
-        const meaning = line.substring(idx + 1).trim();   // 中文意思 + 詞性
+    let sectionDiv = null;
 
-        const card = document.createElement("div");
-        card.className = "term-card";
-        card.dataset.word = word;
-        card.innerHTML = `
-          <div class="main-text">
-            <span class="word">${word}</span>
-            <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-            <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-          </div>
-          <div class="sub-text">${meaning}</div>
-        `;
-        container.appendChild(card);
+    lines.forEach(line => {
+      // 如果是段落標題（例如 "單字(1)"）
+      if (/^單字/.test(line)) {
+        sectionDiv = document.createElement("div");
+        const title = document.createElement("div");
+        title.className = "section-title";
+        title.textContent = line;
+        sectionDiv.appendChild(title);
+        container.appendChild(sectionDiv);
+      } else {
+        // 單字行
+        const idx = line.indexOf("|");
+        if (idx !== -1 && sectionDiv) {
+          const word = line.substring(0, idx).trim();
+          const meaning = line.substring(idx + 1).trim();
+
+          const card = document.createElement("div");
+          card.className = "term-card";
+          card.dataset.word = word;
+          card.innerHTML = `
+            <div class="main-text">
+              <span class="word">${word}</span>
+              <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
+              <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
+            </div>
+            <div class="sub-text">${meaning}</div>
+          `;
+          sectionDiv.appendChild(card);
+        }
       }
     });
+  })
+  .catch(err => {
+    document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
+    console.error(err);
   });
 
 function speakWord(word, lang) {
   const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang;
+  utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
   speechSynthesis.speak(utterance);
 }
 </script>
