@@ -20,7 +20,7 @@
       background-color: #ddd;
     }
     .section-title {
-      margin-top: 20px;
+      margin: 20px 0 10px;
       font-size: 20px;
       font-weight: bold;
       color: #00ff99;
@@ -72,26 +72,24 @@ fetch("txt/單字一.txt")  // 確認檔名正確
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
     const container = document.getElementById("word-container");
 
-    let sectionDiv = null;
+    let row = null;
 
     lines.forEach(line => {
       // 如果是段落標題（例如 "單字(1)"）
       if (/^單字/.test(line)) {
-        sectionDiv = document.createElement("div");
         const title = document.createElement("div");
         title.className = "section-title";
         title.textContent = line;
 
-        const row = document.createElement("div");
+        row = document.createElement("div");
         row.className = "content-row";
 
-        sectionDiv.appendChild(title);
-        sectionDiv.appendChild(row);
-        container.appendChild(sectionDiv);
+        container.appendChild(title);
+        container.appendChild(row);
       } else {
         // 單字行
         const idx = line.indexOf("|");
-        if (idx !== -1 && sectionDiv) {
+        if (idx !== -1 && row) {
           const word = line.substring(0, idx).trim();
           const meaning = line.substring(idx + 1).trim();
 
@@ -106,7 +104,7 @@ fetch("txt/單字一.txt")  // 確認檔名正確
             </div>
             <div class="sub-text">${meaning}</div>
           `;
-          sectionDiv.querySelector(".content-row").appendChild(card);
+          row.appendChild(card);
         }
       }
     });
