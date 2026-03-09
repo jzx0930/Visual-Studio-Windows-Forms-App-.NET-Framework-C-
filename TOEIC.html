@@ -7,91 +7,47 @@
   <link rel="stylesheet" href="index.css">
   <script defer src="index.js"></script>
   <style>
-    .speak-button {
-      margin-left: 6px;
-      cursor: pointer;
-      padding: 4px 8px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #eee;
-      font-size: 12px;
+    .search-box {
+      margin: 20px 0;
+      text-align: center;
     }
-    .speak-button:hover {
-      background-color: #ddd;
-    }
-    .section {
-      margin-bottom: 20px;
-      border: 1px solid #444;
+    .search-input {
+      padding: 8px;
+      width: 250px;
+      border: 2px solid #0f0;
       border-radius: 6px;
-    }
-    .section-title {
-      background-color: #333;
-      color: #00ff99;
-      padding: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-    .arrow {
-      margin-right: 8px;
-      transition: transform 0.3s;
-    }
-    .arrow.rotate {
-      transform: rotate(90deg);
-    }
-    .content-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 每列固定三個字卡 */
-      gap: 16px;
-      padding: 12px;
-    }
-    .term-card {
-      background-color: #222;
+      background-color: #111;
       color: #fff;
-      padding: 12px;
+    }
+    .search-button {
+      padding: 8px 12px;
+      margin-left: 8px;
+      border: 2px solid #0f0;
       border-radius: 6px;
-      border: 1px solid #444;
-    }
-    .main-text {
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .sub-text {
-      font-size: 14px;
-      margin-top: 4px;
-      color: #ccc;
-    }
-    @media (max-width: 768px) {
-      .content-row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .collapsed {
-      display: none;
-    }
-    .controls {
-      margin-bottom: 20px;
-    }
-    .control-button {
-      margin-right: 10px;
-      padding: 6px 12px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #eee;
+      background-color: #0f0;
+      color: #000;
       cursor: pointer;
     }
-    .control-button:hover {
-      background-color: #ddd;
+    .search-button:hover {
+      background-color: #00ff88;
+    }
+    .highlight {
+      background-color: yellow;
+      color: black;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="content-wrapper">
     <a href="index.html" class="back-button">🏠 返回主頁</a>
-
     <h2>📘 TOEIC 工程常用單字</h2>
+
+    <!-- 搜尋框 -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
+      <button class="search-button" onclick="searchWord()">搜尋</button>
+    </div>
 
     <!-- 全部展開 / 收合控制 -->
     <div class="controls">
@@ -103,72 +59,6 @@
   </div>
 
 <script>
-fetch("txt/單字一.txt")
-  .then(response => {
-    if (!response.ok) throw new Error("檔案讀取失敗");
-    return response.text();
-  })
-  .then(text => {
-    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
-    const container = document.getElementById("word-container");
-
-    let section = null;
-    let row = null;
-
-    lines.forEach(line => {
-      if (/^單字/.test(line)) {
-        section = document.createElement("div");
-        section.className = "section";
-
-        const title = document.createElement("div");
-        title.className = "section-title";
-
-        const arrow = document.createElement("span");
-        arrow.className = "arrow";
-        arrow.textContent = "▶";
-
-        title.appendChild(arrow);
-        title.appendChild(document.createTextNode(line));
-
-        row = document.createElement("div");
-        row.className = "content-row";
-
-        // 點擊標題可折疊/展開
-        title.addEventListener("click", () => {
-          row.classList.toggle("collapsed");
-          arrow.classList.toggle("rotate");
-        });
-
-        section.appendChild(title);
-        section.appendChild(row);
-        container.appendChild(section);
-      } else {
-        const idx = line.indexOf("|");
-        if (idx !== -1 && row) {
-          const word = line.substring(0, idx).trim();
-          const meaning = line.substring(idx + 1).trim();
-
-          const card = document.createElement("div");
-          card.className = "term-card";
-          card.dataset.word = word;
-          card.innerHTML = `
-            <div class="main-text">
-              <span class="word">${word}</span>
-              <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-              <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-            </div>
-            <div class="sub-text">${meaning}</div>
-          `;
-          row.appendChild(card);
-        }
-      }
-    });
-  })
-  .catch(err => {
-    document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
-    console.error(err);
-  });
-
 function speakWord(word, lang) {
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
@@ -177,24 +67,58 @@ function speakWord(word, lang) {
 
 // 全部展開
 function expandAll() {
-  document.querySelectorAll(".content-row").forEach(row => {
-    row.classList.remove("collapsed");
-  });
-  document.querySelectorAll(".arrow").forEach(arrow => {
-    arrow.classList.add("rotate");
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("collapsed");
+    section.classList.add("expanded");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▼";
   });
 }
 
 // 全部收合
 function collapseAll() {
-  document.querySelectorAll(".content-row").forEach(row => {
-    row.classList.add("collapsed");
-  });
-  document.querySelectorAll(".arrow").forEach(arrow => {
-    arrow.classList.remove("rotate");
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("expanded");
+    section.classList.add("collapsed");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▶";
   });
 }
-</script>
 
+// 搜尋功能
+function searchWord() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  if (!query) return;
+
+  let found = false;
+
+  document.querySelectorAll(".term-card").forEach(card => {
+    const word = card.dataset.word.toLowerCase();
+    const section = card.closest("section");
+
+    // 移除舊的 highlight
+    card.querySelector(".word").classList.remove("highlight");
+
+    if (word.includes(query)) {
+      found = true;
+      // 展開所在段落
+      section.classList.remove("collapsed");
+      section.classList.add("expanded");
+      const arrow = section.querySelector(".arrow");
+      if (arrow) arrow.textContent = "▼";
+
+      // 高亮顯示
+      card.querySelector(".word").classList.add("highlight");
+
+      // 滾動到該字卡
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+
+  if (!found) {
+    alert("找不到該單字！");
+  }
+}
+</script>
 </body>
 </html>
