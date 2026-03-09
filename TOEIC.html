@@ -20,10 +20,9 @@
       background-color: #ddd;
     }
     .section {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border: 1px solid #444;
       border-radius: 6px;
-      overflow: hidden;
     }
     .section-title {
       background-color: #333;
@@ -32,6 +31,15 @@
       font-size: 18px;
       font-weight: bold;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .arrow {
+      margin-right: 8px;
+      transition: transform 0.3s;
+    }
+    .arrow.rotate {
+      transform: rotate(90deg);
     }
     .content-row {
       display: grid;
@@ -55,7 +63,6 @@
       margin-top: 4px;
       color: #ccc;
     }
-    /* 手機響應式：螢幕寬度小於 768px 時，每列顯示一個字卡 */
     @media (max-width: 768px) {
       .content-row {
         grid-template-columns: 1fr;
@@ -96,7 +103,7 @@
   </div>
 
 <script>
-fetch("txt/單字一.txt")  // 確認檔名正確
+fetch("txt/單字一.txt")
   .then(response => {
     if (!response.ok) throw new Error("檔案讀取失敗");
     return response.text();
@@ -109,14 +116,19 @@ fetch("txt/單字一.txt")  // 確認檔名正確
     let row = null;
 
     lines.forEach(line => {
-      // 如果是段落標題（例如 "單字(1)"）
       if (/^單字/.test(line)) {
         section = document.createElement("div");
         section.className = "section";
 
         const title = document.createElement("div");
         title.className = "section-title";
-        title.textContent = line;
+
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = "▶";
+
+        title.appendChild(arrow);
+        title.appendChild(document.createTextNode(line));
 
         row = document.createElement("div");
         row.className = "content-row";
@@ -124,13 +136,13 @@ fetch("txt/單字一.txt")  // 確認檔名正確
         // 點擊標題可折疊/展開
         title.addEventListener("click", () => {
           row.classList.toggle("collapsed");
+          arrow.classList.toggle("rotate");
         });
 
         section.appendChild(title);
         section.appendChild(row);
         container.appendChild(section);
       } else {
-        // 單字行
         const idx = line.indexOf("|");
         if (idx !== -1 && row) {
           const word = line.substring(0, idx).trim();
@@ -159,7 +171,7 @@ fetch("txt/單字一.txt")  // 確認檔名正確
 
 function speakWord(word, lang) {
   const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
+  utterance.lang = lang;
   speechSynthesis.speak(utterance);
 }
 
@@ -168,12 +180,18 @@ function expandAll() {
   document.querySelectorAll(".content-row").forEach(row => {
     row.classList.remove("collapsed");
   });
+  document.querySelectorAll(".arrow").forEach(arrow => {
+    arrow.classList.add("rotate");
+  });
 }
 
 // 全部收合
 function collapseAll() {
   document.querySelectorAll(".content-row").forEach(row => {
     row.classList.add("collapsed");
+  });
+  document.querySelectorAll(".arrow").forEach(arrow => {
+    arrow.classList.remove("rotate");
   });
 }
 </script>
