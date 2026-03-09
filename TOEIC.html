@@ -123,37 +123,34 @@ fetch("txt/單字一.txt")
 
     let section = null;
     let row = null;
-    
- if (/^單字/.test(line)) {
-  section = document.createElement("section");
 
-  const title = document.createElement("div");
-  title.className = "section-title";
+    lines.forEach(line => {
+      if (/^單字/.test(line)) {
+        section = document.createElement("section");
+        section.className = "collapsed";
 
-  const arrow = document.createElement("span");
-  arrow.className = "arrow";
-  arrow.textContent = "▶"; // 初始狀態箭頭顯示收合
+        const title = document.createElement("div");
+        title.className = "section-title";
 
-  title.appendChild(arrow);
-  title.appendChild(document.createTextNode(line));
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = "▶";
 
-  row = document.createElement("div");
-  row.className = "content-row collapsed"; // ✅ 初始狀態收合字卡
+        title.appendChild(arrow);
+        title.appendChild(document.createTextNode(line));
 
-  // 點擊標題時收合/展開
-  title.addEventListener("click", () => {
-    row.classList.toggle("collapsed");
-    arrow.classList.toggle("rotate");
-    arrow.textContent = row.classList.contains("collapsed") ? "▶" : "▼";
-  });
+        row = document.createElement("div");
+        row.className = "content-row";
 
-  section.appendChild(title);
-  section.appendChild(row);
-  container.appendChild(section);
-}
+        title.addEventListener("click", () => {
+          row.classList.toggle("collapsed");
+          arrow.classList.toggle("rotate");
+        });
 
-
- else {
+        section.appendChild(title);
+        section.appendChild(row);
+        container.appendChild(section);
+      } else {
         const idx = line.indexOf("|");
         if (idx !== -1 && row) {
           const word = line.substring(0, idx).trim();
@@ -188,27 +185,23 @@ function speakWord(word, lang) {
 
 // 全部展開
 function expandAll() {
-  document.querySelectorAll(".content-row").forEach(row => {
-    row.classList.remove("collapsed");
-  });
-  document.querySelectorAll(".arrow").forEach(arrow => {
-    arrow.classList.add("rotate");
-    arrow.textContent = "▼";
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("collapsed");
+    section.classList.add("expanded");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▼";
   });
 }
 
-// 全部收合（只收合字卡，不隱藏標題）
+// 全部收合
 function collapseAll() {
-  document.querySelectorAll(".content-row").forEach(row => {
-    row.classList.add("collapsed");
-  });
-  document.querySelectorAll(".arrow").forEach(arrow => {
-    arrow.classList.remove("rotate");
-    arrow.textContent = "▶";
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("expanded");
+    section.classList.add("collapsed");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▶";
   });
 }
-
-
 
 // 搜尋功能（模糊搜尋）
 function searchWord() {
