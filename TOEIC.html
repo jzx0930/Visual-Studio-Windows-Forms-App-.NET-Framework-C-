@@ -94,7 +94,7 @@
 <body>
 <div class="content-wrapper">
   <a href="index.html" class="back-button">🏠 返回主頁</a>
-  <h2>📘 TOEIC 工程常用單字</h2>
+  <h2>📘 TOEIC 單字</h2>
 
   <!-- 搜尋框 -->
   <div class="search-box">
@@ -112,7 +112,7 @@
 </div>
 
 <script>
-fetch("txt/單字一.txt")
+fetch("txt/單字.txt")
   .then(response => {
     if (!response.ok) throw new Error("檔案讀取失敗");
     return response.text();
