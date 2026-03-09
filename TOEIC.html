@@ -1,89 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <title>工程英文</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="index.css">
-  <script defer src="index.js"></script>
-  <style>
-    .speak-button {
-      margin-left: 6px;
-      cursor: pointer;
-      padding: 4px 8px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #eee;
-      font-size: 12px;
-    }
-    .speak-button:hover {
-      background-color: #ddd;
-    }
-  </style>
-</head>
-<body>
-  <div class="content-wrapper">
-    <a href="index.html" class="back-button">🏠 返回主頁</a>
+<div id="word-container" class="content-row"></div>
 
-    <h2>📘 工程常用單字</h2>
-    <div class="content-row">
+<script>
+fetch("txt/單字(一).txt")
+  .then(response => response.text())
+  .then(text => {
+    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+    const container = document.getElementById("word-container");
 
-      <!-- 單字卡片範例 -->
-      <div class="term-card" data-word="Pitch">
-        <div class="main-text">
-          <span class="word"></span>
-          <button class="speak-button" onclick="speakWord(this,'en-GB')">英式</button>
-          <button class="speak-button" onclick="speakWord(this,'en-US')">美式</button>
-        </div>
-        <div class="sub-text">間距</div>
-      </div>
+    lines.forEach(line => {
+      const parts = line.split("|");
+      if (parts.length >= 2) {
+        const word = parts[0].trim();
+        const meaning = parts[1].trim();
+        const pos = parts[2] ? parts[2].trim() : "";
 
-      <div class="term-card" data-word="Pattern">
-        <div class="main-text">
-          <span class="word"></span>
-          <button class="speak-button" onclick="speakWord(this,'en-GB')">英式</button>
-          <button class="speak-button" onclick="speakWord(this,'en-US')">美式</button>
-        </div>
-        <div class="sub-text">加工路徑排列模式</div>
-      </div>
-
-      <div class="term-card" data-word="Bode Plot">
-        <div class="main-text">
-          <span class="word"></span>
-          <button class="speak-button" onclick="speakWord(this,'en-GB')">英式</button>
-          <button class="speak-button" onclick="speakWord(this,'en-US')">美式</button>
-        </div>
-        <div class="sub-text">波特圖(馬達校準看的圖)</div>
-      </div>
-
-      <div class="term-card" data-word="Hall Sensor">
-        <div class="main-text">
-          <span class="word"></span>
-          <button class="speak-button" onclick="speakWord(this,'en-GB')">英式</button>
-          <button class="speak-button" onclick="speakWord(this,'en-US')">美式</button>
-        </div>
-        <div class="sub-text">電相位感測器</div>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    // 初始化：把 data-word 填到 .word 顯示
-    document.querySelectorAll('.term-card').forEach(card => {
-      const word = card.dataset.word;
-      const wordSpan = card.querySelector('.word');
-      if (wordSpan) wordSpan.textContent = word;
+        const card = document.createElement("div");
+        card.className = "term-card";
+        card.dataset.word = word;
+        card.innerHTML = `
+          <div class="main-text">
+            <span class="word">${word}</span>
+            <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
+            <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
+          </div>
+          <div class="sub-text">${meaning}${pos ? " ｜ " + pos : ""}</div>
+        `;
+        container.appendChild(card);
+      }
     });
+  });
 
-    // 播放指定口音
-    function speakWord(button, lang) {
-      const card = button.closest('.term-card');
-      const word = card.dataset.word;
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
-      speechSynthesis.speak(utterance);
-    }
-  </script>
-</body>
-</html>
+function speakWord(word, lang) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
+  speechSynthesis.speak(utterance);
+}
+</script>
