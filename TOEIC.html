@@ -123,8 +123,8 @@ fetch("txt/單字一.txt")
 
     let section = null;
     let row = null;
-
- if (/^單字/.test(line)) {
+    
+if (/^單字/.test(line)) {
   section = document.createElement("section");
 
   const title = document.createElement("div");
@@ -140,7 +140,7 @@ fetch("txt/單字一.txt")
   row = document.createElement("div");
   row.className = "content-row collapsed"; // ✅ 初始狀態收合字卡
 
-  // 點擊標題時收合/展開
+  // 點擊標題時收合/展開字卡
   title.addEventListener("click", () => {
     row.classList.toggle("collapsed");
     arrow.classList.toggle("rotate");
@@ -151,6 +151,7 @@ fetch("txt/單字一.txt")
   section.appendChild(row);
   container.appendChild(section);
 }
+
 
  else {
         const idx = line.indexOf("|");
@@ -206,6 +207,7 @@ function collapseAll() {
     arrow.textContent = "▶";
   });
 }
+
 
 
 // 搜尋功能（模糊搜尋）
