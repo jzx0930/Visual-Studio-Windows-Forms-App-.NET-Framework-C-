@@ -64,6 +64,20 @@
     .collapsed {
       display: none;
     }
+    .controls {
+      margin-bottom: 20px;
+    }
+    .control-button {
+      margin-right: 10px;
+      padding: 6px 12px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #eee;
+      cursor: pointer;
+    }
+    .control-button:hover {
+      background-color: #ddd;
+    }
   </style>
 </head>
 <body>
@@ -71,6 +85,13 @@
     <a href="index.html" class="back-button">🏠 返回主頁</a>
 
     <h2>📘 TOEIC 工程常用單字</h2>
+
+    <!-- 全部展開 / 收合控制 -->
+    <div class="controls">
+      <button class="control-button" onclick="expandAll()">全部展開</button>
+      <button class="control-button" onclick="collapseAll()">全部收合</button>
+    </div>
+
     <div id="word-container"></div>
   </div>
 
@@ -140,6 +161,20 @@ function speakWord(word, lang) {
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
   speechSynthesis.speak(utterance);
+}
+
+// 全部展開
+function expandAll() {
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.remove("collapsed");
+  });
+}
+
+// 全部收合
+function collapseAll() {
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.add("collapsed");
+  });
 }
 </script>
 
