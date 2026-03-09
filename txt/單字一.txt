@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>工程英文</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <script defer src="index.js"></script>
+  <style>
+    .speak-button {
+      margin-left: 10px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background-color: #eee;
+      font-size: 12px;
+    }
+    .speak-button:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <a href="index.html" class="back-button">🏠 返回主頁</a>
+
+    <h2>📘 工程常用單字</h2>
+    <div class="content-row">
+
+
+
+ <div class="term-card" data-word="Pitch">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">間距</div>
+      </div>
+
+ <div class="term-card" data-word="Pattern">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">加工路徑排列模式</div>
+      </div>
+
+
+ <div class="term-card" data-word="Bode Plot">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">波特圖(馬達校準看的圖)</div>
+      </div>
+    
+ <div class="term-card" data-word="Hall Sensor">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">電相位感測器</div>
+      </div>
+
+
+ <div class="term-card" data-word="Phase">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">相位</div>
+      </div>
+
+ <div class="term-card" data-word="Commutation">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">馬達換向(三項)</div>
+      </div>
+
+
+
+ <div class="term-card" data-word="Unicode">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">國際碼、統一碼</div>
+      </div>
+      
+      <div class="term-card" data-word="Overview">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">概述</div>
+      </div>
+
+      <div class="term-card" data-word="Configure">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">配置</div>
+      </div>
+      
+      <div class="term-card" data-word="Develop">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">開發、發展</div>
+      </div>
+
+      <div class="term-card" data-word="Variables">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">變數</div>
+      </div>
+
+      <div class="term-card" data-word="Machine">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">機器</div>
+      </div>
+
+      <div class="term-card" data-word="App">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">應用(applications)</div>
+      </div>
+
+      <div class="term-card" data-word="Calibration">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">校準</div>
+      </div>
+
+      <div class="term-card" data-word="Autofocus">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">自動對焦</div>
+      </div>
+
+            <div class="term-card" data-word="Manage">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">管理</div>
+      </div>
+
+      <div class="term-card" data-word="Axes">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">軸</div>
+      </div>
+
+      <div class="term-card" data-word="Drive">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">驅動器</div>
+      </div>
+
+      <div class="term-card" data-word="Feedback">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">回饋、回授</div>
+      </div>
+
+      <div class="term-card" data-word="Gantry">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">龍門架</div>
+      </div>
+
+      <div class="term-card" data-word="Homeing">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">回原點</div>
+      </div>
+
+      <div class="term-card" data-word="Calibration">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">校準</div>
+      </div>
+
+      <div class="term-card" data-word="Console">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">命令行介面(CMD)、安慰</div>
+      </div>
+
+      <div class="term-card" data-word="Technical">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">技術的</div>
+      </div>
+
+      <div class="term-card" data-word="Alignment">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">儀器校準、對齊、對位、共識</div>
+      </div>
+
+      <div class="term-card" data-word="Current">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">電流</div>
+      </div>
+
+      <div class="term-card" data-word="Macro">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">巨集</div>
+      </div>
+
+      <div class="term-card" data-word="Preprocessor">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">預處理器、前處理器</div>
+      </div>
+
+      <div class="term-card" data-word="Recursively">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">遞迴</div>
+      </div>
+
+      <div class="term-card" data-word="Replace">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">替代</div>
+      </div>
+
+      <div class="term-card" data-word="Refer to">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">參考;提到、談論</div>
+      </div>
+
+      <div class="term-card" data-word="integer(int)">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">整數</div>
+      </div>
+
+      <div class="term-card" data-word="real(double)">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">浮點數</div>
+      </div>
+
+      <div class="term-card" data-word="License">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">軟體授權、許可證</div>
+      </div>
+
+  <div class="term-card" data-word="Activate">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">啟用設定</div>
+      </div>
+
+<div class="term-card" data-word="procedure">
+        <div class="main-text">
+          <span class="word"></span>
+          <button class="speak-button" onclick="speakTextFromCard(this)">🔊</button>
+        </div>
+        <div class="sub-text">程式</div>
+      </div>
+
+
+
+
+
+
+      
+    </div>
+  </div>
+
+  <script>
+    // 初始化：把 data-word 填到 .word 顯示
+    document.querySelectorAll('.term-card').forEach(card => {
+      const word = card.dataset.word;
+      const wordSpan = card.querySelector('.word');
+      if (wordSpan) wordSpan.textContent = word;
+    });
+
+    function speakTextFromCard(button) {
+      const card = button.closest('.term-card');
+      const word = card.dataset.word; // 單一來源
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
