@@ -1,115 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>TOEIC 工程英文字卡</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="index.css">
-  <script defer src="index.js"></script>
-  <style>
-    .speak-button {
-      margin-left: 6px;
-      cursor: pointer;
-      padding: 4px 8px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #eee;
-      font-size: 12px;
-    }
-    .speak-button:hover { background-color: #ddd; }
+<meta charset="UTF-8">
+<title>TOEIC 工程英文字卡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="index.css">
+<script defer src="index.js"></script>
+<style>
+.speak-button {
+  margin-left: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #eee;
+  font-size: 12px;
+}
+.speak-button:hover { background-color: #ddd; }
 
-    .section {
-      margin-bottom: 24px;
-      border: 1px solid #444;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .section-title {
-      background-color: #333;
-      color: #00ff99;
-      padding: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-    .arrow { margin-right: 8px; transition: transform 0.3s; }
-    .arrow.rotate { transform: rotate(90deg); }
+.section {
+  margin-bottom: 24px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.section-title {
+  background-color: #333;
+  color: #00ff99;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.arrow { margin-right: 8px; transition: transform 0.3s; }
+.arrow.rotate { transform: rotate(90deg); }
 
-    .content-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      padding: 12px;
-    }
-    .term-card {
-      background-color: #222;
-      color: #fff;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #444;
-    }
-    .main-text { font-size: 16px; font-weight: bold; }
-    .sub-text { font-size: 14px; margin-top: 4px; color: #ccc; }
+.content-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 12px;
+}
+.term-card {
+  background-color: #222;
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+}
+.main-text { font-size: 16px; font-weight: bold; }
+.sub-text { font-size: 14px; margin-top: 4px; color: #ccc; }
 
-    @media (max-width: 768px) {
-      .content-row { grid-template-columns: 1fr; }
-    }
-    .collapsed { display: none; }
+@media (max-width: 768px) {
+  .content-row { grid-template-columns: 1fr; }
+}
+.collapsed { display: none; }
 
-    .controls { margin-bottom: 20px; }
-    .control-button {
-      margin-right: 10px;
-      padding: 6px 12px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #eee;
-      cursor: pointer;
-    }
-    .control-button:hover { background-color: #ddd; }
+.controls { margin-bottom: 20px; }
+.control-button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #eee;
+  cursor: pointer;
+}
+.control-button:hover { background-color: #ddd; }
 
-    .search-box { margin: 20px 0; text-align: center; }
-    .search-input {
-      padding: 8px;
-      width: 250px;
-      border: 2px solid #0f0;
-      border-radius: 6px;
-      background-color: #111;
-      color: #fff;
-    }
-    .search-button {
-      padding: 8px 12px;
-      margin-left: 8px;
-      border: 2px solid #0f0;
-      border-radius: 6px;
-      background-color: #0f0;
-      color: #000;
-      cursor: pointer;
-    }
-    .search-button:hover { background-color: #00ff88; }
-    .highlight { background-color: yellow; color: black; font-weight: bold; }
-  </style>
+.search-box { margin: 20px 0; text-align: center; }
+.search-input {
+  padding: 8px;
+  width: 250px;
+  border: 2px solid #0f0;
+  border-radius: 6px;
+  background-color: #111;
+  color: #fff;
+}
+.search-button {
+  padding: 8px 12px;
+  margin-left: 8px;
+  border: 2px solid #0f0;
+  border-radius: 6px;
+  background-color: #0f0;
+  color: #000;
+  cursor: pointer;
+}
+.search-button:hover { background-color: #00ff88; }
+.highlight { background-color: yellow; color: black; font-weight: bold; }
+</style>
 </head>
 <body>
-  <div class="content-wrapper">
-    <a href="index.html" class="back-button">🏠 返回主頁</a>
-    <h2>📘 TOEIC 工程常用單字</h2>
+<div class="content-wrapper">
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
+  <h2>📘 TOEIC 工程常用單字</h2>
 
-    <!-- 搜尋框 -->
-    <div class="search-box">
-      <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
-      <button class="search-button" onclick="searchWord()">搜尋</button>
-    </div>
-
-    <!-- 全部展開 / 收合控制 -->
-    <div class="controls">
-      <button class="control-button" onclick="expandAll()">全部展開</button>
-      <button class="control-button" onclick="collapseAll()">全部收合</button>
-    </div>
-
-    <div id="word-container"></div>
+  <!-- 搜尋框 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
+    <button class="search-button" onclick="searchWord()">搜尋</button>
   </div>
+
+  <!-- 全部展開 / 收合控制 -->
+  <div class="controls">
+    <button class="control-button" onclick="expandAll()">全部展開</button>
+    <button class="control-button" onclick="collapseAll()">全部收合</button>
+  </div>
+
+  <div id="word-container"></div>
+</div>
 
 <script>
 fetch("txt/單字一.txt")
