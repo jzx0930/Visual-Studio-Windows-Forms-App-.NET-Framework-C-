@@ -1,4 +1,4 @@
-
+單字(一)
 Expert | 專家 | 名詞
  Expert | 專家的 / 熟練的 | 形容詞
  Expect | 期待 / 預期 | 動詞 
@@ -998,5 +998,6 @@ in spite of | 儘管 | prep phr.
 commence | 開始 | v.
 intrusion | 侵入、闖入 | n.
 importance | 重要性 | n.
+
 
 
