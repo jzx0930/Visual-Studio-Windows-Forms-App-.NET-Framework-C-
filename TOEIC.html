@@ -29,42 +29,41 @@
     <div id="word-container" class="content-row"></div>
   </div>
 
-  <script>
-    // 從 txt 檔讀取單字資料
-    fetch("txt/單字一.txt")
-      .then(response => response.text())
-      .then(text => {
-        const lines = text.split("\n").map(line => line.trim()).filter(line => line);
-        const container = document.getElementById("word-container");
+<script>
+fetch("txt/単字一.txt")  // 確認檔名正確
+  .then(response => response.text())
+  .then(text => {
+    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+    const container = document.getElementById("word-container");
 
-        lines.forEach(line => {
-          const idx = line.indexOf("|");
-          if (idx !== -1) {
-            const word = line.substring(0, idx).trim();       // 英文單字
-            const meaning = line.substring(idx + 1).trim();   // 中文意思 + 詞性
+    lines.forEach(line => {
+      const idx = line.indexOf("|");
+      if (idx !== -1) {
+        const word = line.substring(0, idx).trim();       // 英文單字
+        const meaning = line.substring(idx + 1).trim();   // 中文意思 + 詞性
 
-            const card = document.createElement("div");
-            card.className = "term-card";
-            card.dataset.word = word;
-            card.innerHTML = `
-              <div class="main-text">
-                <span class="word">${word}</span>
-                <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-                <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-              </div>
-              <div class="sub-text">${meaning}</div>
-            `;
-            container.appendChild(card);
-          }
-        });
-      });
+        const card = document.createElement("div");
+        card.className = "term-card";
+        card.dataset.word = word;
+        card.innerHTML = `
+          <div class="main-text">
+            <span class="word">${word}</span>
+            <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
+            <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
+          </div>
+          <div class="sub-text">${meaning}</div>
+        `;
+        container.appendChild(card);
+      }
+    });
+  });
 
-    // 播放指定口音
-    function speakWord(word, lang) {
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.lang = lang; // 'en-GB' 英式, 'en-US' 美式
-      speechSynthesis.speak(utterance);
-    }
-  </script>
+function speakWord(word, lang) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+  speechSynthesis.speak(utterance);
+}
+</script>
+
 </body>
 </html>
