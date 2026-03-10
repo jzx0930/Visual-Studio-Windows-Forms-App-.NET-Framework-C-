@@ -179,28 +179,45 @@ fetch("txt/單字.txt")
     console.error(err);
   });
 
+/*function speakWord(word, lang) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+  speechSynthesis.speak(utterance);
+}*/
+// 記錄重播狀態
+const repeatStatus = {};
+
 function speakWord(word, lang) {
+  speechSynthesis.cancel(); // 停止其他播放
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
   speechSynthesis.speak(utterance);
 }
-// 一值重播（持續播放）
-function repeatSpeak(word, lang) {
-  // 先停止目前的播放
-  speechSynthesis.cancel();
 
-  // 建立一個新的 utterance
+// 一值重播（再點一次停止）
+function repeatSpeak(word, lang) {
+  // 如果正在重播 → 停止
+  if (repeatStatus[word + lang]) {
+    speechSynthesis.cancel();
+    repeatStatus[word + lang] = false;
+    return;
+  }
+
+  // 沒有重播 → 開始重播
+  repeatStatus[word + lang] = true;
+
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
 
-  // 每次播放結束後再重播
   utterance.onend = () => {
-    speechSynthesis.speak(utterance);
+    if (repeatStatus[word + lang]) {
+      speechSynthesis.speak(utterance);
+    }
   };
 
-  // 開始播放
   speechSynthesis.speak(utterance);
 }
+
 // 全部展開
 function expandAll() {
   document.querySelectorAll("section").forEach(section => {
