@@ -164,6 +164,8 @@ fetch("txt/單字.txt")
               <span class="word">${word}</span>
               <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
               <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
+               <button class="speak-button" onclick="repeatSpeak('${word}','en-GB')">英式重播</button>
+    <button class="speak-button" onclick="repeatSpeak('${word}','en-US')">美式重播</button>
             </div>
             <div class="sub-text">${meaning}</div>
           `;
@@ -182,7 +184,23 @@ function speakWord(word, lang) {
   utterance.lang = lang;
   speechSynthesis.speak(utterance);
 }
+// 一值重播（持續播放）
+function repeatSpeak(word, lang) {
+  // 先停止目前的播放
+  speechSynthesis.cancel();
 
+  // 建立一個新的 utterance
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+
+  // 每次播放結束後再重播
+  utterance.onend = () => {
+    speechSynthesis.speak(utterance);
+  };
+
+  // 開始播放
+  speechSynthesis.speak(utterance);
+}
 // 全部展開
 function expandAll() {
   document.querySelectorAll("section").forEach(section => {
