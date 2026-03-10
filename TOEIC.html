@@ -179,16 +179,14 @@ fetch("txt/單字.txt")
     console.error(err);
   });
 
-/*function speakWord(word, lang) {
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang;
-  speechSynthesis.speak(utterance);
-}*/
 // 記錄重播狀態
 const repeatStatus = {};
 
 function speakWord(word, lang) {
-  speechSynthesis.cancel(); // 停止其他播放
+  // 停止所有播放
+  speechSynthesis.cancel();
+  clearAllRepeatStatus();
+
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
   speechSynthesis.speak(utterance);
@@ -196,27 +194,41 @@ function speakWord(word, lang) {
 
 // 一值重播（再點一次停止）
 function repeatSpeak(word, lang) {
+  const key = word + lang;
+
   // 如果正在重播 → 停止
-  if (repeatStatus[word + lang]) {
+  if (repeatStatus[key]) {
     speechSynthesis.cancel();
-    repeatStatus[word + lang] = false;
+    repeatStatus[key] = false;
     return;
   }
 
-  // 沒有重播 → 開始重播
-  repeatStatus[word + lang] = true;
+  // 停止其他字卡的重播
+  speechSynthesis.cancel();
+  clearAllRepeatStatus();
+
+  // 開始新的重播
+  repeatStatus[key] = true;
 
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
 
   utterance.onend = () => {
-    if (repeatStatus[word + lang]) {
+    if (repeatStatus[key]) {
       speechSynthesis.speak(utterance);
     }
   };
 
   speechSynthesis.speak(utterance);
 }
+
+// 清除所有重播狀態
+function clearAllRepeatStatus() {
+  for (const key in repeatStatus) {
+    repeatStatus[key] = false;
+  }
+}
+
 
 // 全部展開
 function expandAll() {
