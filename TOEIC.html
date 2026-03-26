@@ -16,9 +16,7 @@
   background-color: #eee;
   font-size: 12px;
 }
-.speak-button:hover { background-color: #ddd; }
-
-.section {
+.speak-button:hover { background-color: #ddd; }.section {
   margin-bottom: 24px;
   border: 1px solid #444;
   border-radius: 6px;
@@ -35,9 +33,7 @@
   align-items: center;
 }
 .arrow { margin-right: 8px; transition: transform 0.3s; }
-.arrow.rotate { transform: rotate(90deg); }
-
-.content-row {
+.arrow.rotate { transform: rotate(90deg); }.content-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
@@ -51,14 +47,10 @@
   border: 1px solid #444;
 }
 .main-text { font-size: 16px; font-weight: bold; }
-.sub-text { font-size: 14px; margin-top: 4px; color: #ccc; }
-
-@media (max-width: 768px) {
+.sub-text { font-size: 14px; margin-top: 4px; color: #ccc; }@media (max-width: 768px) {
   .content-row { grid-template-columns: 1fr; }
 }
-.collapsed { display: none; }
-
-.controls { margin-bottom: 20px; }
+.collapsed { display: none; }.controls { margin-bottom: 20px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
 .control-button {
   margin-right: 10px;
   padding: 6px 12px;
@@ -67,9 +59,13 @@
   background-color: #eee;
   cursor: pointer;
 }
-.control-button:hover { background-color: #ddd; }
-
-.search-box { margin: 20px 0; text-align: center; }
+.control-button:hover { background-color: #ddd; }.file-select {
+  padding:6px 8px;
+  border-radius:4px;
+  border:1px solid #333;
+  background:#111;
+  color:#fff;
+}.search-box { margin: 20px 0; text-align: center; }
 .search-input {
   padding: 8px;
   width: 250px;
@@ -88,197 +84,110 @@
   cursor: pointer;
 }
 .search-button:hover { background-color: #00ff88; }
-.highlight { background-color: yellow; color: black; font-weight: bold; }
+.highlight { background-color: yellow; color: black; font-weight: bold; }.back-button { display:inline-block; margin-bottom:10px; color:#00f; text-decoration:none; }
 </style>
 </head>
 <body>
 <div class="content-wrapper">
   <a href="index.html" class="back-button">🏠 返回主頁</a>
-  <h2>📘 TOEIC 單字</h2>
-
-  <!-- 搜尋框 -->
+  <h2>📘 TOEIC 單字</h2>  <!-- 檔案選擇 + 全部展開 / 收合 控制 -->
+  <div class="controls">
+    <select id="fileSelect" class="file-select"></select>
+    <button id="btnLoadFile" class="control-button">載入檔案</button>
+    <button class="control-button" onclick="expandAll()">全部展開</button>
+    <button class="control-button" onclick="collapseAll()">全部收合</button>
+  </div>  <!-- 搜尋框 -->
   <div class="search-box">
     <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
     <button class="search-button" onclick="searchWord()">搜尋</button>
-  </div>
-
-  <!-- 全部展開 / 收合控制 -->
-  <div class="controls">
-    <button class="control-button" onclick="expandAll()">全部展開</button>
-    <button class="control-button" onclick="collapseAll()">全部收合</button>
-  </div>
-
-  <div id="word-container"></div>
-</div>
-
-<script>
-fetch("txt/單字.txt")
-  .then(response => {
-    if (!response.ok) throw new Error("檔案讀取失敗");
-    return response.text();
-  })
-  .then(text => {
-    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
-    const container = document.getElementById("word-container");
-
-    let section = null;
-    let row = null;
-
-    lines.forEach(line => {
-      if (/^單字/.test(line)) {
-        section = document.createElement("section");
-        section.className = "collapsed";
-
-        const title = document.createElement("div");
-        title.className = "section-title";
-
-        const arrow = document.createElement("span");
-        arrow.className = "arrow";
-        arrow.textContent = "▶";
-
-        title.appendChild(arrow);
-        title.appendChild(document.createTextNode(line));
-
-        row = document.createElement("div");
-        row.className = "content-row";
-
-        title.addEventListener("click", () => {
-          row.classList.toggle("collapsed");
-          arrow.classList.toggle("rotate");
+  </div>  <div id="word-container"></div>
+</div><script>
+// 若 index.js 已包含 initFileLoader / renderCardsFromText 等功能，這裡只做簡單綁定初始行為以保險。
+// 若 index.js 已自動在 DOMContentLoaded 初始化，這段會與其共存。
+document.addEventListener("DOMContentLoaded", () => {
+  // 若全域有 initFileLoader，呼叫它；否則嘗試自行載入 files.json 與預設檔案
+  if (typeof initFileLoader === "function") {
+    initFileLoader();
+  } else {
+    // 載入 txt/files.json（若存在）
+    fetch("txt/files.json")
+      .then(r => { if(!r.ok) throw new Error("files.json 讀取失敗"); return r.json(); })
+      .then(list => {
+        const select = document.getElementById("fileSelect");
+        select.innerHTML = "";
+        list.forEach(fn => {
+          const opt = document.createElement("option");
+          opt.value = fn;
+          opt.textContent = fn;
+          select.appendChild(opt);
         });
-
-        section.appendChild(title);
-        section.appendChild(row);
-        container.appendChild(section);
-      } else {
-        const idx = line.indexOf("|");
-        if (idx !== -1 && row) {
-          const word = line.substring(0, idx).trim();
-          const meaning = line.substring(idx + 1).trim();
-
-          const card = document.createElement("div");
-          card.className = "term-card";
-          card.dataset.word = word;
-          card.innerHTML = `
-            <div class="main-text">
-              <span class="word">${word}</span>
-              <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-              <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-               <button class="speak-button" onclick="repeatSpeak('${word}','en-GB')">英式重播</button>
-    <button class="speak-button" onclick="repeatSpeak('${word}','en-US')">美式重播</button>
-            </div>
-            <div class="sub-text">${meaning}</div>
-          `;
-          row.appendChild(card);
-        }
+        if (list.length) loadFileAndRender(list[0]);
+      })
+      .catch(() => {
+        // 若無 files.json，嘗試載入預設檔名 "單字.txt"
+        const select = document.getElementById("fileSelect");
+        select.innerHTML = "<option value=\"單字.txt\">單字.txt</option>";
+        loadFileAndRender("單字.txt");
+      });
+  }  // 綁定按鈕（若 index.js 已處理，這不會覆寫）
+  const btn = document.getElementById("btnLoadFile");
+  btn.addEventListener("click", () => {
+    const select = document.getElementById("fileSelect");
+    const fn = select.value;
+    if (!fn) return;
+    if (typeof loadFileAndRender === "function") {
+      loadFileAndRender(fn);
+    } else {
+      fetch(txt/${encodeURIComponent(fn)})
+        .then(r => { if(!r.ok) throw new Error("檔案讀取失敗"); return r.text(); })
+        .then(text => {
+          if (typeof renderCardsFromText === "function") renderCardsFromText(text);
+          else fallbackRender(text);
+        })
+        .catch(err => {
+          document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
+          console.error(err);
+        });
+    }
+  });
+});// fallback renderer if not provided by index.js
+function fallbackRender(text) {
+  const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+  const container = document.getElementById("word-container");
+  container.innerHTML = "";
+  let section = null, row = null;
+  lines.forEach(line => {
+    if (/^單字/.test(line)) {
+      section = document.createElement("section");
+      section.className = "collapsed";
+      const title = document.createElement("div");
+      title.className = "section-title";
+      const arrow = document.createElement("span");
+      arrow.className = "arrow"; arrow.textContent = "▶";
+      title.appendChild(arrow);
+      title.appendChild(document.createTextNode(line));
+      row = document.createElement("div"); row.className = "content-row";
+      title.addEventListener("click", () => {
+        row.classList.toggle("collapsed");
+        arrow.classList.toggle("rotate");
+        arrow.textContent = arrow.classList.contains("rotate") ? "▼" : "▶";
+      });
+      section.appendChild(title); section.appendChild(row); container.appendChild(section);
+    } else {
+      const idx = line.indexOf("|");
+      if (idx !== -1 && row) {
+        const word = line.substring(0, idx).trim();
+        const meaning = line.substring(idx+1).trim();
+        const card = document.createElement("div");
+        card.className = "term-card";
+        card.dataset.word = word;
+        card.innerHTML =           <div class="main-text">             <span class="word">${escapeHtml(word)}</span>             <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-GB')">英式</button>             <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-US')">美式</button>             <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-GB')">英式重播</button>             <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-US')">美式重播</button>           </div>           <div class="sub-text">${escapeHtml(meaning)}</div>        ;
+        row.appendChild(card);
       }
-    });
-  })
-  .catch(err => {
-    document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
-    console.error(err);
-  });
-
-// 記錄重播狀態
-const repeatStatus = {};
-
-function speakWord(word, lang) {
-  // 停止所有播放
-  speechSynthesis.cancel();
-  clearAllRepeatStatus();
-
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang;
-  speechSynthesis.speak(utterance);
-}
-
-// 一值重播（再點一次停止）
-function repeatSpeak(word, lang) {
-  const key = word + lang;
-
-  // 如果正在重播 → 停止
-  if (repeatStatus[key]) {
-    speechSynthesis.cancel();
-    repeatStatus[key] = false;
-    return;
-  }
-
-  // 停止其他字卡的重播
-  speechSynthesis.cancel();
-  clearAllRepeatStatus();
-
-  // 開始新的重播
-  repeatStatus[key] = true;
-
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang;
-
-  utterance.onend = () => {
-    if (repeatStatus[key]) {
-      speechSynthesis.speak(utterance);
-    }
-  };
-
-  speechSynthesis.speak(utterance);
-}
-
-// 清除所有重播狀態
-function clearAllRepeatStatus() {
-  for (const key in repeatStatus) {
-    repeatStatus[key] = false;
-  }
-}
-
-
-// 全部展開
-function expandAll() {
-  document.querySelectorAll("section").forEach(section => {
-    section.classList.remove("collapsed");
-    section.classList.add("expanded");
-    const arrow = section.querySelector(".arrow");
-    if (arrow) arrow.textContent = "▼";
-  });
-}
-
-// 全部收合
-function collapseAll() {
-  document.querySelectorAll("section").forEach(section => {
-    section.classList.remove("expanded");
-    section.classList.add("collapsed");
-    const arrow = section.querySelector(".arrow");
-    if (arrow) arrow.textContent = "▶";
-  });
-}
-
-// 搜尋功能（模糊搜尋）
-function searchWord() {
-  const query = document.getElementById("searchInput").value.trim().toLowerCase();
-  if (!query) return;
-
-  let found = false;
-
-  document.querySelectorAll(".term-card").forEach(card => {
-    const word = card.dataset.word.toLowerCase();
-    const section = card.closest("section");
-
-    card.querySelector(".word").classList.remove("highlight");
-
-    if (word.includes(query)) {
-      found = true;
-      section.classList.remove("collapsed");
-      section.classList.add("expanded");
-      const arrow = section.querySelector(".arrow");
-      if (arrow) arrow.textContent = "▼";
-
-      card.querySelector(".word").classList.add("highlight");
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   });
-
-  if (!found) {
-    alert("找不到該單字！");
-  }
-}
+}function escapeHtml(s){ if (s==null) return ""; return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"').replace(/'/g,'''); }
+function escapeJs(s){ if (s==null) return ""; return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 </script>
 </body>
 </html>
