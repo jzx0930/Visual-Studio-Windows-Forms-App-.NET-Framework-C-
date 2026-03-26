@@ -102,14 +102,11 @@
     <button class="search-button" onclick="searchWord()">搜尋</button>
   </div>  <div id="word-container"></div>
 </div><script>
-// 若你的 index.js 已實作 initFileLoader / loadFileAndRender / renderCardsFromText
-// 則 initFileLoader() 會被呼叫（index.js 應該在 DOMContentLoaded 註冊）；
-// 若沒有，下面會嘗試載入 txt/files.json，若仍然找不到，使用 fallbackList 內的檔名。const fallbackList = ["單字.txt", "Word UP"]; // 從你提供的資料夾截圖建立的備援清單document.addEventListener("DOMContentLoaded", () => {
-  // 先嘗試使用 index.js 裡的 initFileLoader
+/* fallback 檔名（若沒有 txt/files.json） */
+const fallbackList = ["Word UP.txt", "單字.txt"];document.addEventListener("DOMContentLoaded", () => {
   if (typeof initFileLoader === "function") {
-    try { initFileLoader(); } catch(e){ console.error("initFileLoader error:", e); }
+    try { initFileLoader(); } catch (e) { console.error("initFileLoader error:", e); }
   } else {
-    // 取 files.json（建議在 txt/ 下放 txt/files.json）
     fetch("txt/files.json")
       .then(r => { if (!r.ok) throw new Error("files.json 讀取失敗"); return r.json(); })
       .then(list => {
@@ -117,17 +114,15 @@
         if (list && list.length) loadFile(list[0]);
       })
       .catch(err => {
-        console.warn("無 files.json，使用 fallback 名單或預設單字.txt", err);
+        console.warn("無 files.json，使用 fallback 名單：", err);
         populateFileSelect(fallbackList);
         loadFile(fallbackList[0]);
       });
-  }  // 綁定載入按鈕
-  const btn = document.getElementById("btnLoadFile");
+  }  const btn = document.getElementById("btnLoadFile");
   btn.addEventListener("click", () => {
     const select = document.getElementById("fileSelect");
     const fn = select.value;
     if (!fn) return;
-    // 若 index.js 實作了 loadFileAndRender，呼叫它
     if (typeof loadFileAndRender === "function") {
       loadFileAndRender(fn);
     } else {
@@ -144,8 +139,8 @@
     sel.appendChild(opt);
   });
 }function loadFile(filename){
-  fetch(txt/${encodeURIComponent(filename)})
-    .then(r => { if(!r.ok) throw new Error("檔案讀取失敗: " + r.status); return r.text(); })
+  fetch("txt/" + encodeURIComponent(filename))
+    .then(r => { if (!r.ok) throw new Error("檔案讀取失敗: " + r.status); return r.text(); })
     .then(text => {
       if (typeof renderCardsFromText === "function") {
         renderCardsFromText(text);
@@ -157,7 +152,7 @@
       document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
       console.error(err);
     });
-}// 舊版程式的 fallback renderer（與你原本的邏輯一致並加入 escape）
+}/* fallback renderer（若 index.js 沒提供 renderCardsFromText） */
 function fallbackRender(text) {
   const lines = text.split("\n").map(line => line.trim()).filter(line => line);
   const container = document.getElementById("word-container");
@@ -165,8 +160,8 @@ function fallbackRender(text) {
   let row = null;  lines.forEach(line => {
     if (/^單字/.test(line)) {
       section = document.createElement("section");
-      section.className = "collapsed";  
-const title = document.createElement("div");
+      section.className = "collapsed";
+  const title = document.createElement("div");
   title.className = "section-title";
 
   const arrow = document.createElement("span");
@@ -209,11 +204,24 @@ const title = document.createElement("div");
     `;
     row.appendChild(card);
   }
-}  
+}
+
+
 });
-}// escape helpers
-function escapeHtml(s){ if (s == null) return ""; return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"').replace(/'/g,'''); }
-function escapeJs(s){ if (s == null) return ""; return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }// 以下保留你頁面應用的函式：expandAll, collapseAll, searchWord
+}/* escape helpers */
+function escapeHtml(s){
+  if (s == null) return "";
+  return String(s)
+    .replace(/&/g,'&')
+    .replace(/</g,'<')
+    .replace(/>/g,'>')
+    .replace(/"/g,'"')
+    .replace(/'/g,''');
+}
+function escapeJs(s){
+  if (s == null) return "";
+  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}/* 展開 / 收合 / 搜尋（保留你原本功能） */
 function expandAll() {
   document.querySelectorAll("section").forEach(section => {
     section.classList.remove("collapsed");
@@ -221,18 +229,22 @@ function expandAll() {
     const arrow = section.querySelector(".arrow");
     if (arrow) arrow.textContent = "▼";
   });
-}function collapseAll() {
+}
+function collapseAll() {
   document.querySelectorAll("section").forEach(section => {
     section.classList.remove("expanded");
     section.classList.add("collapsed");
     const arrow = section.querySelector(".arrow");
     if (arrow) arrow.textContent = "▶";
   });
-}function searchWord() {
+}
+function searchWord() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   if (!query) return;  let found = false;  document.querySelectorAll(".term-card").forEach(card => {
     const word = (card.dataset.word || "").toLowerCase();
     const section = card.closest("section");
+
+
 const wordSpan = card.querySelector(".word");
 if (wordSpan) wordSpan.classList.remove("highlight");
 
@@ -246,8 +258,11 @@ if (word.includes(query)) {
   }
   if (wordSpan) wordSpan.classList.add("highlight");
   card.scrollIntoView({ behavior: "smooth", block: "center" });
-}  });  if (!found) alert("找不到該單字！");
+
+
+ });  if (!found) alert("找不到該單字！");
 }
 </script>
 </body>
 </html>
+}
