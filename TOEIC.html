@@ -102,92 +102,152 @@
     <button class="search-button" onclick="searchWord()">搜尋</button>
   </div>  <div id="word-container"></div>
 </div><script>
-// 若 index.js 已包含 initFileLoader / renderCardsFromText 等功能，這裡只做簡單綁定初始行為以保險。
-// 若 index.js 已自動在 DOMContentLoaded 初始化，這段會與其共存。
-document.addEventListener("DOMContentLoaded", () => {
-  // 若全域有 initFileLoader，呼叫它；否則嘗試自行載入 files.json 與預設檔案
+// 若你的 index.js 已實作 initFileLoader / loadFileAndRender / renderCardsFromText
+// 則 initFileLoader() 會被呼叫（index.js 應該在 DOMContentLoaded 註冊）；
+// 若沒有，下面會嘗試載入 txt/files.json，若仍然找不到，使用 fallbackList 內的檔名。const fallbackList = ["單字.txt", "Word UP"]; // 從你提供的資料夾截圖建立的備援清單document.addEventListener("DOMContentLoaded", () => {
+  // 先嘗試使用 index.js 裡的 initFileLoader
   if (typeof initFileLoader === "function") {
-    initFileLoader();
+    try { initFileLoader(); } catch(e){ console.error("initFileLoader error:", e); }
   } else {
-    // 載入 txt/files.json（若存在）
+    // 取 files.json（建議在 txt/ 下放 txt/files.json）
     fetch("txt/files.json")
-      .then(r => { if(!r.ok) throw new Error("files.json 讀取失敗"); return r.json(); })
+      .then(r => { if (!r.ok) throw new Error("files.json 讀取失敗"); return r.json(); })
       .then(list => {
-        const select = document.getElementById("fileSelect");
-        select.innerHTML = "";
-        list.forEach(fn => {
-          const opt = document.createElement("option");
-          opt.value = fn;
-          opt.textContent = fn;
-          select.appendChild(opt);
-        });
-        if (list.length) loadFileAndRender(list[0]);
+        populateFileSelect(list);
+        if (list && list.length) loadFile(list[0]);
       })
-      .catch(() => {
-        // 若無 files.json，嘗試載入預設檔名 "單字.txt"
-        const select = document.getElementById("fileSelect");
-        select.innerHTML = "<option value=\"單字.txt\">單字.txt</option>";
-        loadFileAndRender("單字.txt");
+      .catch(err => {
+        console.warn("無 files.json，使用 fallback 名單或預設單字.txt", err);
+        populateFileSelect(fallbackList);
+        loadFile(fallbackList[0]);
       });
-  }  // 綁定按鈕（若 index.js 已處理，這不會覆寫）
+  }  // 綁定載入按鈕
   const btn = document.getElementById("btnLoadFile");
   btn.addEventListener("click", () => {
     const select = document.getElementById("fileSelect");
     const fn = select.value;
     if (!fn) return;
+    // 若 index.js 實作了 loadFileAndRender，呼叫它
     if (typeof loadFileAndRender === "function") {
       loadFileAndRender(fn);
     } else {
-      fetch(txt/${encodeURIComponent(fn)})
-        .then(r => { if(!r.ok) throw new Error("檔案讀取失敗"); return r.text(); })
-        .then(text => {
-          if (typeof renderCardsFromText === "function") renderCardsFromText(text);
-          else fallbackRender(text);
-        })
-        .catch(err => {
-          document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
-          console.error(err);
-        });
+      loadFile(fn);
     }
   });
-});// fallback renderer if not provided by index.js
+});function populateFileSelect(list){
+  const sel = document.getElementById("fileSelect");
+  sel.innerHTML = "";
+  (list || []).forEach(fn => {
+    const opt = document.createElement("option");
+    opt.value = fn;
+    opt.textContent = fn;
+    sel.appendChild(opt);
+  });
+}function loadFile(filename){
+  fetch(txt/${encodeURIComponent(filename)})
+    .then(r => { if(!r.ok) throw new Error("檔案讀取失敗: " + r.status); return r.text(); })
+    .then(text => {
+      if (typeof renderCardsFromText === "function") {
+        renderCardsFromText(text);
+      } else {
+        fallbackRender(text);
+      }
+    })
+    .catch(err => {
+      document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
+      console.error(err);
+    });
+}// 舊版程式的 fallback renderer（與你原本的邏輯一致並加入 escape）
 function fallbackRender(text) {
-  const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+  const lines = text.split("\n").map(line => line.trim()).filter(line => line);
   const container = document.getElementById("word-container");
-  container.innerHTML = "";
-  let section = null, row = null;
-  lines.forEach(line => {
+  container.innerHTML = "";  let section = null;
+  let row = null;  lines.forEach(line => {
     if (/^單字/.test(line)) {
       section = document.createElement("section");
-      section.className = "collapsed";
-      const title = document.createElement("div");
-      title.className = "section-title";
-      const arrow = document.createElement("span");
-      arrow.className = "arrow"; arrow.textContent = "▶";
-      title.appendChild(arrow);
-      title.appendChild(document.createTextNode(line));
-      row = document.createElement("div"); row.className = "content-row";
-      title.addEventListener("click", () => {
-        row.classList.toggle("collapsed");
-        arrow.classList.toggle("rotate");
-        arrow.textContent = arrow.classList.contains("rotate") ? "▼" : "▶";
-      });
-      section.appendChild(title); section.appendChild(row); container.appendChild(section);
-    } else {
-      const idx = line.indexOf("|");
-      if (idx !== -1 && row) {
-        const word = line.substring(0, idx).trim();
-        const meaning = line.substring(idx+1).trim();
-        const card = document.createElement("div");
-        card.className = "term-card";
-        card.dataset.word = word;
-        card.innerHTML =           <div class="main-text">             <span class="word">${escapeHtml(word)}</span>             <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-GB')">英式</button>             <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-US')">美式</button>             <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-GB')">英式重播</button>             <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-US')">美式重播</button>           </div>           <div class="sub-text">${escapeHtml(meaning)}</div>        ;
-        row.appendChild(card);
-      }
-    }
+      section.className = "collapsed";  
+const title = document.createElement("div");
+  title.className = "section-title";
+
+  const arrow = document.createElement("span");
+  arrow.className = "arrow";
+  arrow.textContent = "▶";
+
+  title.appendChild(arrow);
+  title.appendChild(document.createTextNode(line));
+
+  row = document.createElement("div");
+  row.className = "content-row";
+
+  title.addEventListener("click", () => {
+    row.classList.toggle("collapsed");
+    arrow.classList.toggle("rotate");
+    arrow.textContent = arrow.classList.contains("rotate") ? "▼" : "▶";
   });
-}function escapeHtml(s){ if (s==null) return ""; return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"').replace(/'/g,'''); }
-function escapeJs(s){ if (s==null) return ""; return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+  section.appendChild(title);
+  section.appendChild(row);
+  container.appendChild(section);
+} else {
+  const idx = line.indexOf("|");
+  if (idx !== -1 && row) {
+    const word = line.substring(0, idx).trim();
+    const meaning = line.substring(idx + 1).trim();
+
+    const card = document.createElement("div");
+    card.className = "term-card";
+    card.dataset.word = word;
+    card.innerHTML = `
+      <div class="main-text">
+        <span class="word">${escapeHtml(word)}</span>
+        <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-GB')">英式</button>
+        <button class="speak-button" onclick="speakWord('${escapeJs(word)}','en-US')">美式</button>
+        <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-GB')">英式重播</button>
+        <button class="speak-button" onclick="repeatSpeak('${escapeJs(word)}','en-US')">美式重播</button>
+      </div>
+      <div class="sub-text">${escapeHtml(meaning)}</div>
+    `;
+    row.appendChild(card);
+  }
+}  
+});
+}// escape helpers
+function escapeHtml(s){ if (s == null) return ""; return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"').replace(/'/g,'''); }
+function escapeJs(s){ if (s == null) return ""; return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }// 以下保留你頁面應用的函式：expandAll, collapseAll, searchWord
+function expandAll() {
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("collapsed");
+    section.classList.add("expanded");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▼";
+  });
+}function collapseAll() {
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("expanded");
+    section.classList.add("collapsed");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▶";
+  });
+}function searchWord() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  if (!query) return;  let found = false;  document.querySelectorAll(".term-card").forEach(card => {
+    const word = (card.dataset.word || "").toLowerCase();
+    const section = card.closest("section");
+const wordSpan = card.querySelector(".word");
+if (wordSpan) wordSpan.classList.remove("highlight");
+
+if (word.includes(query)) {
+  found = true;
+  if (section) {
+    section.classList.remove("collapsed");
+    section.classList.add("expanded");
+    const arrow = section.querySelector(".arrow");
+    if (arrow) arrow.textContent = "▼";
+  }
+  if (wordSpan) wordSpan.classList.add("highlight");
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+}  });  if (!found) alert("找不到該單字！");
+}
 </script>
 </body>
 </html>
