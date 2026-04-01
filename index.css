@@ -530,6 +530,78 @@ section.collapsed .api-section {
 }
 
 
+/* =========================
+   多益單字網頁專屬樣式
+========================= */
+
+/* 搜尋與控制區塊 */
+.search-box, .controls {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.search-input {
+    padding: 10px;
+    width: 250px;
+    border: 2px solid #0f0;
+    border-radius: 6px;
+    background-color: #111;
+    color: #fff;
+    outline: none;
+}
+
+.search-button, .control-button {
+    padding: 8px 16px;
+    margin: 5px;
+    border: 2px solid #0f0;
+    border-radius: 6px;
+    background-color: #0f0;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-button:hover, .control-button:hover {
+    background-color: #00ff88;
+    transform: scale(1.05);
+}
+
+/* 語音按鈕 */
+.speak-button {
+    margin-left: 8px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border: 1px solid #0f0;
+    border-radius: 4px;
+    background-color: #222;
+    color: #0f0;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.speak-button:hover {
+    background-color: #0f0;
+    color: #000;
+}
+
+/* 搜尋高亮 */
+.highlight {
+    background-color: #ffcc00;
+    color: #000;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* 響應式網格調整 */
+@media (max-width: 768px) {
+    .content-row {
+        grid-template-columns: 1fr !important; /* 強制在手機版改為單欄 */
+    }
+}
+
+
 
 
 
