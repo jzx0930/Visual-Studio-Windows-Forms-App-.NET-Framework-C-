@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -198,28 +199,7 @@ async function loadWordsFromFile(fileName) {
     row.appendChild(card);
   }
 });
-    /*lines.forEach(line => {
-      const idx = line.indexOf("|");
-      if (idx !== -1) {
-        const word = line.substring(0, idx).trim();
-        const meaning = line.substring(idx + 1).trim();
-
-        const card = document.createElement("div");
-        card.className = "term-card";
-        card.dataset.word = word;
-        card.innerHTML = `
-          <div class="main-text">
-            <span class="word">${word}</span>
-            <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-            <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-            <button class="speak-button" onclick="repeatSpeak('${word}','en-GB')">英式重播</button>
-            <button class="speak-button" onclick="repeatSpeak('${word}','en-US')">美式重播</button>
-          </div>
-          <div class="sub-text">${meaning}</div>
-        `;
-        row.appendChild(card);
-      }
-    });*/
+   
 
     section.appendChild(title);
     section.appendChild(row);
