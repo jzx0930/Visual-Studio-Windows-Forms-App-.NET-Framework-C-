@@ -567,6 +567,48 @@ section.collapsed .api-section {
     transform: scale(1.05);
 }
 
+
+/* 讓單字卡變成三欄排版 */
+.content-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+/* 手機版改為單欄 */
+@media (max-width: 768px) {
+    .content-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.collapsed {
+    display: none !important;
+}
+
+.section-title {
+    background-color: #222;
+    color: #0f0;
+    padding: 12px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border: 1px solid #0f0;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    margin-right: 10px;
+    transition: transform 0.3s;
+}
+
+.rotate {
+    transform: rotate(0deg); /* 這裡配合你的邏輯微調 */
+}
+
 /* 語音按鈕 */
 .speak-button {
     margin-left: 8px;
