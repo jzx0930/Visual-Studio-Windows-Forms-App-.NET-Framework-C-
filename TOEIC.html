@@ -112,78 +112,101 @@
 </div>
 
 <script>
-fetch("txt/單字.txt")
-  .then(response => {
-    if (!response.ok) throw new Error("檔案讀取失敗");
-    return response.text();
-  })
-  .then(text => {
-    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
-    const container = document.getElementById("word-container");
-
-    let section = null;
-    let row = null;
-
-    lines.forEach(line => {
-      if (/^單字/.test(line)) {
-        section = document.createElement("section");
-        section.className = "collapsed";
-
-        const title = document.createElement("div");
-        title.className = "section-title";
-
-        const arrow = document.createElement("span");
-        arrow.className = "arrow";
-        arrow.textContent = "▶";
-
-        title.appendChild(arrow);
-        title.appendChild(document.createTextNode(line));
-
-        row = document.createElement("div");
-        row.className = "content-row";
-
-        title.addEventListener("click", () => {
-          row.classList.toggle("collapsed");
-          arrow.classList.toggle("rotate");
-        });
-
-        section.appendChild(title);
-        section.appendChild(row);
-        container.appendChild(section);
-      } else {
-        const idx = line.indexOf("|");
-        if (idx !== -1 && row) {
-          const word = line.substring(0, idx).trim();
-          const meaning = line.substring(idx + 1).trim();
-
-          const card = document.createElement("div");
-          card.className = "term-card";
-          card.dataset.word = word;
-          card.innerHTML = `
-            <div class="main-text">
-              <span class="word">${word}</span>
-              <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
-              <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
-               <button class="speak-button" onclick="repeatSpeak('${word}','en-GB')">英式重播</button>
-    <button class="speak-button" onclick="repeatSpeak('${word}','en-US')">美式重播</button>
-            </div>
-            <div class="sub-text">${meaning}</div>
-          `;
-          row.appendChild(card);
-        }
-      }
-    });
-  })
-  .catch(err => {
-    document.getElementById("word-container").innerHTML = "<p style='color:red'>讀取失敗：" + err.message + "</p>";
-    console.error(err);
-  });
-
 // 記錄重播狀態
 const repeatStatus = {};
+const container = document.getElementById("word-container");
+
+// 初始化：先抓取 list.json 索引檔，再依序載入所有 .txt
+async function init() {
+  container.innerHTML = "正在讀取索引檔...";
+
+  try {
+    // 讀取 list.json 獲取檔案清單
+    const listResponse = await fetch("txt/list.json");
+    if (!listResponse.ok) throw new Error("無法讀取 list.json 索引檔");
+    
+    const fileList = await listResponse.json();
+    
+    // 清空載入中提示
+    container.innerHTML = "";
+    
+    // 循環載入清單內的檔案
+    for (const fileName of fileList) {
+      await loadWordsFromFile(fileName);
+    }
+    
+    if (fileList.length === 0) {
+      container.innerHTML = "索引檔內沒有任何檔案。";
+    }
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<p style="color:red">初始化失敗：${err.message}</p>`;
+  }
+}
+
+// 載入單一檔案並建立折疊區塊
+async function loadWordsFromFile(fileName) {
+  try {
+    const response = await fetch(`txt/${fileName}`);
+    if (!response.ok) throw new Error(`找不到檔案: ${fileName}`);
+    const text = await response.text();
+    
+    // 檔名去掉 .txt 當作分類欄位名稱
+    const sectionTitleText = fileName.replace(".txt", "");
+    
+    const section = document.createElement("section");
+    section.className = "section";
+
+    const title = document.createElement("div");
+    title.className = "section-title";
+    title.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
+
+    const row = document.createElement("div");
+    row.className = "content-row collapsed"; // 預設收合
+
+    // 點擊事件：展開/收合
+    title.addEventListener("click", () => {
+      row.classList.toggle("collapsed");
+      title.querySelector(".arrow").classList.toggle("rotate");
+    });
+
+    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+    
+    lines.forEach(line => {
+      const idx = line.indexOf("|");
+      if (idx !== -1) {
+        const word = line.substring(0, idx).trim();
+        const meaning = line.substring(idx + 1).trim();
+
+        const card = document.createElement("div");
+        card.className = "term-card";
+        card.dataset.word = word;
+        card.innerHTML = `
+          <div class="main-text">
+            <span class="word">${word}</span>
+            <button class="speak-button" onclick="speakWord('${word}','en-GB')">英式</button>
+            <button class="speak-button" onclick="speakWord('${word}','en-US')">美式</button>
+            <button class="speak-button" onclick="repeatSpeak('${word}','en-GB')">英式重播</button>
+            <button class="speak-button" onclick="repeatSpeak('${word}','en-US')">美式重播</button>
+          </div>
+          <div class="sub-text">${meaning}</div>
+        `;
+        row.appendChild(card);
+      }
+    });
+
+    section.appendChild(title);
+    section.appendChild(row);
+    container.appendChild(section);
+    
+  } catch (err) {
+    console.warn(`跳過檔案 ${fileName}: ${err.message}`);
+  }
+}
+
+// ---------------- 以下為原功能微調 ----------------
 
 function speakWord(word, lang) {
-  // 停止所有播放
   speechSynthesis.cancel();
   clearAllRepeatStatus();
 
@@ -192,22 +215,18 @@ function speakWord(word, lang) {
   speechSynthesis.speak(utterance);
 }
 
-// 一值重播（再點一次停止）
 function repeatSpeak(word, lang) {
   const key = word + lang;
 
-  // 如果正在重播 → 停止
   if (repeatStatus[key]) {
     speechSynthesis.cancel();
     repeatStatus[key] = false;
     return;
   }
 
-  // 停止其他字卡的重播
   speechSynthesis.cancel();
   clearAllRepeatStatus();
 
-  // 開始新的重播
   repeatStatus[key] = true;
 
   const utterance = new SpeechSynthesisUtterance(word);
@@ -222,35 +241,31 @@ function repeatSpeak(word, lang) {
   speechSynthesis.speak(utterance);
 }
 
-// 清除所有重播狀態
 function clearAllRepeatStatus() {
   for (const key in repeatStatus) {
     repeatStatus[key] = false;
   }
 }
 
-
 // 全部展開
 function expandAll() {
-  document.querySelectorAll("section").forEach(section => {
-    section.classList.remove("collapsed");
-    section.classList.add("expanded");
-    const arrow = section.querySelector(".arrow");
-    if (arrow) arrow.textContent = "▼";
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.remove("collapsed");
+    const arrow = row.previousElementSibling.querySelector(".arrow");
+    if (arrow) arrow.classList.add("rotate");
   });
 }
 
 // 全部收合
 function collapseAll() {
-  document.querySelectorAll("section").forEach(section => {
-    section.classList.remove("expanded");
-    section.classList.add("collapsed");
-    const arrow = section.querySelector(".arrow");
-    if (arrow) arrow.textContent = "▶";
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.add("collapsed");
+    const arrow = row.previousElementSibling.querySelector(".arrow");
+    if (arrow) arrow.classList.remove("rotate");
   });
 }
 
-// 搜尋功能（模糊搜尋）
+// 搜尋功能（支援跨檔案搜尋並自動展開）
 function searchWord() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   if (!query) return;
@@ -259,16 +274,15 @@ function searchWord() {
 
   document.querySelectorAll(".term-card").forEach(card => {
     const word = card.dataset.word.toLowerCase();
-    const section = card.closest("section");
+    const row = card.closest(".content-row");
+    const title = row.previousElementSibling;
 
     card.querySelector(".word").classList.remove("highlight");
 
     if (word.includes(query)) {
       found = true;
-      section.classList.remove("collapsed");
-      section.classList.add("expanded");
-      const arrow = section.querySelector(".arrow");
-      if (arrow) arrow.textContent = "▼";
+      row.classList.remove("collapsed");
+      title.querySelector(".arrow").classList.add("rotate");
 
       card.querySelector(".word").classList.add("highlight");
       card.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -279,6 +293,9 @@ function searchWord() {
     alert("找不到該單字！");
   }
 }
+
+// 執行載入
+init();
 </script>
 </body>
 </html>
