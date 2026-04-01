@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>TOEIC單字卡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="index.css">
+<script defer src="index.js"></script>
+<style>
+.speak-button {
+  margin-left: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #eee;
+  font-size: 12px;
+}
+.speak-button:hover { background-color: #ddd; }
+
+.section {
+  margin-bottom: 24px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.section-title {
+  background-color: #333;
+  color: #00ff99;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.arrow { margin-right: 8px; transition: transform 0.3s; }
+.arrow.rotate { transform: rotate(90deg); }
+
+.content-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 12px;
+}
+.term-card {
+  background-color: #222;
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+}
+.main-text { font-size: 16px; font-weight: bold; }
+.sub-text { font-size: 14px; margin-top: 4px; color: #ccc; }
+
+@media (max-width: 768px) {
+  .content-row { grid-template-columns: 1fr; }
+}
+.collapsed { display: none; }
+
+.controls { margin-bottom: 20px; }
+.control-button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #eee;
+  cursor: pointer;
+}
+.control-button:hover { background-color: #ddd; }
+
+.search-box { margin: 20px 0; text-align: center; }
+.search-input {
+  padding: 8px;
+  width: 250px;
+  border: 2px solid #0f0;
+  border-radius: 6px;
+  background-color: #111;
+  color: #fff;
+}
+.search-button {
+  padding: 8px 12px;
+  margin-left: 8px;
+  border: 2px solid #0f0;
+  border-radius: 6px;
+  background-color: #0f0;
+  color: #000;
+  cursor: pointer;
+}
+.search-button:hover { background-color: #00ff88; }
+.highlight { background-color: yellow; color: black; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="content-wrapper">
+  <a href="index.html" class="back-button">🏠 返回主頁</a>
+  <h2>📘 TOEIC 單字</h2>
+
+  <!-- 搜尋框 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
+    <button class="search-button" onclick="searchWord()">搜尋</button>
+  </div>
+
+  <!-- 全部展開 / 收合控制 -->
+  <div class="controls">
+    <button class="control-button" onclick="expandAll()">全部展開</button>
+    <button class="control-button" onclick="collapseAll()">全部收合</button>
+  </div>
+
+  <div id="word-container"></div>
+</div>
+
+<script>
+// 記錄重播狀態
+const repeatStatus = {};
+const container = document.getElementById("word-container");
+
+// 初始化：先抓取 list.json 索引檔，再依序載入所有 .txt
+async function init() {
+  container.innerHTML = "正在讀取索引檔...";
+
+  try {
+    // 讀取 list.json 獲取檔案清單
+    const listResponse = await fetch("txt/list.json");
+    if (!listResponse.ok) throw new Error("無法讀取 list.json 索引檔");
+    
+    const fileList = await listResponse.json();
+    
+    // 清空載入中提示
+    container.innerHTML = "";
+    
+    // 循環載入清單內的檔案
+    for (const fileName of fileList) {
+      await loadWordsFromFile(fileName);
+    }
+    
+    if (fileList.length === 0) {
+      container.innerHTML = "索引檔內沒有任何檔案。";
+    }
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<p style="color:red">初始化失敗：${err.message}</p>`;
+  }
+}
+
+// 載入單一檔案並建立折疊區塊
+async function loadWordsFromFile(fileName) {
+  try {
+    const response = await fetch(`txt/${fileName}`);
+    if (!response.ok) throw new Error(`找不到檔案: ${fileName}`);
+    const text = await response.text();
+    
+    // 檔名去掉 .txt 當作分類欄位名稱
+    const sectionTitleText = fileName.replace(".txt", "");
+    
+    const section = document.createElement("section");
+    section.className = "section";
+
+    const title = document.createElement("div");
+    title.className = "section-title";
+    title.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
+
+    const row = document.createElement("div");
+    row.className = "content-row collapsed"; // 預設收合
+
+    // 點擊事件：展開/收合
+    title.addEventListener("click", () => {
+      row.classList.toggle("collapsed");
+      title.querySelector(".arrow").classList.toggle("rotate");
+    });
+
+    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+
+
+    lines.forEach(line => {
+  const idx = line.indexOf("|");
+  if (idx !== -1) {
+    const word = line.substring(0, idx).trim();
+    const meaning = line.substring(idx + 1).trim();
+
+    // 重要：處理句子中的單引號，防止 HTML 語法報錯
+    const safeWord = word.replace(/'/g, "\\'");
+
+    const card = document.createElement("div");
+    card.className = "term-card";
+    card.dataset.word = word;
+    card.innerHTML = `
+      <div class="main-text">${word}</div>
+      <div class="button-group">
+        <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
+        <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
+        <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
+        <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
+      </div>
+      <div class="sub-text">${meaning}</div>
+    `;
+    row.appendChild(card);
+  }
+});
+   
+
+    section.appendChild(title);
+    section.appendChild(row);
+    container.appendChild(section);
+    
+  } catch (err) {
+    console.warn(`跳過檔案 ${fileName}: ${err.message}`);
+  }
+}
+
+// ---------------- 以下為原功能微調 ----------------
+
+function speakWord(word, lang) {
+  speechSynthesis.cancel();
+  clearAllRepeatStatus();
+
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+  speechSynthesis.speak(utterance);
+}
+
+function repeatSpeak(word, lang) {
+  const key = word + lang;
+
+  if (repeatStatus[key]) {
+    speechSynthesis.cancel();
+    repeatStatus[key] = false;
+    return;
+  }
+
+  speechSynthesis.cancel();
+  clearAllRepeatStatus();
+
+  repeatStatus[key] = true;
+
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+
+  utterance.onend = () => {
+    if (repeatStatus[key]) {
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+function clearAllRepeatStatus() {
+  for (const key in repeatStatus) {
+    repeatStatus[key] = false;
+  }
+}
+
+// 全部展開
+function expandAll() {
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.remove("collapsed");
+    const arrow = row.previousElementSibling.querySelector(".arrow");
+    if (arrow) arrow.classList.add("rotate");
+  });
+}
+
+// 全部收合
+function collapseAll() {
+  document.querySelectorAll(".content-row").forEach(row => {
+    row.classList.add("collapsed");
+    const arrow = row.previousElementSibling.querySelector(".arrow");
+    if (arrow) arrow.classList.remove("rotate");
+  });
+}
+
+// 搜尋功能（支援跨檔案搜尋並自動展開）
+function searchWord() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  if (!query) return;
+
+  let found = false;
+
+  document.querySelectorAll(".term-card").forEach(card => {
+    const word = card.dataset.word.toLowerCase();
+    const row = card.closest(".content-row");
+    const title = row.previousElementSibling;
+
+    card.querySelector(".word").classList.remove("highlight");
+
+    if (word.includes(query)) {
+      found = true;
+      row.classList.remove("collapsed");
+      title.querySelector(".arrow").classList.add("rotate");
+
+      card.querySelector(".word").classList.add("highlight");
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+
+  if (!found) {
+    alert("找不到該單字！");
+  }
+}
+
+// 執行載入
+init();
+</script>
+</body>
+</html>
