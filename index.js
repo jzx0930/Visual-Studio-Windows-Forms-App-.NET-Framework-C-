@@ -262,3 +262,111 @@ function escapeHtmlJs(s) {
   if (s == null) return "";
   return String(s).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   多益單字網頁功能模組
+========================= */
+
+// 語音播放狀態暫存
+const repeatStatus = {};
+
+// 基礎發音功能
+function speakWord(word, lang) {
+    window.speechSynthesis.cancel();
+    clearAllRepeatStatus();
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = lang;
+    window.speechSynthesis.speak(utterance);
+}
+
+// 循環播放功能
+function repeatSpeak(word, lang) {
+    const key = word + lang;
+
+    if (repeatStatus[key]) {
+        window.speechSynthesis.cancel();
+        repeatStatus[key] = false;
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+    clearAllRepeatStatus();
+    repeatStatus[key] = true;
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = lang;
+    utterance.onend = () => {
+        if (repeatStatus[key]) window.speechSynthesis.speak(utterance);
+    };
+    window.speechSynthesis.speak(utterance);
+}
+
+function clearAllRepeatStatus() {
+    for (const key in repeatStatus) {
+        repeatStatus[key] = false;
+    }
+}
+
+// 搜尋功能
+function searchWord() {
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    if (!query) return;
+
+    let found = false;
+    document.querySelectorAll(".term-card").forEach(card => {
+        const word = card.dataset.word.toLowerCase();
+        const section = card.closest("section");
+        const wordSpan = card.querySelector(".word");
+
+        wordSpan.classList.remove("highlight");
+
+        if (word.includes(query)) {
+            found = true;
+            section.classList.remove("collapsed");
+            section.classList.add("expanded");
+            const arrow = section.querySelector(".arrow");
+            if (arrow) arrow.textContent = "▼";
+
+            wordSpan.classList.add("highlight");
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    });
+
+    if (!found) alert("找不到該單字！");
+}
+
+// 全部展開/收合
+function expandAll() {
+    document.querySelectorAll("section").forEach(section => {
+        section.classList.remove("collapsed");
+        section.classList.add("expanded");
+        const arrow = section.querySelector(".arrow");
+        if (arrow) arrow.textContent = "▼";
+    });
+}
+
+function collapseAll() {
+    document.querySelectorAll("section").forEach(section => {
+        section.classList.remove("expanded");
+        section.classList.add("collapsed");
+        const arrow = section.querySelector(".arrow");
+        if (arrow) arrow.textContent = "▶";
+    });
+}
