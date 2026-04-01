@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <title>TOEIC單字卡</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <script defer src="index.js"></script>
-</head>
-<body>
-    <div class="content-wrapper">
-        <a href="index.html" class="back-button glow-orange">🏠 返回主頁</a>
-        <h1 class="title">📘 TOEIC 單字庫</h1>
+<div class="content-wrapper">
+    <a href="index.html" class="back-button glow-orange">🏠 返回主頁</a>
+    <h1 class="title">📘 TOEIC 單字</h1>
 
-        <div class="search-box">
-            <input type="text" id="searchInput" class="search-input" placeholder="輸入英文單字搜尋...">
-            <button class="search-button" onclick="searchWord()">搜尋</button>
-        </div>
-
-        <div class="controls">
-            <button class="control-button" onclick="expandAll()">全部展開</button>
-            <button class="control-button" onclick="collapseAll()">全部收合</button>
-        </div>
-
-        <div id="word-container"></div>
+    <div class="controls">
+        <select id="fileSelect" class="search-input" style="width: auto;"></select>
+        <button id="btnLoadFile" class="control-button">載入檔案</button>
+        <button class="control-button" onclick="expandAll()">全部展開</button>
+        <button class="control-button" onclick="collapseAll()">全部收合</button>
     </div>
-</body>
-</html>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" class="search-input" placeholder="搜尋單字...">
+        <button class="search-button" onclick="searchWord()">搜尋</button>
+    </div>
+
+    <div id="word-container"></div> </div>
