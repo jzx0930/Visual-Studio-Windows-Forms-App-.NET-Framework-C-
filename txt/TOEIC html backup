@@ -9,6 +9,91 @@
 <script defer src="index.js"></script>
 <style>
 
+
+
+
+/* 測驗佈局調整 */
+#quizModal .quiz-layout {
+  display: flex;
+  width: 95%;
+  max-width: 1200px;
+  height: 80vh;
+  gap: 20px;
+}
+
+.quiz-sidebar {
+  flex: 1;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-title {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  background: #333;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.sidebar-item {
+  background: #333;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #444;
+}
+
+.sidebar-item.correct { border-left-color: #00ff99; }
+.sidebar-item.wrong { border-left-color: #ff5555; }
+
+.main-quiz-area {
+  flex: 1.5;
+  background: #333;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  border: 2px solid #00ff99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.exit-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #555;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.exit-btn:hover { background: #777; }
+
+/* 隱藏原生捲軸但保留功能 (可選) */
+.sidebar-content::-webkit-scrollbar { width: 5px; }
+.sidebar-content::-webkit-scrollbar-thumb { background: #555; }
+
+
+
+
+
+
+
+  
+
 /* 測驗選項按鈕樣式 */
 .option-btn {
   padding: 15px;
@@ -124,23 +209,45 @@
   <button class="search-button" onclick="openQuiz()">開始抽考</button>
 </div>
 
-<div id="quizModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; flex-direction:column;">
-  <div style="background:#333; padding:30px; border-radius:15px; width:90%; max-width:500px; text-align:center; border:2px solid #00ff99; position:relative;">
-    <button onclick="closeQuiz()" style="position:absolute; right:15px; top:15px; background:none; border:none; color:#aaa; font-size:24px; cursor:pointer;">&times;</button>
+
+  
+<div id="quizModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center;">
+  <div class="quiz-layout">
     
-    <div style="margin-bottom: 20px;">
-      <span style="color:#00ff99;">正確: <span id="quizCorrect">0</span></span> | 
-      <span style="color:#ff5555;">錯誤: <span id="quizWrong">0</span></span>
+    <div class="quiz-sidebar">
+      <div class="sidebar-title" style="color: #00ff99;">✓ 正確清單</div>
+      <div id="correctList" class="sidebar-content"></div>
     </div>
 
-    <h3 id="quizQuestionCN" style="font-size: 28px; color:#fff; margin-bottom: 30px;">中文題目</h3>
-    
-    <div id="quizOptions" style="display:grid; grid-template-columns:1fr; gap:12px;">
+    <div class="main-quiz-area">
+      <div style="margin-bottom: 20px;">
+        <span style="color:#00ff99;">正確: <span id="quizCorrect">0</span></span> |  
+        <span style="color:#ff5555;">錯誤: <span id="quizWrong">0</span></span>
+        <div id="quizProgress" style="font-size: 12px; color: #888; margin-top: 5px;">進度: 0 / 0</div>
       </div>
-    
-    <p id="quizFeedback" style="margin-top:20px; font-weight:bold; height:24px;"></p>
+
+      <h3 id="quizQuestionCN" style="font-size: 28px; color:#fff; margin-bottom: 30px;">題目</h3>
+      
+      <div id="quizOptions" style="display:grid; grid-template-columns:1fr; gap:12px;"></div>
+      
+      <p id="quizFeedback" style="margin-top:20px; font-weight:bold; height:24px;"></p>
+      
+      <button class="exit-btn" onclick="closeQuiz()">提前結束測驗</button>
+    </div>
+
+    <div class="quiz-sidebar">
+      <div class="sidebar-title" style="color: #ff5555;">✗ 錯誤清單</div>
+      <div id="wrongList" class="sidebar-content"></div>
+    </div>
+
   </div>
 </div>
+
+
+
+
+
+  
   <h2>📘 TOEIC 單字</h2>
 
   <!-- 搜尋框 -->
@@ -350,19 +457,25 @@ function searchWord() {
 init();
 
 // --- 測驗功能專用的全域變數 ---
-let quizPool = {}; // 儲存所有單字 { "分類名": [ {en, cn}, ... ] }
+let quizPool = {}; 
 let currentQuizList = [];
+let quizIndex = 0; // 追蹤目前考到第幾題
 let correctCount = 0;
 let wrongCount = 0;
 let isAnswering = false;
 
-// 修改原本的 loadWordsFromFile，在抓取資料時順便存一份到 quizPool
-// 請找到你原本的 loadWordsFromFile 並在 lines.forEach 裡面加入儲存邏輯
-// 或者直接用以下「外掛」方式監控數據
+// 洗牌演算法 (打亂題目順序)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// 攔截原有的載入邏輯來同步更新測驗池 (這部分維持你的外掛邏輯)
 const originalLoadWords = loadWordsFromFile;
 loadWordsFromFile = async function(fileName) {
-    const result = await originalLoadWords(fileName); // 執行原功能
-    // 以下為新增的儲存邏輯
+    await originalLoadWords(fileName);
     const response = await fetch(`txt/${fileName}`);
     const text = await response.text();
     const catName = fileName.replace(".txt", "");
@@ -379,7 +492,6 @@ loadWordsFromFile = async function(fileName) {
         }
     });
 
-    // 更新下拉選單
     const sel = document.getElementById("quizRange");
     const opt = document.createElement("option");
     opt.value = catName;
@@ -402,34 +514,49 @@ function openQuiz() {
         return;
     }
 
+    // 初始化測驗狀態
+    shuffleArray(currentQuizList); // 打亂順序
+    quizIndex = 0;
     correctCount = 0;
     wrongCount = 0;
+    document.getElementById("correctList").innerHTML = "";
+    document.getElementById("wrongList").innerHTML = "";
     document.getElementById("quizCorrect").textContent = "0";
     document.getElementById("quizWrong").textContent = "0";
     document.getElementById("quizModal").style.display = "flex";
+    
     nextQuestion();
 }
 
 function closeQuiz() {
+    if(quizIndex < currentQuizList.length && quizIndex > 0) {
+        if(!confirm("測驗尚未結束，確定要提前離開嗎？")) return;
+    }
     document.getElementById("quizModal").style.display = "none";
     speechSynthesis.cancel();
 }
 
 function nextQuestion() {
+    // 檢查是否考完了
+    if (quizIndex >= currentQuizList.length) {
+        finishQuiz();
+        return;
+    }
+
     isAnswering = false;
     document.getElementById("quizFeedback").textContent = "";
+    document.getElementById("quizProgress").textContent = `進度: ${quizIndex + 1} / ${currentQuizList.length}`;
+    
     const optionsBox = document.getElementById("quizOptions");
     optionsBox.innerHTML = "";
 
-    // 隨機選一個當題目
-    const target = currentQuizList[Math.floor(Math.random() * currentQuizList.length)];
+    const target = currentQuizList[quizIndex];
     document.getElementById("quizQuestionCN").textContent = target.cn;
 
     // 隨機選三個當干擾項
-    let distractors = [];
     let allFlattened = [];
     Object.values(quizPool).forEach(l => allFlattened.push(...l));
-    
+    let distractors = [];
     while(distractors.length < 3) {
         let rand = allFlattened[Math.floor(Math.random() * allFlattened.length)];
         if(rand.en !== target.en && !distractors.find(d => d.en === rand.en)) {
@@ -437,48 +564,84 @@ function nextQuestion() {
         }
     }
 
-    // 混合選項並打亂
     let options = [target, ...distractors].sort(() => Math.random() - 0.5);
 
     options.forEach(opt => {
         const btn = document.createElement("button");
         btn.className = "option-btn";
         btn.textContent = opt.en;
-        btn.onclick = () => handleAnswer(opt.en, target.en, btn);
+        btn.onclick = () => handleAnswer(opt, target, btn);
         optionsBox.appendChild(btn);
     });
 }
 
-function handleAnswer(selected, correct, btnElement) {
+function handleAnswer(selectedObj, targetObj, btnElement) {
     if(isAnswering) return;
     isAnswering = true;
 
-    if(selected === correct) {
+    const isCorrect = selectedObj.en === targetObj.en;
+
+    if(isCorrect) {
         correctCount++;
         document.getElementById("quizCorrect").textContent = correctCount;
         btnElement.classList.add("option-correct");
         document.getElementById("quizFeedback").style.color = "#00ff99";
         document.getElementById("quizFeedback").textContent = "Correct! ✓";
+        updateSideList("correctList", targetObj, "correct");
     } else {
         wrongCount++;
         document.getElementById("quizWrong").textContent = wrongCount;
         btnElement.classList.add("option-wrong");
         document.getElementById("quizFeedback").style.color = "#ff5555";
-        document.getElementById("quizFeedback").textContent = `Wrong! 正確答案是: ${correct}`;
+        document.getElementById("quizFeedback").textContent = `Wrong!`;
+        updateSideList("wrongList", targetObj, "wrong");
         
-        // 顯示出正確的那個按鈕
+        // 標示正確按鈕
         Array.from(document.querySelectorAll(".option-btn")).forEach(b => {
-            if(b.textContent === correct) b.classList.add("option-correct");
+            if(b.textContent === targetObj.en) b.classList.add("option-correct");
         });
     }
 
-    // 自動以美式口音念出正確答案
-    const utterance = new SpeechSynthesisUtterance(correct);
+    // 自動美式口音播放
+    const utterance = new SpeechSynthesisUtterance(targetObj.en);
     utterance.lang = 'en-US';
     utterance.onend = () => {
-        setTimeout(nextQuestion, 800); // 念完後稍微停頓再下一題
+        quizIndex++;
+        setTimeout(nextQuestion, 800);
     };
     speechSynthesis.speak(utterance);
+}
+
+// 更新左右側清單
+function updateSideList(listId, wordObj, type) {
+    const list = document.getElementById(listId);
+    const item = document.createElement("div");
+    item.className = `sidebar-item ${type}`;
+    
+    // 處理單引號避免 JS 報錯
+    const safeEn = wordObj.en.replace(/'/g, "\\'");
+    
+    item.innerHTML = `
+        <div>
+            <b>${wordObj.en}</b><br>
+            <small>${wordObj.cn}</small>
+        </div>
+        <button class="speak-button" onclick="speakWord('${safeEn}', 'en-US')">🔊</button>
+    `;
+    // 讓最新的顯示在最上面
+    list.insertBefore(item, list.firstChild);
+}
+
+function finishQuiz() {
+    document.getElementById("quizQuestionCN").textContent = "🎊 測驗完成！";
+    document.getElementById("quizOptions").innerHTML = `
+        <div style="color:#fff; font-size: 20px; margin: 20px 0;">
+            正確題數：${correctCount} <br>
+            錯誤題數：${wrongCount}
+        </div>
+        <button class="search-button" onclick="document.getElementById('quizModal').style.display='none'">關閉結果</button>
+    `;
+    document.getElementById("quizFeedback").textContent = "";
 }
 
   
