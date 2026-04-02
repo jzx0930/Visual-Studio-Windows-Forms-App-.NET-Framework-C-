@@ -4,6 +4,13 @@ opponent | 對手| n.
 clerk | 辦事員、書記、職員| n.
 technician | 技術人員 | n.
 comsumer | 消費者 | n.
+guest | 客人、訪客 | n.
+client | 客戶、委託人 | n.
+president | 總裁、總統 | n.
+vice president | 副總裁、副總統 | n.
+chairman | 主席、董事長 | n.
+vice chairman | 副主席、副董事長 | n.
+
 
 
 
