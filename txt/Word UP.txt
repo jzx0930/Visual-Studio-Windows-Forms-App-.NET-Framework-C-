@@ -10,6 +10,12 @@ president | 總裁、總統 | n.
 vice president | 副總裁、副總統 | n.
 chairman | 主席、董事長 | n.
 vice chairman | 副主席、副董事長 | n.
+supervisor| 主管、監督者 | n.
+plumber | 水管工人 | n.
+tenant | 房客、承租人 | n.
+substitute | 代替者、代理人 | n.
+spectator | 觀眾、參觀者 | n.
+secretary | 秘書 | n.
 
 
 
