@@ -592,6 +592,161 @@ function finishQuiz() {
     `;
     document.getElementById("quizProgress").textContent = "Quiz Completed";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // --- 測驗功能專用的全域變數 ---
+let quizPool = {}; // 儲存所有單字 { "分類名": [ {en, cn}, ... ] }
+let currentQuizList = [];
+let correctCount = 0;
+let wrongCount = 0;
+let isAnswering = false;
+
+// 修改原本的 loadWordsFromFile，在抓取資料時順便存一份到 quizPool
+// 請找到你原本的 loadWordsFromFile 並在 lines.forEach 裡面加入儲存邏輯
+// 或者直接用以下「外掛」方式監控數據
+const originalLoadWords = loadWordsFromFile;
+loadWordsFromFile = async function(fileName) {
+    const result = await originalLoadWords(fileName); // 執行原功能
+    // 以下為新增的儲存邏輯
+    const response = await fetch(`txt/${fileName}`);
+    const text = await response.text();
+    const catName = fileName.replace(".txt", "");
+    const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+    
+    quizPool[catName] = [];
+    lines.forEach(line => {
+        const idx = line.indexOf("|");
+        if(idx !== -1) {
+            quizPool[catName].push({
+                en: line.substring(0, idx).trim(),
+                cn: line.substring(idx + 1).trim()
+            });
+        }
+    });
+
+    // 更新下拉選單
+    const sel = document.getElementById("quizRange");
+    const opt = document.createElement("option");
+    opt.value = catName;
+    opt.textContent = catName;
+    sel.appendChild(opt);
+};
+
+function openQuiz() {
+    const range = document.getElementById("quizRange").value;
+    currentQuizList = [];
+    
+    if(range === "all") {
+        Object.values(quizPool).forEach(list => currentQuizList.push(...list));
+    } else {
+        currentQuizList = [...quizPool[range]];
+    }
+
+    if(currentQuizList.length < 4) {
+        alert("單字量不足 4 個，無法開始測驗！");
+        return;
+    }
+
+    correctCount = 0;
+    wrongCount = 0;
+    document.getElementById("quizCorrect").textContent = "0";
+    document.getElementById("quizWrong").textContent = "0";
+    document.getElementById("quizModal").style.display = "flex";
+    nextQuestion();
+}
+
+function closeQuiz() {
+    document.getElementById("quizModal").style.display = "none";
+    speechSynthesis.cancel();
+}
+
+function nextQuestion() {
+    isAnswering = false;
+    document.getElementById("quizFeedback").textContent = "";
+    const optionsBox = document.getElementById("quizOptions");
+    optionsBox.innerHTML = "";
+
+    // 隨機選一個當題目
+    const target = currentQuizList[Math.floor(Math.random() * currentQuizList.length)];
+    document.getElementById("quizQuestionCN").textContent = target.cn;
+
+    // 隨機選三個當干擾項
+    let distractors = [];
+    let allFlattened = [];
+    Object.values(quizPool).forEach(l => allFlattened.push(...l));
+    
+    while(distractors.length < 3) {
+        let rand = allFlattened[Math.floor(Math.random() * allFlattened.length)];
+        if(rand.en !== target.en && !distractors.find(d => d.en === rand.en)) {
+            distractors.push(rand);
+        }
+    }
+
+    // 混合選項並打亂
+    let options = [target, ...distractors].sort(() => Math.random() - 0.5);
+
+    options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = opt.en;
+        btn.onclick = () => handleAnswer(opt.en, target.en, btn);
+        optionsBox.appendChild(btn);
+    });
+}
+
+function handleAnswer(selected, correct, btnElement) {
+    if(isAnswering) return;
+    isAnswering = true;
+
+    if(selected === correct) {
+        correctCount++;
+        document.getElementById("quizCorrect").textContent = correctCount;
+        btnElement.classList.add("option-correct");
+        document.getElementById("quizFeedback").style.color = "#00ff99";
+        document.getElementById("quizFeedback").textContent = "Correct! ✓";
+    } else {
+        wrongCount++;
+        document.getElementById("quizWrong").textContent = wrongCount;
+        btnElement.classList.add("option-wrong");
+        document.getElementById("quizFeedback").style.color = "#ff5555";
+        document.getElementById("quizFeedback").textContent = `Wrong! 正確答案是: ${correct}`;
+        
+        // 顯示出正確的那個按鈕
+        Array.from(document.querySelectorAll(".option-btn")).forEach(b => {
+            if(b.textContent === correct) b.classList.add("option-correct");
+        });
+    }
+
+    // 自動以美式口音念出正確答案
+    const utterance = new SpeechSynthesisUtterance(correct);
+    utterance.lang = 'en-US';
+    utterance.onend = () => {
+        setTimeout(nextQuestion, 800); // 念完後稍微停頓再下一題
+    };
+    speechSynthesis.speak(utterance);
+}
   
 </script>
 </body>
