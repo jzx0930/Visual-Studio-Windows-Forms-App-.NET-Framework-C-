@@ -1,26 +1,72 @@
+### 👥 人員／角色
 colleague | 同事 | n.
 competitor | 競爭者、對手 | n.
-opponent | 對手| n.
-clerk | 辦事員、書記、職員| n.
-technician | 技術人員 | n.
-comsumer | 消費者 | n.
+opponent | 對手 | n.
+participant | 參加者、參與者 | n.
+spectator | 觀眾、參觀者 | n.
 guest | 客人、訪客 | n.
 client | 客戶、委託人 | n.
+consumer | 消費者 | n.
+tenant | 房客、承租人 | n.
+novice | 新手、初學者 | n.
+substitute | 代替者、代理人 | n.
+
+### 🛠️ 技術／專業人員
+technician | 技術人員 | n.
+plumber | 水管工人 | n.
+clerk | 辦事員、書記、職員 | n.
+receptionist | 接待員、櫃檯人員 | n.
+secretary | 秘書 | n.
+operator | 操作員、接線員 | n.
+conductor | 指揮(樂團)、列車長 | n.
+
+### 📊 管理／領導職位
 president | 總裁、總統 | n.
 vice president | 副總裁、副總統 | n.
 chairman | 主席、董事長 | n.
 vice chairman | 副主席、副董事長 | n.
-supervisor| 主管、監督者 | n.
-plumber | 水管工人 | n.
-tenant | 房客、承租人 | n.
-substitute | 代替者、代理人 | n.
-spectator | 觀眾、參觀者 | n.
-secretary | 秘書 | n.
+director | 董事、主管、主任 | n.
+supervisor | 主管、監督者 | n.
+manager | 經理、管理者 | n.
+executive | 高階主管、行政人員 | n.
+
+### 💼 顧問／代表
+advisor | 顧問 | n.
+consultant | 顧問、諮詢師 | n.
+representative | 代表、代理人 | n.
+
+### 💰 商業／股東
+supplier | 供應商 | n.
+shareholder | 股東 | n.
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+chairman | 主席、董事長 | n.
+vice chairman | 副主席、副董事長 | n.
 
 
 
