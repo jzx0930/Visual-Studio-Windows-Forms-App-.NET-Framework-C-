@@ -1,4 +1,3 @@
-
 colleague | 同事 | n.
 competitor | 競爭者、對手 | n.
 opponent | 對手 | n.
@@ -10,8 +9,6 @@ consumer | 消費者 | n.
 tenant | 房客、承租人 | n.
 novice | 新手、初學者 | n.
 substitute | 代替者、代理人 | n.
-
-
 technician | 技術人員 | n.
 plumber | 水管工人 | n.
 clerk | 辦事員、書記、職員 | n.
@@ -19,8 +16,6 @@ receptionist | 接待員、櫃檯人員 | n.
 secretary | 秘書 | n.
 operator | 操作員、接線員 | n.
 conductor | 指揮(樂團)、列車長 | n.
-
-
 president | 總裁、總統 | n.
 vice president | 副總裁、副總統 | n.
 chairman | 主席、董事長 | n.
@@ -29,44 +24,10 @@ director | 董事、主管、主任 | n.
 supervisor | 主管、監督者 | n.
 manager | 經理、管理者 | n.
 executive | 高階主管、行政人員 | n.
-
-
 advisor | 顧問 | n.
 consultant | 顧問、諮詢師 | n.
 representative | 代表、代理人 | n.
-
-
 supplier | 供應商 | n.
 shareholder | 股東 | n.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 chairman | 主席、董事長 | n.
 vice chairman | 副主席、副董事長 | n.
-
-
-
