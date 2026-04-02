@@ -206,6 +206,18 @@
   <select id="quizRange" class="search-input" style="width: auto; margin-bottom: 10px;">
     <option value="all">全部範圍</option>
   </select>
+    
+<span style="color: #00ff99; font-weight: bold; margin-left: 15px; margin-right: 10px;">題型:</span>
+  <select id="quizMode" class="search-input" style="width: auto; margin-bottom: 10px;">
+    <option value="cn-en">中選英 (看中文選英文)</option>
+    <option value="en-cn">英選中 (看英文選中文)</option>
+  </select>
+
+
+
+
+
+    
   <button class="search-button" onclick="openQuiz()">開始抽考</button>
 </div>
 
@@ -463,6 +475,7 @@ let quizIndex = 0; // 追蹤目前考到第幾題
 let correctCount = 0;
 let wrongCount = 0;
 let isAnswering = false;
+  let currentQuizType = "cn-en"; // 紀錄當前題型
 
 // 洗牌演算法 (打亂題目順序)
 function shuffleArray(array) {
@@ -500,7 +513,8 @@ loadWordsFromFile = async function(fileName) {
 };
 
 function openQuiz() {
-    const range = document.getElementById("quizRange").value;
+   const range = document.getElementById("quizRange").value;
+    currentQuizType = document.getElementById("quizMode").value; // 取得使用者選擇的題型
     currentQuizList = [];
     
     if(range === "all") {
@@ -535,9 +549,7 @@ function closeQuiz() {
     document.getElementById("quizModal").style.display = "none";
     speechSynthesis.cancel();
 }
-
 function nextQuestion() {
-    // 檢查是否考完了
     if (quizIndex >= currentQuizList.length) {
         finishQuiz();
         return;
@@ -551,14 +563,19 @@ function nextQuestion() {
     optionsBox.innerHTML = "";
 
     const target = currentQuizList[quizIndex];
-    document.getElementById("quizQuestionCN").textContent = target.cn;
 
-    // 隨機選三個當干擾項
+    // --- 根據題型決定題目顯示 ---
+    // 中選英：題目顯示中文；英選中：題目顯示英文
+    document.getElementById("quizQuestionCN").textContent = 
+        (currentQuizType === "cn-en") ? target.cn : target.en;
+
     let allFlattened = [];
     Object.values(quizPool).forEach(l => allFlattened.push(...l));
+    
     let distractors = [];
     while(distractors.length < 3) {
         let rand = allFlattened[Math.floor(Math.random() * allFlattened.length)];
+        // 確保干擾項不重複且不是正確答案
         if(rand.en !== target.en && !distractors.find(d => d.en === rand.en)) {
             distractors.push(rand);
         }
@@ -569,7 +586,11 @@ function nextQuestion() {
     options.forEach(opt => {
         const btn = document.createElement("button");
         btn.className = "option-btn";
-        btn.textContent = opt.en;
+        
+        // --- 根據題型決定按鈕顯示文字 ---
+        // 中選英：按鈕顯示英文；英選中：按鈕顯示中文
+        btn.textContent = (currentQuizType === "cn-en") ? opt.en : opt.cn;
+        
         btn.onclick = () => handleAnswer(opt, target, btn);
         optionsBox.appendChild(btn);
     });
@@ -593,16 +614,19 @@ function handleAnswer(selectedObj, targetObj, btnElement) {
         document.getElementById("quizWrong").textContent = wrongCount;
         btnElement.classList.add("option-wrong");
         document.getElementById("quizFeedback").style.color = "#ff5555";
-        document.getElementById("quizFeedback").textContent = `Wrong!`;
+        
+        // 根據題型顯示正確答案文字
+        const correctText = (currentQuizType === "cn-en") ? targetObj.en : targetObj.cn;
+        document.getElementById("quizFeedback").textContent = `Wrong! 正確答案是: ${correctText}`;
+        
         updateSideList("wrongList", targetObj, "wrong");
         
-        // 標示正確按鈕
         Array.from(document.querySelectorAll(".option-btn")).forEach(b => {
-            if(b.textContent === targetObj.en) b.classList.add("option-correct");
+            if(b.textContent === correctText) b.classList.add("option-correct");
         });
     }
 
-    // 自動美式口音播放
+    // 無論哪種題型，作答後依然維持美式口音播放正確單字一次
     const utterance = new SpeechSynthesisUtterance(targetObj.en);
     utterance.lang = 'en-US';
     utterance.onend = () => {
