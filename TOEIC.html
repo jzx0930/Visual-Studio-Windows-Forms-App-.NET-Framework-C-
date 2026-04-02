@@ -549,7 +549,6 @@ function closeQuiz() {
     document.getElementById("quizModal").style.display = "none";
     speechSynthesis.cancel();
 }
-
 function nextQuestion() {
     if (quizIndex >= currentQuizList.length) {
         finishQuiz();
@@ -566,14 +565,17 @@ function nextQuestion() {
     const target = currentQuizList[quizIndex];
 
     // --- 根據題型決定題目顯示 ---
+    // 中選英：題目顯示中文；英選中：題目顯示英文
     document.getElementById("quizQuestionCN").textContent = 
         (currentQuizType === "cn-en") ? target.cn : target.en;
 
     let allFlattened = [];
     Object.values(quizPool).forEach(l => allFlattened.push(...l));
+    
     let distractors = [];
     while(distractors.length < 3) {
         let rand = allFlattened[Math.floor(Math.random() * allFlattened.length)];
+        // 確保干擾項不重複且不是正確答案
         if(rand.en !== target.en && !distractors.find(d => d.en === rand.en)) {
             distractors.push(rand);
         }
@@ -585,20 +587,10 @@ function nextQuestion() {
         const btn = document.createElement("button");
         btn.className = "option-btn";
         
-        // --- 根據題型決定按鈕文字 ---
+        // --- 根據題型決定按鈕顯示文字 ---
+        // 中選英：按鈕顯示英文；英選中：按鈕顯示中文
         btn.textContent = (currentQuizType === "cn-en") ? opt.en : opt.cn;
         
-        btn.onclick = () => handleAnswer(opt, target, btn);
-        optionsBox.appendChild(btn);
-    });
-}
-
-    let options = [target, ...distractors].sort(() => Math.random() - 0.5);
-
-    options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.className = "option-btn";
-        btn.textContent = opt.en;
         btn.onclick = () => handleAnswer(opt, target, btn);
         optionsBox.appendChild(btn);
     });
