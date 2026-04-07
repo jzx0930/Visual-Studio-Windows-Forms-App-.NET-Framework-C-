@@ -443,40 +443,31 @@ function speakWord(word, lang) {
 }*/
 
 function repeatSpeak(word, lang) {
-    const key = word + lang;
+  const key = word + lang;
 
-    // 如果再次點擊重播按鈕，就停止重播
+  if (repeatStatus[key]) {
+    speechSynthesis.cancel();
+    repeatStatus[key] = false;
+    return;
+  }
+
+  speechSynthesis.cancel();
+  clearAllRepeatStatus();
+
+  repeatStatus[key] = true;
+
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = lang;
+
+  utterance.onend = () => {
     if (repeatStatus[key]) {
-        if (responsiveVoice.isPlaying()) responsiveVoice.cancel();
-        repeatStatus[key] = false;
-        return;
+      speechSynthesis.speak(utterance);
     }
+  };
 
-    // 點擊新的重播前，先清空其他發音
-    if (responsiveVoice.isPlaying()) responsiveVoice.cancel();
-    clearAllRepeatStatus();
+  speechSynthesis.speak(utterance);
+}
 
-    repeatStatus[key] = true;
-
-    // 判斷發音口音
-    let voiceType = "US English Female";
-    if (lang.includes("GB") || lang.includes("UK")) {
-        voiceType = "UK English Female";
-    }
-
-    // 建立一個會自己呼叫自己的循環播放函式
-    function playLoop() {
-        if (repeatStatus[key]) {
-            responsiveVoice.speak(word, voiceType, {
-                onend: function() {
-                    // 為了避免念太快連在一起，稍微延遲 0.5 秒再重複
-                    setTimeout(() => {
-                        if (repeatStatus[key]) playLoop();
-                    }, 500); 
-                }
-            });
-        }
-    }
 
     // 啟動第一次播放
     playLoop();
