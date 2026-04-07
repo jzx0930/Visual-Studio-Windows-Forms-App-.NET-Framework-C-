@@ -424,11 +424,11 @@ async function loadWordsFromFile(fileName) {
     container.appendChild(section);
 
     // 同步更新測驗池 (Quiz Pool)
-    quizPool[sectionTitleText] = wordList.map(item => ({
+   quizPool[sectionTitleText] = wordList.map(item => ({
       en: item.word,
       cn: item.translation
     }));
-
+updateQuizRangeUI(sectionTitleText);
   } catch (err) {
     console.warn(`跳過檔案 ${fileName}: ${err.message}`);
   }
