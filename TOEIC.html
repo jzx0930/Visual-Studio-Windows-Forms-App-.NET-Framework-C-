@@ -382,26 +382,23 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
 function speakWord(word, lang, callback) {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (window.responsiveVoice) responsiveVoice.cancel();
-
-    const l = lang.toUpperCase();
-    let voiceType = "";
-
-    if (l.includes("GB") || l.includes("UK")) {
-        voiceType = "UK English Female"; // 英式真人
-    } else {
-        // 嘗試換成這個名稱，有時候能避開 Fallback
-        voiceType = "US English Male"; 
-        // 或者維持 "US English Female"，但我們要確保它不走系統音
+    // 1. 停止目前所有發音，避免重疊
+    if (window.responsiveVoice) {
+        responsiveVoice.cancel();
+    }
+    
+    // 2. 判斷美式 (US) 或英式 (UK/GB)
+    let voiceType = "US English Female"; // 預設美音
+    if (lang.toUpperCase().includes("GB") || lang.toUpperCase().includes("UK")) {
+        voiceType = "UK English Female"; // 切換英音
     }
 
-    console.log("正在嘗試真人發音:", word, "口音:", voiceType);
+    console.log("正在發音:", word, "使用口音:", voiceType);
 
+    // 3. 直接呼叫外掛發音
     responsiveVoice.speak(word, voiceType, {
-        // 強制不使用系統備用語音 (如果外掛支援此參數)
-        fallbackVoice: "UK English Female", 
         onend: function() {
+            // 如果有下一題的函式 (callback)，唸完就執行
             if (callback) callback();
         }
     });
