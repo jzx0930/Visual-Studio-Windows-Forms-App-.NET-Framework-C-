@@ -396,20 +396,7 @@ async function speakWord(word, lang, callback) {
     // 3. 設定發音參數
     const isUS = lang.toUpperCase().includes("US");
 
-  const requestBody = {
-    input: { text: word },
-    voice: { 
-        languageCode: isUS ? "en-US" : "en-GB", 
-        // 將 Wavenet 改為 Standard，這就是最經典的 Google 翻譯女聲
-        name: isUS ? "en-US-Standard-C" : "en-GB-Standard-A", 
-        ssmlGender: "FEMALE"
-    },
-    audioConfig: { 
-        audioEncoding: "MP3",
-        pitch: 0,
-        speakingRate: 1.0 // 速度可以依照喜好調整
-    }
-};
+
   
     const requestBody = {
         input: { text: word },
