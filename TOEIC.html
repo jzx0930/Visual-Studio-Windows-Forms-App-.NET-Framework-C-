@@ -380,31 +380,32 @@ async function loadWordsFromFile(fileName) {
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
 
 
-    lines.forEach(line => {
-  const idx = line.indexOf("|");
-  if (idx !== -1) {
-    const word = line.substring(0, idx).trim();
-    const meaning = line.substring(idx + 1).trim();
+  lines.forEach(line => {
+    const idx = line.indexOf("|");
+    if (idx !== -1) {
+        const word = line.substring(0, idx).trim();
+        const meaning = line.substring(idx + 1).trim();
+        const safeWord = word.replace(/'/g, "\\'");
 
-    // 重要：處理句子中的單引號，防止 HTML 語法報錯
-    const safeWord = word.replace(/'/g, "\\'");
-
-    const card = document.createElement("div");
-    card.className = "term-card";
-    card.dataset.word = word;
-    card.innerHTML = `
-     <button class="eye-btn" onclick="toggleSingleWord(this)">🙈</button>
-      <div class="main-text hidden-word">${word}</div> 
-      <div class="button-group">
-        <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
-        <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
-        <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
-        <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
-      </div>
-      <div class="sub-text">${meaning}</div>
-    `;
-    row.appendChild(card);
-  }
+        const card = document.createElement("div");
+        card.className = "term-card";
+        card.dataset.word = word;
+        
+        // 移除 main-text 後面的 hidden-word 類別
+        // 將按鈕文字預設設為 👁️
+        card.innerHTML = `
+            <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
+            <div class="main-text">${word}</div> 
+            <div class="button-group">
+                <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
+                <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
+                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
+                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
+            </div>
+            <div class="sub-text">${meaning}</div>
+        `;
+        row.appendChild(card);
+    }
 });
    
 
