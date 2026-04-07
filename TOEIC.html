@@ -14,7 +14,41 @@
 <style>
 
 
+/* 單字卡相對定位，方便放置右上角眼睛 */
+.term-card {
+  position: relative;
+  min-height: 100px;
+}
 
+/* 眼睛按鈕樣式 */
+.eye-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #00ff99;
+  z-index: 10;
+  padding: 5px;
+}
+
+.eye-btn:hover {
+  transform: scale(1.2);
+}
+
+/* 單字隱藏時的樣式：變透明或模糊 */
+.main-text.hidden-word {
+  color: transparent;
+  text-shadow: 0 0 8px rgba(255,255,255,0.5); /* 模糊效果 */
+  user-select: none; /* 防止反白偷看 */
+}
+
+/* 頂部全域控制按鈕容器 */
+.global-eye-controls {
+  margin-bottom: 10px;
+}
 
 /* 測驗佈局調整 */
 #quizModal .quiz-layout {
@@ -274,10 +308,12 @@
   </div>
 
   <!-- 全部展開 / 收合控制 -->
-  <div class="controls">
-    <button class="control-button" onclick="expandAll()">全部展開</button>
-    <button class="control-button" onclick="collapseAll()">全部收合</button>
-  </div>
+ <div class="controls">
+  <button class="control-button" onclick="expandAll()">全部展開</button>
+  <button class="control-button" onclick="collapseAll()">全部收合</button>
+  <button class="control-button" style="border-color: #00ff99;" onclick="toggleAllWords(false)">👁️ 全部顯示</button>
+  <button class="control-button" style="border-color: #ff5555;" onclick="toggleAllWords(true)">🙈 全部隱藏</button>
+</div>
 
   <div id="word-container"></div>
 </div>
@@ -357,7 +393,8 @@ async function loadWordsFromFile(fileName) {
     card.className = "term-card";
     card.dataset.word = word;
     card.innerHTML = `
-      <div class="main-text">${word}</div>
+     <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
+      <div class="main-text hidden-word">${word}</div> 
       <div class="button-group">
         <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
         <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
@@ -740,6 +777,36 @@ function finishQuiz() {
     document.getElementById("quizFeedback").textContent = "";
 }
 
+  // 切換單個單字的顯示/隱藏
+function toggleSingleWord(btn) {
+    const mainText = btn.nextElementSibling; // 眼睛下一個元素就是 main-text
+    mainText.classList.toggle("hidden-word");
+    
+    // 切換眼睛圖示
+    if (mainText.classList.contains("hidden-word")) {
+        btn.textContent = "👁️";
+    } else {
+        btn.textContent = "🔓";
+    }
+}
+
+// 全域控制：全部顯示或全部隱藏
+function toggleAllWords(shouldHide) {
+    const allWords = document.querySelectorAll(".main-text");
+    const allEyeBtns = document.querySelectorAll(".eye-btn");
+    
+    allWords.forEach(word => {
+        if (shouldHide) {
+            word.classList.add("hidden-word");
+        } else {
+            word.classList.remove("hidden-word");
+        }
+    });
+    
+    allEyeBtns.forEach(btn => {
+        btn.textContent = shouldHide ? "👁️" : "🔓";
+    });
+}
   
 </script>
  
