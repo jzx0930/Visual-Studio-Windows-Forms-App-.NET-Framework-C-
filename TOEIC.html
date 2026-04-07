@@ -385,7 +385,7 @@ function speakWord(word, lang, callback) {
 
     const voiceLang = lang.toLowerCase();
     // 加上隨機參數避免快取問題，並使用 Google TTS 介面
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${voiceLang}&client=tw-ob`;
+    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${voiceLang}&client=gtx`;
     
     const audio = new Audio(audioUrl);
 
