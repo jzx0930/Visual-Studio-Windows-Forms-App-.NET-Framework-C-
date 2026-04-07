@@ -784,9 +784,9 @@ function toggleSingleWord(btn) {
     
     // 切換眼睛圖示
     if (mainText.classList.contains("hidden-word")) {
-        btn.textContent = "👁️";
+        btn.textContent = "🙈";
     } else {
-        btn.textContent = "🔓";
+        btn.textContent = "👁️";
     }
 }
 
@@ -804,7 +804,7 @@ function toggleAllWords(shouldHide) {
     });
     
     allEyeBtns.forEach(btn => {
-        btn.textContent = shouldHide ? "👁️" : "🔓";
+        btn.textContent = shouldHide ? "🙈" : "👁️";
     });
 }
   
