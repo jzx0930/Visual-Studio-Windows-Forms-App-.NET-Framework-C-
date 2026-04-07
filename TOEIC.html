@@ -7,7 +7,7 @@
   
 <meta charset="UTF-8">
 <title>TOEIC單字卡</title>
-  <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="index.css">
 <script defer src="index.js"></script>
@@ -383,23 +383,29 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 發音功能核心 ----------------
 
 function speakWord(word, lang, callback) {
-    // 1. 停止目前所有發音，避免重疊
+    // 1. 先強行停止瀏覽器內建的所有機械音 (這步最關鍵！)
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+    }
+
+    // 2. 停止 ResponsiveVoice 目前的發音
     if (window.responsiveVoice) {
         responsiveVoice.cancel();
     }
-    
-    // 2. 判斷美式 (US) 或英式 (UK/GB)
-    let voiceType = "US English Female"; // 預設美音
-    if (lang.toUpperCase().includes("GB") || lang.toUpperCase().includes("UK")) {
-        voiceType = "UK English Female"; // 切換英音
+
+    // 3. 判斷語言（不分大小寫）
+    const l = lang.toUpperCase();
+    let voiceType = "US English Female"; // 預設美式
+
+    if (l.includes("GB") || l.includes("UK")) {
+        voiceType = "UK English Female"; // 英式
     }
 
-    console.log("正在發音:", word, "使用口音:", voiceType);
-
-    // 3. 直接呼叫外掛發音
+    // 4. 只使用 ResponsiveVoice，不要寫備用方案 (避免搶聲)
+    console.log("確定呼叫 ResponsiveVoice 唸:", word, "口音:", voiceType);
+    
     responsiveVoice.speak(word, voiceType, {
         onend: function() {
-            // 如果有下一題的函式 (callback)，唸完就執行
             if (callback) callback();
         }
     });
