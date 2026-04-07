@@ -3,10 +3,11 @@
 <html lang="zh-Hant">
 <head>
 
-<script src="https://code.responsivevoice.org/responsivevoice.js?key=免費註冊獲取或留空測試"></script>
+
   
 <meta charset="UTF-8">
 <title>TOEIC單字卡</title>
+  <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="index.css">
 <script defer src="index.js"></script>
@@ -381,10 +382,26 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
 
-function speakWord(word, lang) {
-    const voiceType = lang.includes("US") ? "US English Female" : "UK English Female";
-    // 直接呼叫 responsiveVoice 的播放功能
-    responsiveVoice.speak(word, voiceType);
+function speakWord(word, lang, callback) {
+    // 播放前先停止目前正在發音的聲音
+    if (responsiveVoice.isPlaying()) {
+        responsiveVoice.cancel();
+    }
+    clearAllRepeatStatus();
+
+    // 判斷要使用美式還是英式發音
+    let voiceType = "US English Female"; // 預設使用美式女聲
+    if (lang.includes("GB") || lang.includes("UK")) {
+        voiceType = "UK English Female"; // 切換為英式女聲
+    }
+
+    // 呼叫外掛播放聲音
+    responsiveVoice.speak(word, voiceType, {
+        onend: function() {
+            // 當發音結束時，如果有測驗的 callback 就執行它
+            if (callback) callback();
+        }
+    });
 }
 /*
 function speakWord(word, lang) {
@@ -397,29 +414,43 @@ function speakWord(word, lang) {
 }*/
 
 function repeatSpeak(word, lang) {
-  const key = word + lang;
+    const key = word + lang;
 
-  if (repeatStatus[key]) {
-    speechSynthesis.cancel();
-    repeatStatus[key] = false;
-    return;
-  }
-
-  speechSynthesis.cancel();
-  clearAllRepeatStatus();
-
-  repeatStatus[key] = true;
-
-  const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = lang;
-
-  utterance.onend = () => {
+    // 如果再次點擊重播按鈕，就停止重播
     if (repeatStatus[key]) {
-      speechSynthesis.speak(utterance);
+        if (responsiveVoice.isPlaying()) responsiveVoice.cancel();
+        repeatStatus[key] = false;
+        return;
     }
-  };
 
-  speechSynthesis.speak(utterance);
+    // 點擊新的重播前，先清空其他發音
+    if (responsiveVoice.isPlaying()) responsiveVoice.cancel();
+    clearAllRepeatStatus();
+
+    repeatStatus[key] = true;
+
+    // 判斷發音口音
+    let voiceType = "US English Female";
+    if (lang.includes("GB") || lang.includes("UK")) {
+        voiceType = "UK English Female";
+    }
+
+    // 建立一個會自己呼叫自己的循環播放函式
+    function playLoop() {
+        if (repeatStatus[key]) {
+            responsiveVoice.speak(word, voiceType, {
+                onend: function() {
+                    // 為了避免念太快連在一起，稍微延遲 0.5 秒再重複
+                    setTimeout(() => {
+                        if (repeatStatus[key]) playLoop();
+                    }, 500); 
+                }
+            });
+        }
+    }
+
+    // 啟動第一次播放
+    playLoop();
 }
 
 function clearAllRepeatStatus() {
