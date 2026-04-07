@@ -377,21 +377,25 @@ async function loadWordsFromFile(fileName) {
 
 // ---------------- 以下為原功能微調 ----------------
 function speakWord(word, lang) {
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
+    // 停止目前正在播放的語音 (Web Speech API)
+    speechSynthesis.cancel(); 
+    clearAllRepeatStatus();
+
+    // 轉換語言代碼符合 Google TTS 格式 (en-US -> en-us)
+    const voiceLang = lang.toLowerCase();
     
-    // 取得所有可用聲音
-    const voices = speechSynthesis.getVoices();
+    // 組合 Google TTS URL
+    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${voiceLang}&client=tw-ob`;
     
-    // 嘗試找到特定的語音來源（例如 Google 的語音通常更流暢）
-    const selectedVoice = voices.find(v => v.lang === lang && v.name.includes("Google"));
-    
-    if (selectedVoice) {
-        utterance.voice = selectedVoice;
-    }
-    
-    utterance.lang = lang;
-    speechSynthesis.speak(utterance);
+    // 使用 Audio 物件播放
+    const audio = new Audio(audioUrl);
+    audio.play().catch(e => {
+        console.warn("外部發音播放失敗，切換回系統內建語音:", e);
+        // 備案：如果 Google TTS 失敗（例如沒網路），就用回原本的 Web Speech API
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = lang;
+        speechSynthesis.speak(utterance);
+    });
 }
 /*
 function speakWord(word, lang) {
