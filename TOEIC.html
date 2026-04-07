@@ -1,4 +1,4 @@
-https://responsivevoice.org/app/?email=fuli62%40yahoo.com.tw&vgo_ee=l%2BG91NTiMwHTDhMuytIjXX56c%2FlYGgXXWMRtITQlpOpcygo%3D%3Aj5g2%2FBmLVehDI8quBB2qtW37f5TrPq9G
+<!-- https://responsivevoice.org/app/?email=fuli62%40yahoo.com.tw&vgo_ee=l%2BG91NTiMwHTDhMuytIjXX56c%2FlYGgXXWMRtITQlpOpcygo%3D%3Aj5g2%2FBmLVehDI8quBB2qtW37f5TrPq9G -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -383,7 +383,9 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
 async function speakWord(word, lang, callback) {
-  /*GOOGLE API 適用jzx2930那隻帳號*/
+  /*GOOGLE API 適用jzx2930那隻帳號
+  https://console.cloud.google.com/apis/library?project=my-toeic-app-492606*/
+  
     // 1. 在這裡貼上你的 Google API 金鑰
     const GOOGLE_API_KEY = "AIzaSyB9jqgbVynCg1Y5_bzBO-Tug_ROPkZ_vmA"; 
     const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`;
