@@ -381,30 +381,26 @@ async function loadWordsFromFile(fileName) {
 
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
-
 function speakWord(word, lang, callback) {
-    // 1. 先強行停止瀏覽器內建的所有機械音 (這步最關鍵！)
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (window.responsiveVoice) responsiveVoice.cancel();
 
-    // 2. 停止 ResponsiveVoice 目前的發音
-    if (window.responsiveVoice) {
-        responsiveVoice.cancel();
-    }
-
-    // 3. 判斷語言（不分大小寫）
     const l = lang.toUpperCase();
-    let voiceType = "US English Female"; // 預設美式
+    let voiceType = "";
 
     if (l.includes("GB") || l.includes("UK")) {
-        voiceType = "UK English Female"; // 英式
+        voiceType = "UK English Female"; // 英式真人
+    } else {
+        // 嘗試換成這個名稱，有時候能避開 Fallback
+        voiceType = "US English Male"; 
+        // 或者維持 "US English Female"，但我們要確保它不走系統音
     }
 
-    // 4. 只使用 ResponsiveVoice，不要寫備用方案 (避免搶聲)
-    console.log("確定呼叫 ResponsiveVoice 唸:", word, "口音:", voiceType);
-    
+    console.log("正在嘗試真人發音:", word, "口音:", voiceType);
+
     responsiveVoice.speak(word, voiceType, {
+        // 強制不使用系統備用語音 (如果外掛支援此參數)
+        fallbackVoice: "UK English Female", 
         onend: function() {
             if (callback) callback();
         }
