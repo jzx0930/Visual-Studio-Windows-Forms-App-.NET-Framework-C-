@@ -387,7 +387,8 @@ function speakWord(word, lang, callback) {
     
     // 2. 使用這個目前最穩定的 URL 格式
     // 注意：把參數順序稍微調整，有助於避開偵測
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${vLang}&q=${encodeURIComponent(word)}`;
+   // 注意網域變成了 translate.googleapis.com，而且 client 改成了 gtx
+const audioUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${vLang}&q=${encodeURIComponent(word)}`;
     
     const audio = new Audio();
     audio.src = audioUrl;
