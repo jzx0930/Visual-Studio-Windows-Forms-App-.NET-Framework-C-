@@ -379,37 +379,33 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 發音功能核心 ----------------
 
 function speakWord(word, lang, callback) {
-    // 停止目前所有系統語音
     speechSynthesis.cancel(); 
     clearAllRepeatStatus();
 
-    const voiceLang = lang.toLowerCase();
-    // 加上隨機參數避免快取問題，並使用 Google TTS 介面
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${voiceLang}&client=gtx`;
+    // 1. 確保語言代碼正確 (例如 en-us)
+    const vLang = lang.toLowerCase();
     
-    const audio = new Audio(audioUrl);
+    // 2. 使用這個目前最穩定的 URL 格式
+    // 注意：把參數順序稍微調整，有助於避開偵測
+    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${vLang}&q=${encodeURIComponent(word)}`;
+    
+    const audio = new Audio();
+    audio.src = audioUrl;
 
-    // 當音訊播放結束時，如果有點擊測驗，就執行回傳函式 (跳下一題)
-    if (callback) {
-        audio.onended = callback;
-        // 如果載入音訊失敗，也要讓測驗能繼續下去
-        audio.onerror = () => {
-            console.warn("音訊載入失敗，執行備案");
-            const utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = lang;
-            utterance.onend = callback;
-            speechSynthesis.speak(utterance);
-        };
-    }
-
-    audio.play().catch(e => {
-        console.warn("Google TTS 播放被阻擋，切換回系統語音:", e);
-        // 備案：如果 Google 被擋或沒網路，用回系統內建機械音
+    // 處理播放
+    audio.play().then(() => {
+        console.log("播放中: " + word);
+    }).catch(e => {
+        console.warn("Google TTS 依舊被擋，切換為系統音", e);
         const utterance = new SpeechSynthesisUtterance(word);
         utterance.lang = lang;
         if (callback) utterance.onend = callback;
         speechSynthesis.speak(utterance);
     });
+
+    if (callback) {
+        audio.onended = callback;
+    }
 }
 /*
 function speakWord(word, lang) {
