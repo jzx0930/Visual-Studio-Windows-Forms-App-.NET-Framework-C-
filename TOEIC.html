@@ -7,7 +7,7 @@ https://responsivevoice.org/app/?email=fuli62%40yahoo.com.tw&vgo_ee=l%2BG91NTiMw
   
 <meta charset="UTF-8">
 <title>TOEIC單字卡</title>
-<script src="https://code.responsivevoice.org/responsivevoice.js?key=rKAIQc8z"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="index.css">
 <script defer src="index.js"></script>
@@ -382,41 +382,55 @@ async function loadWordsFromFile(fileName) {
 
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
-function speakWord(word, lang, callback) {
-    if (window.responsiveVoice) {
-        responsiveVoice.cancel();
-    }
+async function speakWord(word, lang, callback) {
+    // 1. 在這裡貼上你的 Google API 金鑰
+    const GOOGLE_API_KEY = "AIzaSyB9jqgbVynCg1Y5_bzBO-Tug_ROPkZ_vmA"; 
+    const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`;
 
-    const checkLang = lang.toUpperCase();
-    let voiceType = "US English Female"; // 預設 ResponsiveVoice 名稱
+    // 2. 停止目前正在播放的所有聲音 (避免重疊)
+    window.speechSynthesis.cancel();
 
-    if (checkLang.includes("GB") || checkLang.includes("UK")) {
-        voiceType = "UK English Female";
-    }
-
-    // 關鍵修正：嘗試直接調用瀏覽器中的 Google 語音引擎
-    if (voiceType === "US English Female" && window.speechSynthesis) {
-        const voices = window.speechSynthesis.getVoices();
-        // 尋找名稱包含 "Google" 且語言為 "en-US" 的語音
-        const googleUS = voices.find(v => v.name.includes('Google') && v.lang === 'en-US');
-        
-        if (googleUS) {
-            const utterance = new SpeechSynthesisUtterance(word);
-            utterance.voice = googleUS;
-            utterance.lang = 'en-US';
-            utterance.onend = callback;
-            window.speechSynthesis.speak(utterance);
-            console.log("已強制切換至 Google US English 發音");
-            return; // 跳過下方的 responsiveVoice 執行
+    // 3. 設定發音參數
+    const isUS = lang.toUpperCase().includes("US");
+    const requestBody = {
+        input: { text: word },
+        voice: { 
+            languageCode: isUS ? "en-US" : "en-GB", 
+            // 使用 Wavenet 系列聲音，這才是真正的真人音質
+            name: isUS ? "en-US-Wavenet-F" : "en-GB-Wavenet-A",
+            ssmlGender: "FEMALE"
+        },
+        audioConfig: { 
+            audioEncoding: "MP3",
+            pitch: 0,
+            speakingRate: 1.0
         }
-    }
+    };
 
-    // 若找不到 Google 語音，則回歸使用 ResponsiveVoice 外掛
-    responsiveVoice.speak(word, voiceType, {
-        onend: function() {
-            if (callback) callback();
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody)
+        });
+
+        const data = await response.json();
+
+        if (data.audioContent) {
+            // 4. 將 Base64 資料轉成音訊並播放
+            const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+            audio.play();
+            
+            // 5. 播放結束後執行回傳函式 (例如：自動下一題)
+            audio.onended = () => {
+                if (callback) callback();
+            };
+        } else {
+            console.error("Google TTS 沒回傳音訊內容，請檢查金鑰權限。");
         }
-    });
+    } catch (error) {
+        console.error("呼叫 Google API 失敗:", error);
+    }
 }
 /*
 function speakWord(word, lang) {
