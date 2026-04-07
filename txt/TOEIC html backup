@@ -1,9 +1,13 @@
-
+<!-- https://responsivevoice.org/app/?email=fuli62%40yahoo.com.tw&vgo_ee=l%2BG91NTiMwHTDhMuytIjXX56c%2FlYGgXXWMRtITQlpOpcygo%3D%3Aj5g2%2FBmLVehDI8quBB2qtW37f5TrPq9G -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+
+
+  
 <meta charset="UTF-8">
 <title>TOEIC單字卡</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="index.css">
 <script defer src="index.js"></script>
@@ -197,7 +201,8 @@
 </head>
 <body>
 <div class="content-wrapper">
-  <a href="index.html" class="back-button">🏠 返回主頁</a>
+  
+ <!-- <a href="index.html" class="back-button">🏠 返回主頁</a> -->
 
 
 
@@ -376,7 +381,76 @@ async function loadWordsFromFile(fileName) {
 }
 
 // ---------------- 以下為原功能微調 ----------------
+// ---------------- 發音功能核心 ----------------
+async function speakWord(word, lang, callback) {
+  /*GOOGLE API 適用jzx2930那隻帳號
+  https://console.cloud.google.com/apis/library?project=my-toeic-app-492606*/
+  
+    // 1. 在這裡貼上你的 Google API 金鑰
+    const GOOGLE_API_KEY = "AIzaSyB9jqgbVynCg1Y5_bzBO-Tug_ROPkZ_vmA"; 
+    const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`;
 
+    // 2. 停止目前正在播放的所有聲音 (避免重疊)
+    window.speechSynthesis.cancel();
+
+    // 3. 設定發音參數
+    const isUS = lang.toUpperCase().includes("US");
+
+
+  
+    const requestBody = {
+        input: { text: word },
+        voice: { 
+            languageCode: isUS ? "en-US" : "en-GB", 
+          
+        /*語音類型每月免費額度超過後的費用(EX:apple為5個字元)
+        Standard 語音前 400 萬 字元免費$4.00美金 
+        Wavenet 語音前 100 萬 字元免費$16.00 美金
+        下面則一
+         // 將 Wavenet 改為 Standard，這就是最經典的 Google 翻譯女聲
+         // 使用 Wavenet 系列聲音，這才是真正的真人音質
+        */                           
+                                 
+               name: isUS ? "en-US-Standard-C" : "en-GB-Standard-A",
+             // name: isUS ? "en-US-Wavenet-F" : "en-GB-Wavenet-A", 
+            ssmlGender: "FEMALE"// 女聲
+          
+        },
+        audioConfig: { 
+            audioEncoding: "MP3",
+            pitch: 0,
+            speakingRate: 1.0 // 速度可以依照喜好調整
+        }
+    };
+
+  
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody)
+        });
+
+        const data = await response.json();
+
+        if (data.audioContent) {
+            // 4. 將 Base64 資料轉成音訊並播放
+            const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+            audio.play();
+            
+            // 5. 播放結束後執行回傳函式 (例如：自動下一題)
+            audio.onended = () => {
+                if (callback) callback();
+            };
+        } else {
+            console.error("Google TTS 沒回傳音訊內容，請檢查金鑰權限。");
+        }
+    } catch (error) {
+        console.error("呼叫 Google API 失敗:", error);
+    }
+}
+/*
 function speakWord(word, lang) {
   speechSynthesis.cancel();
   clearAllRepeatStatus();
@@ -384,7 +458,7 @@ function speakWord(word, lang) {
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = lang;
   speechSynthesis.speak(utterance);
-}
+}*/
 
 function repeatSpeak(word, lang) {
   const key = word + lang;
@@ -411,6 +485,7 @@ function repeatSpeak(word, lang) {
 
   speechSynthesis.speak(utterance);
 }
+
 
 function clearAllRepeatStatus() {
   for (const key in repeatStatus) {
@@ -615,7 +690,6 @@ function handleAnswer(selectedObj, targetObj, btnElement) {
         btnElement.classList.add("option-wrong");
         document.getElementById("quizFeedback").style.color = "#ff5555";
         
-        // 根據題型顯示正確答案文字
         const correctText = (currentQuizType === "cn-en") ? targetObj.en : targetObj.cn;
         document.getElementById("quizFeedback").textContent = `Wrong! 正確答案是: ${correctText}`;
         
@@ -626,14 +700,12 @@ function handleAnswer(selectedObj, targetObj, btnElement) {
         });
     }
 
-    // 無論哪種題型，作答後依然維持美式口音播放正確單字一次
-    const utterance = new SpeechSynthesisUtterance(targetObj.en);
-    utterance.lang = 'en-US';
-    utterance.onend = () => {
+    // --- 關鍵修正：使用高品質發音，並在播放結束後才跳下一題 ---
+    // 這裡我們帶入一個 callback 函式
+    speakWord(targetObj.en, 'en-US', () => {
         quizIndex++;
         setTimeout(nextQuestion, 800);
-    };
-    speechSynthesis.speak(utterance);
+    });
 }
 
 // 更新左右側清單
@@ -670,5 +742,7 @@ function finishQuiz() {
 
   
 </script>
+ 
+
 </body>
 </html>
