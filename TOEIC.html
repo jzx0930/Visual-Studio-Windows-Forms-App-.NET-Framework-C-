@@ -380,7 +380,7 @@ async function loadWordsFromFile(fileName) {
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
 
 
-  lines.forEach(line => {
+ lines.forEach(line => {
     const idx = line.indexOf("|");
     if (idx !== -1) {
         const word = line.substring(0, idx).trim();
@@ -391,23 +391,43 @@ async function loadWordsFromFile(fileName) {
         card.className = "term-card";
         card.dataset.word = word;
         
-        // 移除 main-text 後面的 hidden-word 類別
-        // 將按鈕文字預設設為 👁️
         card.innerHTML = `
             <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
-            <div class="main-text">${word}</div> 
+            <div class="main-text">${word}</div>
+            <div class="phonetic-text" id="phonetic-${safeWord.replace(/\s+/g, '-')}" style="color: #00ff99; font-size: 13px; margin: 2px 0;">[ 載入中... ]</div>
+            
             <div class="button-group">
                 <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
                 <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
-                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
-                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
+                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁</button>
+                <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁</button>
             </div>
             <div class="sub-text">${meaning}</div>
         `;
         row.appendChild(card);
+
+        // 呼叫抓取音標的函式
+        fetchPhonetic(word);
     }
 });
-   
+    
+   // 新增抓取音標的函式
+async function fetchPhonetic(word) {
+    try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        const data = await response.json();
+        const phonetic = data[0]?.phonetic || data[0]?.phonetics?.find(p => p.text)?.text || "";
+        
+        const element = document.getElementById(`phonetic-${word.replace(/\s+/g, '-')}`);
+        if (element) {
+            element.textContent = phonetic ? phonetic : ""; // 如果沒找到就清空
+        }
+    } catch (err) {
+        // 失敗時靜默處理，不顯示錯誤資訊以免打亂介面
+        const element = document.getElementById(`phonetic-${word.replace(/\s+/g, '-')}`);
+        if (element) element.textContent = "";
+    }
+}
 
     section.appendChild(title);
     section.appendChild(row);
