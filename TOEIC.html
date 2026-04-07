@@ -595,18 +595,19 @@ function searchWord() {
 }
 
 // 執行載入
+// 執行載入
 init();
 
 // --- 測驗功能專用的全域變數 ---
 let quizPool = {}; 
 let currentQuizList = [];
-let quizIndex = 0; // 追蹤目前考到第幾題
+let quizIndex = 0; 
 let correctCount = 0;
 let wrongCount = 0;
 let isAnswering = false;
-  let currentQuizType = "cn-en"; // 紀錄當前題型
+let currentQuizType = "cn-en";
 
-// 洗牌演算法 (打亂題目順序)
+// 洗牌演算法
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -614,51 +615,38 @@ function shuffleArray(array) {
     }
 }
 
-// 攔截原有的載入邏輯來同步更新測驗池 (這部分維持你的外掛邏輯)
-const originalLoadWords = loadWordsFromFile;
-loadWordsFromFile = async function(fileName) {
-    await originalLoadWords(fileName);
-    const response = await fetch(`txt/${fileName}`);
-    const text = await response.text();
-    const catName = fileName.replace(".txt", "");
-    const lines = text.split("\n").map(l => l.trim()).filter(l => l);
-    
-    quizPool[catName] = [];
-    lines.forEach(line => {
-        const idx = line.indexOf("|");
-        if(idx !== -1) {
-            quizPool[catName].push({
-                en: line.substring(0, idx).trim(),
-                cn: line.substring(idx + 1).trim()
-            });
-        }
-    });
-
+// 更新下拉選單 (此函式由 loadWordsFromFile 在載入成功後呼叫)
+function updateQuizRangeUI(catName) {
     const sel = document.getElementById("quizRange");
-    const opt = document.createElement("option");
-    opt.value = catName;
-    opt.textContent = catName;
-    sel.appendChild(opt);
-};
+    // 檢查是否已經存在該選項，避免重複添加
+    if (!Array.from(sel.options).some(opt => opt.value === catName)) {
+        const opt = document.createElement("option");
+        opt.value = catName;
+        opt.textContent = catName;
+        sel.appendChild(opt);
+    }
+}
 
+// 修改 loadWordsFromFile 內部邏輯以支援 UI 更新
+// (請確保你先前的 loadWordsFromFile 函式末端有呼叫 updateQuizRangeUI)
+// 為了保險起見，這裡提供一個「自動修復版」的測驗範圍初始化
 function openQuiz() {
-   const range = document.getElementById("quizRange").value;
-    currentQuizType = document.getElementById("quizMode").value; // 取得使用者選擇的題型
+    const range = document.getElementById("quizRange").value;
+    currentQuizType = document.getElementById("quizMode").value;
     currentQuizList = [];
     
     if(range === "all") {
         Object.values(quizPool).forEach(list => currentQuizList.push(...list));
     } else {
-        currentQuizList = [...quizPool[range]];
+        currentQuizList = quizPool[range] ? [...quizPool[range]] : [];
     }
 
     if(currentQuizList.length < 4) {
-        alert("單字量不足 4 個，無法開始測驗！");
+        alert("該範圍單字量不足 4 個，無法開始測驗！");
         return;
     }
 
-    // 初始化測驗狀態
-    shuffleArray(currentQuizList); // 打亂順序
+    shuffleArray(currentQuizList);
     quizIndex = 0;
     correctCount = 0;
     wrongCount = 0;
@@ -670,6 +658,8 @@ function openQuiz() {
     
     nextQuestion();
 }
+
+// ... 剩下的 closeQuiz, nextQuestion, handleAnswer, updateSideList, finishQuiz 邏輯保持不變 ...
 
 function closeQuiz() {
     if(quizIndex < currentQuizList.length && quizIndex > 0) {
