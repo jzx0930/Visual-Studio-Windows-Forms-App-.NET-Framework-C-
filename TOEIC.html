@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=免費註冊獲取或留空測試"></script>
+  
 <meta charset="UTF-8">
 <title>TOEIC單字卡</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -379,29 +382,9 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 發音功能核心 ----------------
 
 function speakWord(word, lang) {
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    
-    // 取得瀏覽器內建的所有聲音清單
-    const voices = speechSynthesis.getVoices();
-    
-    // 根據你傳入的 lang (英式或美式) 來挑選高品質聲音
-    let selectedVoice;
-    if (lang.includes("US")) {
-        // 優先尋找 Google 或 Microsoft 的美式高品質女聲/男聲
-        selectedVoice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Microsoft Zira"));
-    } else {
-        selectedVoice = voices.find(v => v.name.includes("Google UK English") || v.name.includes("Microsoft Hazel"));
-    }
-
-    // 如果有找到高品質聲音就套用，沒有就用系統預設
-    if (selectedVoice) {
-        utterance.voice = selectedVoice;
-    } else {
-        utterance.lang = lang; 
-    }
-
-    speechSynthesis.speak(utterance);
+    const voiceType = lang.includes("US") ? "US English Female" : "UK English Female";
+    // 直接呼叫 responsiveVoice 的播放功能
+    responsiveVoice.speak(word, voiceType);
 }
 /*
 function speakWord(word, lang) {
