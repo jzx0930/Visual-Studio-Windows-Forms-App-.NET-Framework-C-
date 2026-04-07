@@ -378,35 +378,30 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
 
-function speakWord(word, lang, callback) {
-    speechSynthesis.cancel(); 
-    clearAllRepeatStatus();
-
-    // 1. 確保語言代碼正確 (例如 en-us)
-    const vLang = lang.toLowerCase();
+function speakWord(word, lang) {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(word);
     
-    // 2. 使用這個目前最穩定的 URL 格式
-    // 注意：把參數順序稍微調整，有助於避開偵測
-   // 注意網域變成了 translate.googleapis.com，而且 client 改成了 gtx
-const audioUrl = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=${vLang}&q=${encodeURIComponent(word)}`;
+    // 取得瀏覽器內建的所有聲音清單
+    const voices = speechSynthesis.getVoices();
     
-    const audio = new Audio();
-    audio.src = audioUrl;
-
-    // 處理播放
-    audio.play().then(() => {
-        console.log("播放中: " + word);
-    }).catch(e => {
-        console.warn("Google TTS 依舊被擋，切換為系統音", e);
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = lang;
-        if (callback) utterance.onend = callback;
-        speechSynthesis.speak(utterance);
-    });
-
-    if (callback) {
-        audio.onended = callback;
+    // 根據你傳入的 lang (英式或美式) 來挑選高品質聲音
+    let selectedVoice;
+    if (lang.includes("US")) {
+        // 優先尋找 Google 或 Microsoft 的美式高品質女聲/男聲
+        selectedVoice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Microsoft Zira"));
+    } else {
+        selectedVoice = voices.find(v => v.name.includes("Google UK English") || v.name.includes("Microsoft Hazel"));
     }
+
+    // 如果有找到高品質聲音就套用，沒有就用系統預設
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    } else {
+        utterance.lang = lang; 
+    }
+
+    speechSynthesis.speak(utterance);
 }
 /*
 function speakWord(word, lang) {
