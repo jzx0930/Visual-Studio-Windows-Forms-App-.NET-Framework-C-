@@ -383,6 +383,7 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 以下為原功能微調 ----------------
 // ---------------- 發音功能核心 ----------------
 async function speakWord(word, lang, callback) {
+  /*GOOGLE API 適用jzx2930那隻帳號*/
     // 1. 在這裡貼上你的 Google API 金鑰
     const GOOGLE_API_KEY = "AIzaSyB9jqgbVynCg1Y5_bzBO-Tug_ROPkZ_vmA"; 
     const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`;
@@ -392,20 +393,48 @@ async function speakWord(word, lang, callback) {
 
     // 3. 設定發音參數
     const isUS = lang.toUpperCase().includes("US");
+
+  const requestBody = {
+    input: { text: word },
+    voice: { 
+        languageCode: isUS ? "en-US" : "en-GB", 
+        // 將 Wavenet 改為 Standard，這就是最經典的 Google 翻譯女聲
+        name: isUS ? "en-US-Standard-C" : "en-GB-Standard-A", 
+        ssmlGender: "FEMALE"
+    },
+    audioConfig: { 
+        audioEncoding: "MP3",
+        pitch: 0,
+        speakingRate: 1.0 // 速度可以依照喜好調整
+    }
+};
+  
     const requestBody = {
         input: { text: word },
         voice: { 
             languageCode: isUS ? "en-US" : "en-GB", 
-            // 使用 Wavenet 系列聲音，這才是真正的真人音質
-            name: isUS ? "en-US-Wavenet-F" : "en-GB-Wavenet-A",
-            ssmlGender: "FEMALE"
+          
+        /*語音類型每月免費額度超過後的費用(EX:apple為5個字元)
+        Standard 語音前 400 萬 字元免費$4.00美金 
+        Wavenet 語音前 100 萬 字元免費$16.00 美金
+        下面則一
+         // 將 Wavenet 改為 Standard，這就是最經典的 Google 翻譯女聲
+         // 使用 Wavenet 系列聲音，這才是真正的真人音質
+        */                           
+                                 
+               name: isUS ? "en-US-Standard-C" : "en-GB-Standard-A",
+             // name: isUS ? "en-US-Wavenet-F" : "en-GB-Wavenet-A", 
+            ssmlGender: "FEMALE"// 女聲
+          
         },
         audioConfig: { 
             audioEncoding: "MP3",
             pitch: 0,
-            speakingRate: 1.0
+            speakingRate: 1.0 // 速度可以依照喜好調整
         }
     };
+
+  
 
     try {
         const response = await fetch(url, {
