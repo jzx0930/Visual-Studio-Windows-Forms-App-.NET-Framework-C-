@@ -383,22 +383,23 @@ async function loadWordsFromFile(fileName) {
 // ---------------- 發音功能核心 ----------------
 
 function speakWord(word, lang, callback) {
-    // 播放前先停止目前正在發音的聲音
-    if (responsiveVoice.isPlaying()) {
+    // 1. 停止目前所有發音，避免重疊
+    if (window.responsiveVoice) {
         responsiveVoice.cancel();
     }
-    clearAllRepeatStatus();
-
-    // 判斷要使用美式還是英式發音
-    let voiceType = "US English Female"; // 預設使用美式女聲
-    if (lang.includes("GB") || lang.includes("UK")) {
-        voiceType = "UK English Female"; // 切換為英式女聲
+    
+    // 2. 判斷美式 (US) 或英式 (UK/GB)
+    let voiceType = "US English Female"; // 預設美音
+    if (lang.toUpperCase().includes("GB") || lang.toUpperCase().includes("UK")) {
+        voiceType = "UK English Female"; // 切換英音
     }
 
-    // 呼叫外掛播放聲音
+    console.log("正在發音:", word, "使用口音:", voiceType);
+
+    // 3. 直接呼叫外掛發音
     responsiveVoice.speak(word, voiceType, {
         onend: function() {
-            // 當發音結束時，如果有測驗的 callback 就執行它
+            // 如果有下一題的函式 (callback)，唸完就執行
             if (callback) callback();
         }
     });
@@ -708,5 +709,7 @@ function finishQuiz() {
 
   
 </script>
+  <script
+src="https://code.responsivevoice.org/responsivevoice.js?key=rKAIQc8z"></script>
 </body>
 </html>
