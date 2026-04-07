@@ -411,6 +411,8 @@ async function loadWordsFromFile(fileName) {
           <div class="button-group">
               <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
               <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
+              <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
+              <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
           </div>
           <div class="sub-text">${translation}</div>
       `;
