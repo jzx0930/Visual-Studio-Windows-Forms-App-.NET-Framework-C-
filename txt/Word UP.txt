@@ -1,33 +1,33 @@
-colleague | 同事 | n.
-competitor | 競爭者、對手 | n.
-opponent | 對手 | n.
-participant | 參加者、參與者 | n.
-spectator | 觀眾、參觀者 | n.
-guest | 客人、訪客 | n.
-client | 客戶、委託人 | n.
-consumer | 消費者 | n.
-tenant | 房客、承租人 | n.
-novice | 新手、初學者 | n.
-substitute | 代替者、代理人 | n.
-technician | 技術人員 | n.
-plumber | 水管工人 | n.
-clerk | 辦事員、書記、職員 | n.
-receptionist | 接待員、櫃檯人員 | n.
-secretary | 秘書 | n.
-operator | 操作員、接線員 | n.
-conductor | 指揮(樂團)、列車長 | n.
-president | 總裁、總統 | n.
-vice president | 副總裁、副總統 | n.
-chairman | 主席、董事長 | n.
-vice chairman | 副主席、副董事長 | n.
-director | 董事、主管、主任 | n.
-supervisor | 主管、監督者 | n.
-manager | 經理、管理者 | n.
-executive | 高階主管、行政人員 | n.
-advisor | 顧問 | n.
-consultant | 顧問、諮詢師 | n.
-representative | 代表、代理人 | n.
-supplier | 供應商 | n.
-shareholder | 股東 | n.
-chairman | 主席、董事長 | n.
-vice chairman | 副主席、副董事長 | n.
+[
+  { "word": "colleague", "kk": "[ˈkɑlig]", "translation": "同事", "part_of_speech": "n." },
+  { "word": "competitor", "kk": "[kəmˈpɛtətɚ]", "translation": "競爭者、對手", "part_of_speech": "n." },
+  { "word": "opponent", "kk": "[əˈponənt]", "translation": "對手", "part_of_speech": "n." },
+  { "word": "participant", "kk": "[pɑrˈtɪsəpənt]", "translation": "參加者、參與者", "part_of_speech": "n." },
+  { "word": "spectator", "kk": "[ˈspɛktetɚ]", "translation": "觀眾、參觀者", "part_of_speech": "n." },
+  { "word": "guest", "kk": "[ɡɛst]", "translation": "客人、訪客", "part_of_speech": "n." },
+  { "word": "client", "kk": "[ˈklaɪənt]", "translation": "客戶、委託人", "part_of_speech": "n." },
+  { "word": "consumer", "kk": "[kənˈsumɚ]", "translation": "消費者", "part_of_speech": "n." },
+  { "word": "tenant", "kk": "[ˈtɛnənt]", "translation": "房客、承租人", "part_of_speech": "n." },
+  { "word": "novice", "kk": "[ˈnɑvɪs]", "translation": "新手、初學者", "part_of_speech": "n." },
+  { "word": "substitute", "kk": "[ˈsʌbstəˌtjut]", "translation": "代替者、代理人", "part_of_speech": "n." },
+  { "word": "technician", "kk": "[tɛkˈnɪʃən]", "translation": "技術人員", "part_of_speech": "n." },
+  { "word": "plumber", "kk": "[ˈplʌmɚ]", "translation": "水管工人", "part_of_speech": "n." },
+  { "word": "clerk", "kk": "[klɝk]", "translation": "辦事員、書記、職員", "part_of_speech": "n." },
+  { "word": "receptionist", "kk": "[rɪˈsɛpʃənɪst]", "translation": "接待員、櫃檯人員", "part_of_speech": "n." },
+  { "word": "secretary", "kk": "[ˈsɛkrəˌtɛri]", "translation": "秘書", "part_of_speech": "n." },
+  { "word": "operator", "kk": "[ˈɑpəˌretɚ]", "translation": "操作員、接線員", "part_of_speech": "n." },
+  { "word": "conductor", "kk": "[kənˈdʌktɚ]", "translation": "指揮(樂團)、列車長", "part_of_speech": "n." },
+  { "word": "president", "kk": "[ˈprɛzədənt]", "translation": "總裁、總統", "part_of_speech": "n." },
+  { "word": "vice president", "kk": "[vaɪs ˈprɛzədənt]", "translation": "副總裁、副總統", "part_of_speech": "n." },
+  { "word": "chairman", "kk": "[ˈtʃɛrmən]", "translation": "主席、董事長", "part_of_speech": "n." },
+  { "word": "vice chairman", "kk": "[vaɪs ˈtʃɛrmən]", "translation": "副主席、副董事長", "part_of_speech": "n." },
+  { "word": "director", "kk": "[dəˈrɛktɚ]", "translation": "董事、主管、主任", "part_of_speech": "n." },
+  { "word": "supervisor", "kk": "[ˈsupɚˌvaɪzɚ]", "translation": "主管、監督者", "part_of_speech": "n." },
+  { "word": "manager", "kk": "[ˈmænədʒɚ]", "translation": "經理、管理者", "part_of_speech": "n." },
+  { "word": "executive", "kk": "[ɪɡˈzɛkjətɪv]", "translation": "高階主管、行政人員", "part_of_speech": "n." },
+  { "word": "advisor", "kk": "[ædˈvaɪzɚ]", "translation": "顧問", "part_of_speech": "n." },
+  { "word": "consultant", "kk": "[kənˈsʌltənt]", "translation": "顧問、諮詢師", "part_of_speech": "n." },
+  { "word": "representative", "kk": "[ˌrɛprɪˈzɛntətɪv]", "translation": "代表、代理人", "part_of_speech": "n." },
+  { "word": "supplier", "kk": "[səˈplaɪɚ]", "translation": "供應商", "part_of_speech": "n." },
+  { "word": "shareholder", "kk": "[ˈʃɛrˌholdɚ]", "translation": "股東", "part_of_speech": "n." }
+]
