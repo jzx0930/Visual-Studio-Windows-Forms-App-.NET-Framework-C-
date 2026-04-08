@@ -14,6 +14,44 @@
 <style>
 
 
+/* 筆記按鈕樣式 */
+.note-btn {
+  position: absolute;
+bottom: 8px;    /* 距離底部 8px */
+  right: 8px;     /* 距離右側 8px */
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #ffcc00; /* 金黃色 */
+  z-index: 10;
+  padding: 5px;
+  transition: transform 0.2s;
+}
+
+.note-btn:hover {
+  transform: scale(1.2);
+}
+
+/* 筆記內容區塊 */
+.note-content {
+  display: none;
+  background-color: #333;
+  color: #ffcc00;
+  font-size: 13px;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: 1px dashed #ffcc00;
+  word-break: break-all;
+  text-align: left;
+  white-space: pre-wrap; /* 支援換行 */
+}
+
+.note-content.show {
+  display: block;
+}
+  
 /* 單字卡相對定位，方便放置右上角眼睛 */
 .term-card {
   position: relative;
@@ -361,9 +399,36 @@ async function loadWordsFromFile(fileName) {
     const section = document.createElement("section");
     section.className = "section";
 
-    const title = document.createElement("div");
-    title.className = "section-title";
-    title.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
+  const title = document.createElement("div");
+  title.className = "section-title";
+  // 增加一個容器讓標題和按鈕分開
+  title.style.display = "flex";
+  title.style.justifyContent = "space-between";
+  title.style.alignItems = "center";
+
+  // 左側標題內容
+  const titleText = document.createElement("span");
+  titleText.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
+  title.appendChild(titleText);
+
+  // 右側循環播放按鈕
+  const loopBtn = document.createElement("button");
+  loopBtn.className = "control-button";
+  loopBtn.style.fontSize = "12px";
+  loopBtn.style.padding = "2px 8px";
+  loopBtn.style.margin = "0";
+  loopBtn.style.borderColor = "#00ff99";
+  loopBtn.style.backgroundColor = "transparent";
+  loopBtn.style.color = "#00ff99";
+  loopBtn.innerText = "🔁 循環播放區塊";
+
+  // 點擊按鈕時執行循環邏輯
+  loopBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // 阻止折疊區塊收合
+    toggleSectionLoop(sectionTitleText, loopBtn);
+  });
+
+  title.appendChild(loopBtn);
 
     const row = document.createElement("div");
     row.className = "content-row collapsed";
@@ -393,18 +458,25 @@ async function loadWordsFromFile(fileName) {
       }).filter(item => item !== null);
     }
 
-    // --- 渲染單字卡 ---
+   // --- 渲染單字卡 (已修正加入筆記功能) ---
     wordList.forEach(item => {
       const word = item.word;
       const translation = item.translation;
-      const kk = item.kk || ""; // 如果 JSON 有 KK 音標就顯示，沒有則為空串
+      const kk = item.kk || ""; 
+      const note = (item.note || "").trim(); // 讀取 note 並去除空白
       const safeWord = word.replace(/'/g, "\\'");
 
       const card = document.createElement("div");
       card.className = "term-card";
       card.dataset.word = word;
-      
+
+      // 關鍵：判斷 note 是否存在
+      const hasNote = note.length > 0;
+      const noteButtonHtml = hasNote ? `<button class="note-btn" onclick="toggleNote(this)" title="查看筆記">📝</button>` : "";
+      const noteContentHtml = hasNote ? `<div class="note-content">${note}</div>` : "";
+
       card.innerHTML = `
+          ${noteButtonHtml}
           <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
           <div class="main-text">${word}</div> 
           <div class="sub-text" style="color: #00ff99; font-family: Arial; margin-bottom: 4px;">${kk}</div>
@@ -415,6 +487,7 @@ async function loadWordsFromFile(fileName) {
               <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
           </div>
           <div class="sub-text">${translation}</div>
+          ${noteContentHtml}
       `;
       row.appendChild(card);
     });
@@ -813,6 +886,83 @@ function toggleAllWords(shouldHide) {
     allEyeBtns.forEach(btn => {
         btn.textContent = shouldHide ? "🙈" : "👁️";
     });
+}
+
+
+  // 切換筆記顯示/隱藏的函數
+function toggleNote(btn) {
+    // 找到同一個字卡內的 note-content
+    const card = btn.closest('.term-card');
+    const noteContent = card.querySelector(".note-content");
+    if (noteContent) {
+        noteContent.classList.toggle("show");
+        // 點擊後稍微改變按鈕透明度代表已開啟
+        btn.style.opacity = noteContent.classList.contains("show") ? "0.5" : "1";
+    }
+}
+
+  // 記錄各區塊的播放狀態
+const sectionLoopStatus = {};
+function toggleSectionLoop(sectionName, btnElement) {
+    // 如果該區塊正在播放，則停止
+    if (sectionLoopStatus[sectionName]) {
+        sectionLoopStatus[sectionName] = false;
+        window.speechSynthesis.cancel();
+        btnElement.innerText = "🔁 循環播放區塊";
+        btnElement.style.backgroundColor = "transparent";
+        btnElement.style.color = "#00ff99";
+        return;
+    }
+
+    // 停止所有其他正在進行的發音
+    window.speechSynthesis.cancel();
+    // 將所有其他按鈕重置（可選）
+    document.querySelectorAll(".section-title .control-button").forEach(btn => {
+        if (btn !== btnElement) {
+            btn.innerText = "🔁 循環播放區塊";
+            btn.style.backgroundColor = "transparent";
+            btn.style.color = "#00ff99";
+        }
+    });
+
+    // 標記目前區塊為播放中
+    // 先把所有狀態清空，確保一次只有一個區塊在循環
+    for (let key in sectionLoopStatus) sectionLoopStatus[key] = false;
+    sectionLoopStatus[sectionName] = true;
+
+    btnElement.innerText = "⏹ 停止播放";
+    btnElement.style.backgroundColor = "#00ff99";
+    btnElement.style.color = "#000";
+
+    const words = quizPool[sectionName];
+    if (!words || words.length === 0) return;
+
+    let currentIndex = 0;
+
+    function playNext() {
+        if (!sectionLoopStatus[sectionName]) return; // 如果狀態被切換為 false，停止遞迴
+
+        const wordObj = words[currentIndex];
+        const utterance = new SpeechSynthesisUtterance(wordObj.en);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9; // 稍微放慢一點點，聽得比較清楚
+
+        utterance.onend = () => {
+            if (sectionLoopStatus[sectionName]) {
+                currentIndex = (currentIndex + 1) % words.length; // 循環索引
+                setTimeout(playNext, 1000); // 每個單字間隔 1 秒
+            }
+        };
+
+        utterance.onerror = () => {
+            sectionLoopStatus[sectionName] = false;
+            btnElement.innerText = "🔁 循環播放區塊";
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    playNext();
 }
   
 </script>
