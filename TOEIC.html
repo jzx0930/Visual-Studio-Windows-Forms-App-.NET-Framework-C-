@@ -12,7 +12,9 @@
 <link rel="stylesheet" href="index.css">
 <script defer src="index.js"></script>
 <style>
-/* 筆記按鈕：放在左上角 */
+
+
+/* 筆記按鈕樣式 */
 .note-btn {
   position: absolute;
   top: 8px;
@@ -31,7 +33,7 @@
   transform: scale(1.2);
 }
 
-/* 筆記內容：預設隱藏，顯示在單字卡下方 */
+/* 筆記內容區塊 */
 .note-content {
   display: none;
   background-color: #333;
@@ -43,13 +45,13 @@
   border: 1px dashed #ffcc00;
   word-break: break-all;
   text-align: left;
-  white-space: pre-wrap; /* 支援筆記內換行 */
+  white-space: pre-wrap; /* 支援換行 */
 }
 
 .note-content.show {
   display: block;
 }
-
+  
 /* 單字卡相對定位，方便放置右上角眼睛 */
 .term-card {
   position: relative;
@@ -397,36 +399,10 @@ async function loadWordsFromFile(fileName) {
     const section = document.createElement("section");
     section.className = "section";
 
-  const title = document.createElement("div");
-  title.className = "section-title";
-  // 增加一個容器讓標題和按鈕分開
-  title.style.display = "flex";
-  title.style.justifyContent = "space-between";
-  title.style.alignItems = "center";
+    const title = document.createElement("div");
+    title.className = "section-title";
+    title.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
 
-  // 左側標題內容
-  const titleText = document.createElement("span");
-  titleText.innerHTML = `<span class="arrow">▶</span> ${sectionTitleText}`;
-  title.appendChild(titleText);
-
-  // 右側循環播放按鈕
-  const loopBtn = document.createElement("button");
-  loopBtn.className = "control-button";
-  loopBtn.style.fontSize = "12px";
-  loopBtn.style.padding = "2px 8px";
-  loopBtn.style.margin = "0";
-  loopBtn.style.borderColor = "#00ff99";
-  loopBtn.style.backgroundColor = "transparent";
-  loopBtn.style.color = "#00ff99";
-  loopBtn.innerText = "🔁 循環播放區塊";
-
-  // 點擊按鈕時執行循環邏輯
-  loopBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // 阻止折疊區塊收合
-    toggleSectionLoop(sectionTitleText, loopBtn);
-  });
-
-  title.appendChild(loopBtn);
     const row = document.createElement("div");
     row.className = "content-row collapsed";
 
@@ -455,19 +431,19 @@ async function loadWordsFromFile(fileName) {
       }).filter(item => item !== null);
     }
 
-  // --- 渲染單字卡 ---
+   // --- 渲染單字卡 (已修正加入筆記功能) ---
     wordList.forEach(item => {
       const word = item.word;
       const translation = item.translation;
-      const kk = item.kk || "";
-      const note = (item.note || "").trim(); // 確保讀取 note 並去除空白
+      const kk = item.kk || ""; 
+      const note = (item.note || "").trim(); // 讀取 note 並去除空白
       const safeWord = word.replace(/'/g, "\\'");
 
       const card = document.createElement("div");
       card.className = "term-card";
       card.dataset.word = word;
 
-      // 判斷是否有內容：只有 note 不是空字串才顯示按鈕
+      // 關鍵：判斷 note 是否存在
       const hasNote = note.length > 0;
       const noteButtonHtml = hasNote ? `<button class="note-btn" onclick="toggleNote(this)" title="查看筆記">📝</button>` : "";
       const noteContentHtml = hasNote ? `<div class="note-content">${note}</div>` : "";
@@ -488,7 +464,6 @@ async function loadWordsFromFile(fileName) {
       `;
       row.appendChild(card);
     });
-});
 
     section.appendChild(title);
     section.appendChild(row);
@@ -612,71 +587,6 @@ function repeatSpeak(word, lang) {
 }
 
 
-  // 記錄各區塊的播放狀態
-const sectionLoopStatus = {};
-function toggleSectionLoop(sectionName, btnElement) {
-    // 如果該區塊正在播放，則停止
-    if (sectionLoopStatus[sectionName]) {
-        sectionLoopStatus[sectionName] = false;
-        window.speechSynthesis.cancel();
-        btnElement.innerText = "🔁 循環播放區塊";
-        btnElement.style.backgroundColor = "transparent";
-        btnElement.style.color = "#00ff99";
-        return;
-    }
-
-    // 停止所有其他正在進行的發音
-    window.speechSynthesis.cancel();
-    // 將所有其他按鈕重置（可選）
-    document.querySelectorAll(".section-title .control-button").forEach(btn => {
-        if (btn !== btnElement) {
-            btn.innerText = "🔁 循環播放區塊";
-            btn.style.backgroundColor = "transparent";
-            btn.style.color = "#00ff99";
-        }
-    });
-
-    // 標記目前區塊為播放中
-    // 先把所有狀態清空，確保一次只有一個區塊在循環
-    for (let key in sectionLoopStatus) sectionLoopStatus[key] = false;
-    sectionLoopStatus[sectionName] = true;
-
-    btnElement.innerText = "⏹ 停止播放";
-    btnElement.style.backgroundColor = "#00ff99";
-    btnElement.style.color = "#000";
-
-    const words = quizPool[sectionName];
-    if (!words || words.length === 0) return;
-
-    let currentIndex = 0;
-
-    function playNext() {
-        if (!sectionLoopStatus[sectionName]) return; // 如果狀態被切換為 false，停止遞迴
-
-        const wordObj = words[currentIndex];
-        const utterance = new SpeechSynthesisUtterance(wordObj.en);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9; // 稍微放慢一點點，聽得比較清楚
-
-        utterance.onend = () => {
-            if (sectionLoopStatus[sectionName]) {
-                currentIndex = (currentIndex + 1) % words.length; // 循環索引
-                setTimeout(playNext, 1000); // 每個單字間隔 1 秒
-            }
-        };
-
-        utterance.onerror = () => {
-            sectionLoopStatus[sectionName] = false;
-            btnElement.innerText = "🔁 循環播放區塊";
-        };
-
-        window.speechSynthesis.speak(utterance);
-    }
-
-    playNext();
-}
-
-
 function clearAllRepeatStatus() {
   for (const key in repeatStatus) {
     repeatStatus[key] = false;
@@ -712,18 +622,15 @@ function searchWord() {
     const word = card.dataset.word.toLowerCase();
     const row = card.closest(".content-row");
     const title = row.previousElementSibling;
-    const mainText = card.querySelector(".main-text"); // 修正為 main-text
 
-    mainText.classList.remove("highlight");
+    card.querySelector(".word").classList.remove("highlight");
 
     if (word.includes(query)) {
       found = true;
       row.classList.remove("collapsed");
-      // 展開箭頭
-      const arrow = title.querySelector(".arrow");
-      if(arrow) arrow.classList.add("rotate");
+      title.querySelector(".arrow").classList.add("rotate");
 
-      mainText.classList.add("highlight");
+      card.querySelector(".word").classList.add("highlight");
       card.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   });
@@ -954,16 +861,18 @@ function toggleAllWords(shouldHide) {
     });
 }
 
-// 切換筆記顯示/隱藏
+
+  // 切換筆記顯示/隱藏的函數
 function toggleNote(btn) {
-    const noteContent = btn.parentElement.querySelector(".note-content");
+    // 找到同一個字卡內的 note-content
+    const card = btn.closest('.term-card');
+    const noteContent = card.querySelector(".note-content");
     if (noteContent) {
         noteContent.classList.toggle("show");
-        // 點擊後稍微改變按鈕透明度，代表已開啟
+        // 點擊後稍微改變按鈕透明度代表已開啟
         btn.style.opacity = noteContent.classList.contains("show") ? "0.5" : "1";
     }
 }
-
   
 </script>
  
