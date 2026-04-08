@@ -1,0 +1,23 @@
+[
+  { "word": "participant", "kk": "[pɑrˈtɪsəpənt]", "translation": "參加者、參與者", "part_of_speech": "n." },
+  { "word": "spectator", "kk": "[ˈspɛktetɚ]", "translation": "觀眾、參觀者", "part_of_speech": "n." },
+  { "word": "substitute", "kk": "[ˈsʌbstəˌtjut]", "translation": "代替者、代理人", "part_of_speech": "n." },
+  { "word": "receptionist", "kk": "[rɪˈsɛpʃənɪst]", "translation": "接待員、櫃檯人員", "part_of_speech": "n." },
+  
+  { "word": "secretary", "kk": "[ˈsɛkrəˌtɛri]", "translation": "秘書", "part_of_speech": "n." },
+  { "word": "operator", "kk": "[ˈɑpəˌretɚ]", "translation": "操作員、接線員", "part_of_speech": "n." },
+  { "word": "conductor", "kk": "[kənˈdʌktɚ]", "translation": "指揮(樂團)、列車長", "part_of_speech": "n." },
+  { "word": "president", "kk": "[ˈprɛzədənt]", "translation": "總裁、總統", "part_of_speech": "n." },
+  { "word": "vice president", "kk": "[vaɪs ˈprɛzədənt]", "translation": "副總裁、副總統", "part_of_speech": "n." },
+  { "word": "chairman", "kk": "[ˈtʃɛrmən]", "translation": "主席、董事長", "part_of_speech": "n." },
+  { "word": "vice chairman", "kk": "[vaɪs ˈtʃɛrmən]", "translation": "副主席、副董事長", "part_of_speech": "n." },
+  { "word": "director", "kk": "[dəˈrɛktɚ]", "translation": "董事、主管、主任", "part_of_speech": "n." },
+  { "word": "supervisor", "kk": "[ˈsupɚˌvaɪzɚ]", "translation": "主管、監督者", "part_of_speech": "n." },
+  { "word": "manager", "kk": "[ˈmænədʒɚ]", "translation": "經理、管理者", "part_of_speech": "n." },
+  { "word": "executive", "kk": "[ɪɡˈzɛkjətɪv]", "translation": "高階主管、行政人員", "part_of_speech": "n." },
+  { "word": "advisor", "kk": "[ædˈvaɪzɚ]", "translation": "顧問", "part_of_speech": "n." },
+  { "word": "consultant", "kk": "[kənˈsʌltənt]", "translation": "顧問、諮詢師", "part_of_speech": "n." },
+  { "word": "representative", "kk": "[ˌrɛprɪˈzɛntətɪv]", "translation": "代表、代理人", "part_of_speech": "n." },
+  { "word": "supplier", "kk": "[səˈplaɪɚ]", "translation": "供應商", "part_of_speech": "n." },
+  { "word": "shareholder", "kk": "[ˈʃɛrˌholdɚ]", "translation": "股東", "part_of_speech": "n." }
+]
