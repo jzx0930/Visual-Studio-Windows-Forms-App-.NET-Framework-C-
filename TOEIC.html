@@ -455,40 +455,39 @@ async function loadWordsFromFile(fileName) {
       }).filter(item => item !== null);
     }
 
-    // --- 渲染單字卡 ---
- // --- 渲染單字卡 ---
- // --- 渲染單字卡 ---
-wordList.forEach(item => {
-    const word = item.word;
-    const translation = item.translation;
-    const kk = item.kk || "";
-    const note = (item.note || "").trim(); // 讀取並去除前後空格
-    const safeWord = word.replace(/'/g, "\\'");
+  // --- 渲染單字卡 ---
+    wordList.forEach(item => {
+      const word = item.word;
+      const translation = item.translation;
+      const kk = item.kk || "";
+      const note = (item.note || "").trim(); // 確保讀取 note 並去除空白
+      const safeWord = word.replace(/'/g, "\\'");
 
-    const card = document.createElement("div");
-    card.className = "term-card";
-    card.dataset.word = word;
+      const card = document.createElement("div");
+      card.className = "term-card";
+      card.dataset.word = word;
 
-    // 關鍵判斷：只有當 note 不是空字串時才顯示按鈕與內容容器
-    const hasNote = note.length > 0;
-    const noteButtonHtml = hasNote ? `<button class="note-btn" onclick="toggleNote(this)" title="查看筆記">📝</button>` : "";
-    const noteContentHtml = hasNote ? `<div class="note-content">${note}</div>` : "";
+      // 判斷是否有內容：只有 note 不是空字串才顯示按鈕
+      const hasNote = note.length > 0;
+      const noteButtonHtml = hasNote ? `<button class="note-btn" onclick="toggleNote(this)" title="查看筆記">📝</button>` : "";
+      const noteContentHtml = hasNote ? `<div class="note-content">${note}</div>` : "";
 
-    card.innerHTML = `
-        ${noteButtonHtml}
-        <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
-        <div class="main-text">${word}</div> 
-        <div class="sub-text" style="color: #00ff99; font-family: Arial; margin-bottom: 4px;">${kk}</div>
-        <div class="button-group">
-            <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
-            <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
-            <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
-            <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
-        </div>
-        <div class="sub-text">${translation}</div>
-        ${noteContentHtml}
-    `;
-    row.appendChild(card);
+      card.innerHTML = `
+          ${noteButtonHtml}
+          <button class="eye-btn" onclick="toggleSingleWord(this)">👁️</button>
+          <div class="main-text">${word}</div> 
+          <div class="sub-text" style="color: #00ff99; font-family: Arial; margin-bottom: 4px;">${kk}</div>
+          <div class="button-group">
+              <button class="speak-button" onclick="speakWord('${safeWord}','en-GB')">🇬🇧 英式</button>
+              <button class="speak-button" onclick="speakWord('${safeWord}','en-US')">🇺🇸 美式</button>
+              <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-GB')">🔁 英式重播</button>
+              <button class="speak-button" onclick="repeatSpeak('${safeWord}','en-US')">🔁 美式重播</button>
+          </div>
+          <div class="sub-text">${translation}</div>
+          ${noteContentHtml}
+      `;
+      row.appendChild(card);
+    });
 });
 
     section.appendChild(title);
@@ -713,15 +712,18 @@ function searchWord() {
     const word = card.dataset.word.toLowerCase();
     const row = card.closest(".content-row");
     const title = row.previousElementSibling;
+    const mainText = card.querySelector(".main-text"); // 修正為 main-text
 
-    card.querySelector(".word").classList.remove("highlight");
+    mainText.classList.remove("highlight");
 
     if (word.includes(query)) {
       found = true;
       row.classList.remove("collapsed");
-      title.querySelector(".arrow").classList.add("rotate");
+      // 展開箭頭
+      const arrow = title.querySelector(".arrow");
+      if(arrow) arrow.classList.add("rotate");
 
-      card.querySelector(".word").classList.add("highlight");
+      mainText.classList.add("highlight");
       card.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   });
